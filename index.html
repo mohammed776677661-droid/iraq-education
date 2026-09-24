@@ -36,9 +36,17 @@
         .hero-card { background: linear-gradient(135deg, #1c2541 0%, #3a506b 100%); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(224, 169, 109, 0.3); }
         .section-title { font-size: 15px; font-weight: 700; margin: 15px 0 10px 0; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
         
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .quick-btn { background: #1c2541; padding: 12px 8px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 11px; color: #f1faee; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+        .quick-btn { background: #1c2541; padding: 12px 8px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 11px; color: #f1faee; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
+        .quick-btn:active { transform: scale(0.95); }
         .quick-btn i { font-size: 18px; margin-bottom: 6px; display: block; color: #48cae4; }
+
+        /* App-like Grade Cards */
+        .grades-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .grade-card { background: linear-gradient(135deg, #1c2541 0%, #162032 100%); border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; border: 1px solid rgba(72, 202, 228, 0.3); transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .grade-card:active { transform: scale(0.97); }
+        .grade-card i { font-size: 24px; color: #e0a96d; }
+        .grade-card span { font-size: 13px; font-weight: bold; color: #fff; }
 
         /* Stats Cards */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
@@ -164,22 +172,29 @@
                     <div class="quick-btn" onclick="switchTab('results')"><i class="fa-solid fa-robot"></i>التصحيح AI</div>
                 </div>
 
-                <!-- قسم الإعلانات الداخلية -->
-                <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#e0a96d;"></i> الإعلانات والقنوات الرسمية</div>
-                <div class="ads-container" id="ads-display-list">
-                    <div class="ad-card">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60" class="ad-img" alt="إعلان">
-                        <div class="ad-details">
-                            <div class="ad-title">انضم لقناة التلغرام الرسمية</div>
-                            <a href="https://t.me" target="_blank" class="ad-link-btn"><i class="fa-brands fa-telegram"></i> انضمام</a>
-                        </div>
+                <!-- المراحل الدراسية (مترتبة فوق الإعلانات وبتصميم شبيه بالتطبيقات) -->
+                <div class="section-title"><i class="fa-solid fa-graduation-cap" style="color:#48cae4;"></i> المراحل الدراسية</div>
+                <div class="grades-container">
+                    <div class="grade-card" onclick="switchTab('scientific')">
+                        <i class="fa-solid fa-flask"></i>
+                        <span>السادس العلمي</span>
+                    </div>
+                    <div class="grade-card" onclick="switchTab('literary')">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>السادس الأدبي</span>
                     </div>
                 </div>
 
-                <div class="section-title">المراحل الدراسية</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <button class="btn-submit" onclick="switchTab('scientific')"><i class="fa-solid fa-flask"></i> السادس العلمي</button>
-                    <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="switchTab('literary')"><i class="fa-solid fa-book-open"></i> السادس الأدبي</button>
+                <!-- قسم الإعلانات وقناة التلغرام -->
+                <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#e0a96d;"></i> الإعلانات والقنوات الرسمية</div>
+                <div class="ads-container" id="ads-display-list">
+                    <div class="ad-card" id="telegram-ad-card">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60" class="ad-img" alt="قناة التلغرام">
+                        <div class="ad-details">
+                            <div class="ad-title" id="telegram-ad-title-text">انضم لقناة التلغرام الرسمية</div>
+                            <a href="https://t.me" target="_blank" id="telegram-ad-link-btn" class="ad-link-btn"><i class="fa-brands fa-telegram"></i> انضمام</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -350,6 +365,20 @@
                         <button class="btn-submit" style="background:#27ae60;" onclick="triggerLogoUpload()"><i class="fa-solid fa-image"></i> تحديث شعار المنصة</button>
                     </div>
 
+                    <!-- إضافة وتعديل قناة التلغرام الرسمية -->
+                    <div class="admin-box">
+                        <h3><i class="fa-brands fa-telegram"></i> إعدادات قناة التلغرام الرسمية</h3>
+                        <div class="form-group">
+                            <label>عنوان أو اسم القناة:</label>
+                            <input type="text" id="telegram-title-input" class="form-control" placeholder="مثال: انضم لقناة التلغرام الرسمية">
+                        </div>
+                        <div class="form-group">
+                            <label>رابط قناة التلغرام:</label>
+                            <input type="text" id="telegram-link-input" class="form-control" placeholder="https://t.me/your_channel">
+                        </div>
+                        <button class="btn-submit" style="background:#0077b6;" onclick="updateTelegramChannel()"><i class="fa-solid fa-save"></i> حفظ وتحديث رابط القناة</button>
+                    </div>
+
                     <!-- إدارة رابط المسؤولين -->
                     <div class="admin-box">
                         <h3><i class="fa-solid fa-user-shield"></i> رابط دخول المسؤولين (إضافة مسؤولين)</h3>
@@ -448,6 +477,9 @@
         let currentPlatformCode = localStorage.getItem('platform_code') || 'iraq2026';
         let currentPlatformName = localStorage.getItem('platform_name') || 'منصة العراق التعليمية';
         let currentPlatformLogo = localStorage.getItem('platform_logo') || '';
+        
+        let telegramTitle = localStorage.getItem('telegram_title') || 'انضم لقناة التلغرام الرسمية';
+        let telegramLink = localStorage.getItem('telegram_link') || 'https://t.me';
 
         let currentActiveLectureContainer = null;
         let currentActiveExamContainer = null;
@@ -456,6 +488,7 @@
 
         window.onload = function() {
             applyPlatformBranding();
+            applyTelegramSettings();
 
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') === currentAdminCode) {
@@ -468,6 +501,9 @@
 
             document.getElementById('platform-access-code').value = currentPlatformCode;
             document.getElementById('platform-name-input').value = currentPlatformName;
+            document.getElementById('telegram-title-input').value = telegramTitle;
+            document.getElementById('telegram-link-input').value = telegramLink;
+
             updateAdminLinkDisplay();
             loadAttendanceList();
             updatePlatformStats();
@@ -479,6 +515,26 @@
             
             if (currentPlatformLogo) {
                 document.getElementById('app-logo-img').src = currentPlatformLogo;
+            }
+        }
+
+        function applyTelegramSettings() {
+            document.getElementById('telegram-ad-title-text').innerText = telegramTitle;
+            document.getElementById('telegram-ad-link-btn').href = telegramLink;
+        }
+
+        function updateTelegramChannel() {
+            let tTitle = document.getElementById('telegram-title-input').value;
+            let tLink = document.getElementById('telegram-link-input').value;
+            if(tTitle && tLink) {
+                telegramTitle = tTitle;
+                telegramLink = tLink;
+                localStorage.setItem('telegram_title', tTitle);
+                localStorage.setItem('telegram_link', tLink);
+                applyTelegramSettings();
+                alert('تم تحديث قناة التلغرام الرسمية بنجاح!');
+            } else {
+                alert('يرجى ملء الحقول الخاصة بقناة التلغرام.');
             }
         }
 
@@ -495,7 +551,6 @@
         function checkMandatoryAttendance() {
             let attendanceTime = localStorage.getItem('mandatory_attendance_time');
             let now = new Date().getTime();
-            // الحضور صالح ليوم واحد (24 ساعة)
             if (!attendanceTime || (now - parseInt(attendanceTime) > 86400000)) {
                 document.getElementById('mandatory-attendance-modal').style.display = 'flex';
             } else {
@@ -759,7 +814,6 @@
 
                 let videoUrl = URL.createObjectURL(file);
                 
-                // إضافة أزرار التعديل والحذف التي تظهر للمسؤول فقط داخل المحاضرة
                 let adminActionButtons = isAdmin ? `
                     <div style="display:flex; gap:6px; margin-top:6px;">
                         <button class="download-btn" style="background:#e0a96d; color:#0b132b; padding:4px 8px; font-size:10px;" onclick="editLectureTitle(this)"><i class="fa-solid fa-pen"></i> تعديل</button>
@@ -779,7 +833,6 @@
             }
         };
 
-        // دالة تعديل اسم المحاضرة للمسؤول
         function editLectureTitle(btnElem) {
             if(!isAdmin) return;
             let lectureItem = btnElem.closest('.lecture-item');
@@ -792,7 +845,6 @@
             }
         }
 
-        // دالة حذف المحاضرة للمسؤول
         function deleteLectureItem(btnElem) {
             if(!isAdmin) return;
             if(confirm('هل أنت متأكد من حذف هذه المحاضرة نهائياً؟')) {
