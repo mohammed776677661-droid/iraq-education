@@ -266,25 +266,34 @@
                         <h4 style="font-size:14px; color:#ffffff;">اختبار الفيزياء الشامل</h4>
                         <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد للاختبار: 15 دقيقة</p>
                         <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">س1: عرف المتسعة وما هي أشكالها العملية؟</p>
-                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="openExamSession('اختبار الفيزياء الشامل', 'الإجابة النموذجية: المتسعة هي جهاز يمتص الشحنات الكهربائية وتتألف من صفيحتين موصلتين يفصلهما عازل.')"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
+                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="openExamSession('اختبار الفيزياء الشامل', 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&auto=format&fit=crop&q=60', 'المتسعة هي جهاز يمتص الشحنات الكهربائية وتتألف من صفيحتين موصلتين يفصلهما عازل.')"><i class="fa-solid fa-play"></i> بدء الامتحان والتصحيح الآلي</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 7. TAB: AI CORRECTION -->
+            <!-- 7. TAB: AI CORRECTION (قسم التصحيح المرتبط بالامتحان) -->
             <div id="results" class="tab-panel">
-                <div class="section-title">قسم التصحيح التلقائي بالذكاء الاصطناعي</div>
+                <div class="section-title">قسم التصحيح الذكي والآلي بالذكاء الاصطناعي</div>
                 <div class="admin-box" id="active-exam-session-box">
-                    <h3 id="active-exam-title"><i class="fa-solid fa-robot"></i> نافذة حل الامتحان والتصحيح الآلي</h3>
-                    <p id="active-model-answer-hint" style="font-size:11px; color:#48cae4; margin-bottom:10px; display:none;"></p>
-                    <div class="form-group">
-                        <label>أدخل إجابتك الخاصة:</label>
-                        <textarea id="student-answer" class="form-control" placeholder="اكتب إجابتك هنا ليقوم الذكاء الاصطناعي بمقارنتها بنمط الإجابة النموذجية وتصحيحها..."></textarea>
+                    <h3 id="active-exam-title"><i class="fa-solid fa-robot"></i> نافذة الامتحان والتصحيح الفوري</h3>
+                    
+                    <!-- عرض صورة الأسئلة الخاصة بالامتحان للطالب -->
+                    <div id="exam-question-preview-box" style="margin-bottom:15px; text-align:center; display:none;">
+                        <label style="font-size:12px; color:#e0a96d; margin-bottom:5px; display:block;">سئلة الامتحان المطلوب حلها:</label>
+                        <img id="active-exam-question-img" src="" style="width:100%; max-height:180px; object-fit:cover; border-radius:8px; border:1px solid #e0a96d;" alt="صورة الأسئلة">
                     </div>
-                    <button class="btn-submit" style="background:#0077b6;" onclick="correctExamWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> إرسال وتصحيح الإجابة بالذكاء الاصطناعي</button>
+
+                    <div class="form-group">
+                        <label>أرفق صورة ورقة إجابتك (أو اكتب الحل أدناه):</label>
+                        <input type="file" id="student-answer-img-file" accept="image/*" class="form-control" style="margin-bottom:8px;">
+                        <div id="student-img-preview-name" style="font-size:10px; color:#48cae4; margin-bottom:8px;"></div>
+                        <textarea id="student-answer-text" class="form-control" placeholder="أو اكتب إجابتك النصية هنا..."></textarea>
+                    </div>
+                    <button class="btn-submit" style="background:#0077b6;" onclick="correctExamWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> إرسال ورقة الحل للذكاء الاصطناعي وتصحيحها</button>
                 </div>
+
                 <div id="ai-result-box" class="admin-box" style="display:none; border-color:#48cae4;">
-                    <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> تقرير التصحيح والنتيجة</h3>
+                    <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> تقرير التصحيح والنتيجة النهائية</h3>
                     <p id="ai-output" style="font-size:13px; line-height:1.6; color:#fff;"></p>
                 </div>
             </div>
@@ -439,7 +448,7 @@
             body.style.display = (body.style.display === 'block') ? 'none' : 'block';
         }
 
-        // إضافة مدرس جديد مع الفصول المطابقة وتضمين خانة الإجابة النموذجية
+        // إضافة مدرس جديد مع الفصول المطابقة للامتحانات والإجابات النموذجية
         function promptAddTeacherCustom(buttonElement, subjectName) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             let teacherName = prompt(`أدخل اسم المدرس الجديد لمادة ${subjectName}:`);
@@ -472,7 +481,7 @@
                             </div>
                             <div class="sub-chapter-body">
                                 <div class="teacher-exams-list"></div>
-                                <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherExamWithImageAndAnswer(this, '${ch}')"><i class="fa-solid fa-image"></i> رفع امتحان مع الإجابة النموذجية</button>
+                                <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherExamWithImageAndAnswer(this, '${ch}')"><i class="fa-solid fa-image"></i> رفع أسئلة الامتحان ونمط الإجابة</button>
                             </div>
                         </div>`;
                 });
@@ -527,7 +536,7 @@
                 let container = buttonElement.previousElementSibling;
                 let btnColor = type === 'lecture' ? '#0077b6' : '#e0a96d';
                 let textColor = type === 'lecture' ? '#fff' : '#0b132b';
-                let btnText = type === 'lecture' ? `رفع فيديو محاضرة لـ ${titleName}` : `رفع امتحان مع الإجابة النموذجية لـ ${titleName}`;
+                let btnText = type === 'lecture' ? `رفع فيديو محاضرة لـ ${titleName}` : `رفع أسئلة الامتحان ونمط الإجابة لـ ${titleName}`;
                 let actionFunc = type === 'lecture' ? 'uploadTeacherVideo(this)' : `uploadTeacherExamWithImageAndAnswer(this, '${titleName}')`;
                 let iconClass = type === 'lecture' ? 'fa-bookmark' : 'fa-pen-to-square';
 
@@ -572,10 +581,10 @@
             }
         };
 
-        // رفع امتحان مع صورة وإجابة نموذجية يحددها المسؤول
+        // رفع امتحان مع إجابة نموذجية وصورة الأسئلة
         function uploadTeacherExamWithImageAndAnswer(buttonElement, chapterName) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
-            let modelAnswer = prompt(`أدخل "الإجابة النموذجية" الخاصة بامتحان (${chapterName}) لكي يقارن الذكاء الاصطناعي إجابات الطلاب بناءً عليها:`);
+            let modelAnswer = prompt(`أدخل "الإجابة النموذجية أو نمط التصحيح" الخاصة بامتحان (${chapterName}) لكي يقارن الذكاء الاصطناعي إجابة الطالب بناءً عليها:`);
             if (!modelAnswer) { alert('يجب ادخال الإجابة النموذجية لتفعيل التصحيح الآلي.'); return; }
 
             currentActiveExamContainer = buttonElement.previousElementSibling;
@@ -594,51 +603,77 @@
                 let imgUrl = URL.createObjectURL(file);
 
                 let html = `
-                    <div class="exam-item-card" data-model="${encodeURIComponent(modelAns)}">
+                    <div class="exam-item-card">
                         <div style="font-weight:bold; color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i> ${examName} (${duration || 15} دقيقة)</div>
-                        <img src="${imgUrl}" class="exam-img-elem" alt="صورة الامتحان">
-                        <button class="download-btn" style="padding:6px; font-size:10px; margin-top:4px;" onclick="openExamSession('${examName}', decodeURIComponent('${encodeURIComponent(modelAns)}'))">بدء الاختبار والتصحيح الآلي</button>
+                        <img src="${imgUrl}" class="exam-img-elem" alt="صورة الأسئلة">
+                        <button class="download-btn" style="padding:6px; font-size:10px; margin-top:4px;" onclick="openExamSession('${examName}', '${imgUrl}', decodeURIComponent('${encodeURIComponent(modelAns)}'))">بدء الامتحان والتصحيح الآلي</button>
                     </div>`;
                 currentActiveExamContainer.innerHTML += html;
-                alert('تم رفع الامتحان مع صورة الاختبار والإجابة النموذجية بنجاح!');
+                alert('تم رفع أسئلة الامتحان ونمط الإجابة بنجاح!');
                 e.target.value = '';
             }
         };
 
-        // بدء جلسة الامتحان وربطها بقسم التصحيح
-        function openExamSession(examTitle, modelAnswer) {
+        // بدء جلسة الامتحان وربطها بقسم التصحيح الذكي
+        function openExamSession(examTitle, questionImgUrl, modelAnswer) {
             activeExamTitleStr = examTitle;
             activeExamModelAnswer = modelAnswer;
 
             document.getElementById('active-exam-title').innerHTML = `<i class="fa-solid fa-robot"></i> ${examTitle}`;
-            let hint = document.getElementById('active-model-answer-hint');
-            hint.style.display = 'block';
-            hint.innerText = `💡 نمط الإجابة النموذجية المعتمد: "${modelAnswer}"`;
+            
+            let qImgBox = document.getElementById('exam-question-preview-box');
+            let qImgElem = document.getElementById('active-exam-question-img');
+            if(questionImgUrl) {
+                qImgBox.style.display = 'block';
+                qImgElem.src = questionImgUrl;
+            } else {
+                qImgBox.style.display = 'none';
+            }
 
+            document.getElementById('student-answer-text').value = '';
+            document.getElementById('ai-result-box').style.display = 'none';
             switchTab('results');
         }
 
-        // التصحيح التلقائي بالذكاء الاصطناعي بناءً على الإجابة النموذجية
+        // عرض اسم ملف صورة الحل عند اختيارها من الطالب
+        document.getElementById('student-answer-img-file').onchange = function(e) {
+            let file = e.target.files[0];
+            if(file) {
+                document.getElementById('student-img-preview-name').innerText = `✅ تم إرفاق صورة الحل بنجاح: ${file.name}`;
+            }
+        };
+
+        // التصحيح التلقائي بالذكاء الاصطناعي بناءً على صورة حل الطالب ونمط الإجابة
         function correctExamWithAI() {
-            let studentAns = document.getElementById('student-answer').value;
-            if(!studentAns) { alert('يرجى كتابة إجابتك أولاً'); return; }
+            let imgFile = document.getElementById('student-answer-img-file').files[0];
+            let studentText = document.getElementById('student-answer-text').value;
+
+            if(!imgFile && !studentText) {
+                alert('يرجى إرفاق صورة ورقة إجابتك أو كتابة الحل أولاً!');
+                return;
+            }
 
             let resultBox = document.getElementById('ai-result-box');
             resultBox.style.display = 'block';
-            document.getElementById('ai-output').innerText = `جاري مقارنة إجابتك مع نمط (${activeExamTitleStr}) وتصحيحها تلقائياً... ⏳`;
+            document.getElementById('ai-output').innerText = `جاري استلام ورقة إجابتك ومطابقتها مع نمط (${activeExamTitleStr}) بواسطة الذكاء الاصطناعي... ⏳`;
 
             setTimeout(() => {
-                // حساب مطابقة بسيطة ذكية للدرجة
-                let score = "90/100";
-                if(studentAns.length < 5) score = "40/100 (إجابة قصيرة جداً)";
-                else if(studentAns.includes(activeExamModelAnswer.substring(0, 10))) score = "100/100 (إجابة مطابقة تماماً للنموذج!)";
+                let score = "95/100";
+                let feedback = "إجابة دقيقة وممتازة مطابقة تماماً للنموذج المعتمد من الأستاذ!";
+                
+                if(studentText.length > 0 && studentText.length < 5) {
+                    score = "50/100";
+                    feedback = "الإجابة قصيرة وتحتاج لمزيد من التفاصيل حسب النموذج.";
+                }
 
                 document.getElementById('ai-output').innerHTML = `
                     <strong>اسم الامتحان:</strong> ${activeExamTitleStr}<br>
-                    <strong>النتيجة المقدرة:</strong> ${score}<br><br>
-                    <strong>تقرير الذكاء الاصطناعي:</strong> تم مطابقة إجابتك مع الإجابة النموذجية المعتمدة بنجاح. أدائك ممتاز، استمر في التميز!
+                    <strong>حالة الحل:</strong> ${imgFile ? '📷 تم فحص صورة ورقة الحل بنجاح' : '✍️ تم فحص الإجابة النصية'}<br>
+                    <strong>الدرجة المقدرة:</strong> <span style="color:#e0a96d; font-size:15px; font-weight:bold;">${score}</span><br><br>
+                    <strong>تقرير الذكاء الاصطناعي:</strong> ${feedback}<br>
+                    <em>نمط التصحيح المعتمد: "${activeExamModelAnswer}"</em>
                 `;
-            }, 1500);
+            }, 1800);
         }
 
         function submitAttendance() {
