@@ -71,7 +71,7 @@
         .sub-chapter-header { padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 11px; font-weight: bold; color: #e0a96d; }
         .sub-chapter-body { padding: 8px; background: #0d1b2a; display: none; }
 
-        .lecture-item { display: flex; flex-direction: column; gap: 6px; background: #1c2541; padding: 8px; border-radius: 6px; margin-bottom: 5px; font-size: 11px; border-right: 3px solid #0077b6; }
+        .lecture-item { display: flex; flex-direction: column; gap: 6px; background: #1c2541; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 11px; border-right: 3px solid #0077b6; }
         .exam-item-card { display: flex; flex-direction: column; gap: 6px; background: #1c2541; padding: 8px; border-radius: 6px; margin-bottom: 5px; font-size: 11px; border-right: 3px solid #e0a96d; }
         
         .video-player-elem { width: 100%; max-height: 160px; background: #000; border-radius: 6px; margin-top: 4px; }
@@ -102,7 +102,24 @@
 </head>
 <body>
 
-    <!-- نافذة إدخال كود التفعيل أو التجربة المجانية للطلاب -->
+    <!-- نافذة تسجيل الحضور الإجباري للطالب عند فتح المنصة -->
+    <div id="mandatory-attendance-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور اليومي الإجباري</h2>
+            <p style="font-size:12px; color:#8d99ae; text-align:center; margin-bottom:15px;">يرجى إدخال بياناتك لتتمكن من فتح المحاضرات والمنصة.</p>
+            <div class="form-group">
+                <label>اسم الطالب الثلاثي:</label>
+                <input type="text" id="m-att-name" class="form-control" placeholder="أدخل اسمك الثلاثي">
+            </div>
+            <div class="form-group">
+                <label>اسم المحافظة:</label>
+                <input type="text" id="m-att-gov" class="form-control" placeholder="مثال: بغداد، الأنبار، البصرة...">
+            </div>
+            <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="submitMandatoryAttendance()">تسجيل حضور والدخول</button>
+        </div>
+    </div>
+
+    <!-- نافذة تفعيل دخول المنصة (كود التفعيل أو التجربة) -->
     <div id="access-modal" class="modal-overlay" style="display:none;">
         <div class="modal-box">
             <h2><i class="fa-solid fa-key"></i> تفعيل دخول المنصة</h2>
@@ -113,28 +130,6 @@
             </div>
             <button class="btn-submit" style="background:#0077b6; margin-bottom:10px;" onclick="verifyAccessCode()">تحقق ودخول</button>
             <button class="btn-submit" style="background:transparent; border:1px solid #e0a96d; color:#e0a96d;" onclick="activateFreeTrial()">🎁 تجربة مجانية لمدة أسبوع</button>
-        </div>
-    </div>
-
-    <!-- نافذة تسجيل الحضور اليومي الخاص بالأستاذ (إجبارية لفتح المحاضرات والامتحانات) -->
-    <div id="teacher-attendance-modal" class="modal-overlay" style="display:none;">
-        <div class="modal-box">
-            <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور اليومي للأستاذ</h2>
-            <p style="font-size:12px; color:#8d99ae; text-align:center; margin-bottom:12px;" id="attendance-teacher-notice">يرجى تسجيل بياناتك لتتمكن من فتح محاضرات وامتحانات هذا الأستاذ اليوم.</p>
-            <div class="form-group">
-                <label>اسم الطالب الثلاثي:</label>
-                <input type="text" id="t-att-name" class="form-control" placeholder="أدخل اسمك الثلاثي">
-            </div>
-            <div class="form-group">
-                <label>اسم المدرس:</label>
-                <input type="text" id="t-att-teacher" class="form-control" readonly style="background:#162032; color:#48cae4; font-weight:bold;">
-            </div>
-            <div class="form-group">
-                <label>المحافظة:</label>
-                <input type="text" id="t-att-gov" class="form-control" placeholder="مثال: بغداد، الأنبار، البصرة...">
-            </div>
-            <button class="btn-submit" style="background:#e0a96d; color:#0b132b; margin-bottom:8px;" onclick="submitTeacherAttendance()">تسجيل حضور وفتح المحتوى</button>
-            <button class="btn-submit" style="background:transparent; border:1px solid #8d99ae; color:#8d99ae; padding:8px;" onclick="closeTeacherAttendanceModal()">إلغاء</button>
         </div>
     </div>
 
@@ -283,7 +278,7 @@
                         <h4 style="font-size:14px; color:#ffffff;">اختبار الفيزياء الشامل</h4>
                         <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد للاختبار: 15 دقيقة</p>
                         <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">س1: عرف المتسعة وما هي أشكالها العملية؟</p>
-                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="openExamSession('اختبار الفيزياء الشامل', 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&auto=format&fit=crop&q=60', 'المتسعة هي جهاز يمتص الشحنات الكهربائية وتتألف من صفيحتين موصلتين يفصلهما عازل.', 'أحمد عبد الكريم')"><i class="fa-solid fa-play"></i> بدء الامتحان والتصحيح الآلي</button>
+                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="openExamSession('اختبار الفيزياء الشامل', 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&auto=format&fit=crop&q=60', 'المتسعة هي جهاز يمتص الشحنات الكهربائية وتتألف من صفيحتين موصلتين يفصلهما عازل.')"><i class="fa-solid fa-play"></i> بدء الامتحان والتصحيح الآلي</button>
                     </div>
                 </div>
             </div>
@@ -411,15 +406,14 @@
                         <button class="btn-submit" style="background:#e63946;" onclick="uploadPdf()"><i class="fa-solid fa-upload"></i> رفع وتوفير للتحميل</button>
                     </div>
 
-                    <!-- سجل الحضور اليومي للطلاب لكل أستاذ -->
+                    <!-- سجل الحضور اليومي العام -->
                     <div class="admin-box">
-                        <h3><i class="fa-solid fa-users"></i> سجل الحضور اليومي للطلاب (حسب الأستاذ)</h3>
+                        <h3><i class="fa-solid fa-users"></i> سجل الحضور اليومي للطلاب</h3>
                         <table>
                             <thead>
                                 <tr>
                                     <th>اسم الطالب الثلاثي</th>
-                                    <th>اسم المدرس</th>
-                                    <th>المحافظة</th>
+                                    <th>اسم المحافظة</th>
                                 </tr>
                             </thead>
                             <tbody id="attendance-table-body">
@@ -439,7 +433,7 @@
             <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
             <div class="nav-item" onclick="switchTab('lectures', this)"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
             <div class="nav-item" onclick="switchTab('pdf', this)"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
-            <div class="nav-item" onclick="switchTab('exams', this)"><i class="fa-solid fa-pen-to-square"></i>المحطات</div>
+            <div class="nav-item" onclick="switchTab('exams', this)"><i class="fa-solid fa-pen-to-square"></i>الامتحانات</div>
             <div class="nav-item" id="nav-admin-btn" onclick="switchTab('profile', this)" style="display:none;"><i class="fa-solid fa-gears"></i>الإدارة</div>
         </div>
     </div>
@@ -459,20 +453,17 @@
         let currentActiveExamContainer = null;
         let activeExamModelAnswer = "الإجابة النموذجية غير محددة";
         let activeExamTitleStr = "اختبار عام";
-        
-        let pendingActionCallback = null;
-        let pendingTeacherNameStr = "";
 
         window.onload = function() {
             applyPlatformBranding();
 
             const urlParams = new URLSearchParams(window.location.search);
-            
             if (urlParams.get('admin') === currentAdminCode) {
                 enableAdminMode();
             } else {
                 document.getElementById('nav-admin-btn').style.display = 'none';
                 checkPlatformAccess();
+                checkMandatoryAttendance();
             }
 
             document.getElementById('platform-access-code').value = currentPlatformCode;
@@ -492,13 +483,48 @@
         }
 
         function updatePlatformStats() {
-            let attendanceData = JSON.parse(localStorage.getItem('attendance_records') || '[]');
+            let attendanceData = JSON.parse(localStorage.getItem('mandatory_attendance_records') || '[]');
             let uniqueStudents = {};
             attendanceData.forEach(item => uniqueStudents[item.name] = true);
 
             document.getElementById('stat-students-count').innerText = Object.keys(uniqueStudents).length || (attendanceData.length > 0 ? attendanceData.length : 1);
             document.getElementById('stat-codes-count').innerText = "1";
             document.getElementById('stat-attendance-count').innerText = attendanceData.length;
+        }
+
+        function checkMandatoryAttendance() {
+            let attendanceTime = localStorage.getItem('mandatory_attendance_time');
+            let now = new Date().getTime();
+            // الحضور صالح ليوم واحد (24 ساعة)
+            if (!attendanceTime || (now - parseInt(attendanceTime) > 86400000)) {
+                document.getElementById('mandatory-attendance-modal').style.display = 'flex';
+            } else {
+                document.getElementById('mandatory-attendance-modal').style.display = 'none';
+            }
+        }
+
+        function submitMandatoryAttendance() {
+            let name = document.getElementById('m-att-name').value;
+            let gov = document.getElementById('m-att-gov').value;
+
+            if (!name || !gov) {
+                alert('يرجى كتابة اسمك الثلاثي والمحافظة لتسجيل الحضور.');
+                return;
+            }
+
+            let records = JSON.parse(localStorage.getItem('mandatory_attendance_records') || '[]');
+            records.push({
+                name: name,
+                gov: gov,
+                date: new Date().toDateString()
+            });
+            localStorage.setItem('mandatory_attendance_records', JSON.stringify(records));
+            localStorage.setItem('mandatory_attendance_time', new Date().getTime());
+
+            document.getElementById('mandatory-attendance-modal').style.display = 'none';
+            loadAttendanceList();
+            updatePlatformStats();
+            alert('تم تسجيل حضورك اليومي بنجاح!');
         }
 
         function updatePlatformName() {
@@ -542,7 +568,7 @@
             adminButtons.forEach(btn => btn.style.display = 'block');
 
             document.getElementById('access-modal').style.display = 'none';
-            document.getElementById('teacher-attendance-modal').style.display = 'none';
+            document.getElementById('mandatory-attendance-modal').style.display = 'none';
         }
 
         function checkPlatformAccess() {
@@ -606,71 +632,12 @@
             body.style.display = (body.style.display === 'block') ? 'none' : 'block';
         }
 
-        // دالة التحقق من تسجيل الحضور قبل فتح المحتوى الخاص بالأستاذ
-        function requireTeacherAttendance(teacherName, callback) {
-            if (isAdmin) {
-                callback(); // المسؤول يتخطى الحضور
-                return;
-            }
-
-            pendingTeacherNameStr = teacherName;
-            pendingActionCallback = callback;
-
-            let records = JSON.parse(localStorage.getItem('attendance_records') || '[]');
-            let today = new Date().toDateString();
-            let alreadyAttended = records.some(r => r.teacher === teacherName && r.date === today);
-
-            if (alreadyAttended) {
-                callback();
-            } else {
-                document.getElementById('t-att-teacher').value = teacherName;
-                document.getElementById('t-att-name').value = '';
-                document.getElementById('t-att-gov').value = '';
-                document.getElementById('teacher-attendance-modal').style.display = 'flex';
-            }
-        }
-
-        function submitTeacherAttendance() {
-            let name = document.getElementById('t-att-name').value;
-            let teacher = document.getElementById('t-att-teacher').value;
-            let gov = document.getElementById('t-att-gov').value;
-
-            if (!name || !gov) {
-                alert('يرجى ملء اسمك الثلاثي والمحافظة لتسجيل الحضور.');
-                return;
-            }
-
-            let records = JSON.parse(localStorage.getItem('attendance_records') || '[]');
-            records.push({
-                name: name,
-                teacher: teacher,
-                gov: gov,
-                date: new Date().toDateString()
-            });
-            localStorage.setItem('attendance_records', JSON.stringify(records));
-
-            document.getElementById('teacher-attendance-modal').style.display = 'none';
-            loadAttendanceList();
-            updatePlatformStats();
-            alert('تم تسجيل حضورك اليومي لهذا الأستاذ بنجاح!');
-
-            if (pendingActionCallback) {
-                pendingActionCallback();
-                pendingActionCallback = null;
-            }
-        }
-
-        function closeTeacherAttendanceModal() {
-            document.getElementById('teacher-attendance-modal').style.display = 'none';
-            pendingActionCallback = null;
-        }
-
         function loadAttendanceList() {
-            let attendanceData = JSON.parse(localStorage.getItem('attendance_records') || '[]');
+            let attendanceData = JSON.parse(localStorage.getItem('mandatory_attendance_records') || '[]');
             let tbody = document.getElementById('attendance-table-body');
             tbody.innerHTML = '';
             attendanceData.forEach(item => {
-                tbody.innerHTML += `<tr><td>${item.name}</td><td>${item.teacher}</td><td>${item.gov}</td></tr>`;
+                tbody.innerHTML += `<tr><td>${item.name}</td><td>${item.gov}</td></tr>`;
             });
         }
 
@@ -688,7 +655,7 @@
                 chapters.forEach(ch => {
                     chaptersLecturesHtml += `
                         <div class="sub-chapter-box">
-                            <div class="sub-chapter-header" onclick="requireTeacherAttendance('${teacherName}', () => toggleAccordion(this))">
+                            <div class="sub-chapter-header" onclick="toggleAccordion(this)">
                                 <span><i class="fa-solid fa-bookmark"></i> ${ch}</span>
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
@@ -700,7 +667,7 @@
 
                     chaptersExamsHtml += `
                         <div class="sub-chapter-box">
-                            <div class="sub-chapter-header" onclick="requireTeacherAttendance('${teacherName}', () => toggleAccordion(this))">
+                            <div class="sub-chapter-header" onclick="toggleAccordion(this)">
                                 <span><i class="fa-solid fa-pen-to-square"></i> ${ch}</span>
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
@@ -713,14 +680,14 @@
 
                 let html = `
                     <div class="teacher-accordion">
-                        <div class="teacher-header" onclick="requireTeacherAttendance('${teacherName}', () => toggleAccordion(this))">
+                        <div class="teacher-header" onclick="toggleAccordion(this)">
                             <span><i class="fa-solid fa-user-tie"></i> أ. ${teacherName}</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                         <div class="teacher-body">
                             
                             <div class="main-category-box">
-                                <div class="main-category-header" onclick="requireTeacherAttendance('${teacherName}', () => toggleAccordion(this))">
+                                <div class="main-category-header" onclick="toggleAccordion(this)">
                                     <span><i class="fa-solid fa-circle-play" style="color:#48cae4;"></i> محاضرات الأستاذ</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
@@ -728,12 +695,12 @@
                                     <div class="sub-chapters-container">
                                         ${chaptersLecturesHtml}
                                     </div>
-                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px; display:block;" onclick="addNewSubChapter(this, 'lecture', '${teacherName}')"><i class="fa-solid fa-plus"></i> + إضافة فصل محاضرة إضافي</button>
+                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px; display:block;" onclick="addNewSubChapter(this, 'lecture')"><i class="fa-solid fa-plus"></i> + إضافة فصل محاضرة إضافي</button>
                                 </div>
                             </div>
 
                             <div class="main-category-box">
-                                <div class="main-category-header" onclick="requireTeacherAttendance('${teacherName}', () => toggleAccordion(this))">
+                                <div class="main-category-header" onclick="toggleAccordion(this)">
                                     <span><i class="fa-solid fa-pen-to-square" style="color:#e0a96d;"></i> امتحانات واختبارات الأستاذ</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
@@ -741,7 +708,7 @@
                                     <div class="sub-exams-container">
                                         ${chaptersExamsHtml}
                                     </div>
-                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px; display:block;" onclick="addNewSubChapter(this, 'exam', '${teacherName}')"><i class="fa-solid fa-plus"></i> + إضافة فصل امتحان إضافي</button>
+                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px; display:block;" onclick="addNewSubChapter(this, 'exam')"><i class="fa-solid fa-plus"></i> + إضافة فصل امتحان إضافي</button>
                                 </div>
                             </div>
 
@@ -751,7 +718,7 @@
             }
         }
 
-        function addNewSubChapter(buttonElement, type, teacherName) {
+        function addNewSubChapter(buttonElement, type) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             let titleName = prompt("أدخل عنوان الفصل أو الموضوع الجديد:");
             if (titleName) {
@@ -764,7 +731,7 @@
 
                 let html = `
                     <div class="sub-chapter-box">
-                        <div class="sub-chapter-header" onclick="requireTeacherAttendance('${teacherName}', () => toggleAccordion(this))">
+                        <div class="sub-chapter-header" onclick="toggleAccordion(this)">
                             <span><i class="fa-solid ${iconClass}"></i> ${titleName}</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
@@ -791,16 +758,49 @@
                 if (!lectureTitle) lectureTitle = file.name;
 
                 let videoUrl = URL.createObjectURL(file);
+                
+                // إضافة أزرار التعديل والحذف التي تظهر للمسؤول فقط داخل المحاضرة
+                let adminActionButtons = isAdmin ? `
+                    <div style="display:flex; gap:6px; margin-top:6px;">
+                        <button class="download-btn" style="background:#e0a96d; color:#0b132b; padding:4px 8px; font-size:10px;" onclick="editLectureTitle(this)"><i class="fa-solid fa-pen"></i> تعديل</button>
+                        <button class="download-btn" style="background:#e63946; padding:4px 8px; font-size:10px;" onclick="deleteLectureItem(this)"><i class="fa-solid fa-trash"></i> حذف</button>
+                    </div>
+                ` : '';
+
                 let html = `
                     <div class="lecture-item">
-                        <div style="font-weight:bold; color:#48cae4;"><i class="fa-solid fa-video"></i> ${lectureTitle}</div>
+                        <div style="font-weight:bold; color:#48cae4;" class="lecture-title-text"><i class="fa-solid fa-video"></i> ${lectureTitle}</div>
                         <video controls class="video-player-elem" src="${videoUrl}"></video>
+                        ${adminActionButtons}
                     </div>`;
                 currentActiveLectureContainer.innerHTML += html;
                 alert('تم رفع المحاضرة بنجاح داخل الفصل!');
                 e.target.value = '';
             }
         };
+
+        // دالة تعديل اسم المحاضرة للمسؤول
+        function editLectureTitle(btnElem) {
+            if(!isAdmin) return;
+            let lectureItem = btnElem.closest('.lecture-item');
+            let titleDiv = lectureItem.querySelector('.lecture-title-text');
+            let currentText = titleDiv.innerText.replace(/[^ء-يa-zA-Z0-9\s()]/g, '').trim();
+            let newTitle = prompt("تعديل عنوان المحاضرة:", currentText);
+            if(newTitle) {
+                titleDiv.innerHTML = `<i class="fa-solid fa-video"></i> ${newTitle}`;
+                alert('تم تعديل العنوان بنجاح!');
+            }
+        }
+
+        // دالة حذف المحاضرة للمسؤول
+        function deleteLectureItem(btnElem) {
+            if(!isAdmin) return;
+            if(confirm('هل أنت متأكد من حذف هذه المحاضرة نهائياً؟')) {
+                let lectureItem = btnElem.closest('.lecture-item');
+                lectureItem.remove();
+                alert('تم حذف المحاضرة بنجاح!');
+            }
+        }
 
         function uploadTeacherExamWithImageAndAnswer(buttonElement, chapterName) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
