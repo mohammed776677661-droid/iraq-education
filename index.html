@@ -32,12 +32,20 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Cards & UI elements */
-        .hero-card { background: linear-gradient(135deg, #1c2541 0%, #3a506b 100%); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; border: 1px solid rgba(224, 169, 109, 0.3); }
-        .section-title { font-size: 16px; font-weight: 700; margin: 15px 0 10px 0; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
+        .hero-card { background: linear-gradient(135deg, #1c2541 0%, #3a506b 100%); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(224, 169, 109, 0.3); }
+        .section-title { font-size: 15px; font-weight: 700; margin: 15px 0 10px 0; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
         
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
         .quick-btn { background: #1c2541; padding: 12px 8px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 11px; color: #f1faee; }
         .quick-btn i { font-size: 18px; margin-bottom: 6px; display: block; color: #48cae4; }
+
+        /* Internal Ads Section */
+        .ads-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .ad-card { background: #1c2541; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
+        .ad-img { width: 100%; height: 130px; object-fit: cover; }
+        .ad-details { padding: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .ad-title { font-size: 13px; font-weight: bold; color: #fff; }
+        .ad-link-btn { background: #0077b6; color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; }
 
         .subject-accordion { background: #1c2541; border-radius: 16px; margin-bottom: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
         .subject-header { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
@@ -74,7 +82,7 @@
 </head>
 <body>
 
-    <!-- نافذة تسجيل الحضور اليومي الإجباري -->
+    <!-- نافذة تسجيل الحضور اليومي الإجباري (كل 24 ساعة) -->
     <div id="attendance-modal" class="modal-overlay">
         <div class="modal-box">
             <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور اليومي</h2>
@@ -114,19 +122,32 @@
         <!-- Content Area -->
         <div class="app-content">
 
-            <!-- 1. TAB: HOME -->
+            <!-- 1. TAB: HOME (الرئيسية مع الإعلانات والوصول السريع) -->
             <div id="home" class="tab-panel active">
                 <div class="hero-card">
                     <h2 id="banner-title">منصة العراق التعليمية</h2>
                     <p id="banner-desc">أهلاً بك في المنصة التعليمية الأولى</p>
                 </div>
                 
-                <div class="section-title">وصول سريع</div>
+                <!-- الأزرار السريعة بالأعلى -->
+                <div class="section-title">الأقسام الرئيسية</div>
                 <div class="grid-4">
                     <div class="quick-btn" onclick="switchTab('lectures')"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
                     <div class="quick-btn" onclick="switchTab('pdf')"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
-                    <div class="quick-btn" onclick="switchTab('exams')"><i class="fa-solid fa-pen-to-square"></i>الاختبارات</div>
+                    <div class="quick-btn" onclick="switchTab('exams')"><i class="fa-solid fa-pen-to-square"></i>الامتحانات</div>
                     <div class="quick-btn" onclick="switchTab('results')"><i class="fa-solid fa-robot"></i>التصحيح AI</div>
+                </div>
+
+                <!-- قسم الإعلانات الداخلية بالواجهة -->
+                <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#e0a96d;"></i> الإعلانات والقنوات الرسمية</div>
+                <div class="ads-container" id="ads-display-list">
+                    <div class="ad-card">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60" class="ad-img" alt="إعلان">
+                        <div class="ad-details">
+                            <div class="ad-title">انضم لقناة التلغرام الرسمية للمنصة</div>
+                            <a href="https://t.me" target="_blank" class="ad-link-btn"><i class="fa-brands fa-telegram"></i> انضمام</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="section-title">المراحل الدراسية</div>
@@ -136,9 +157,9 @@
                 </div>
             </div>
 
-            <!-- 2. TAB: SCIENTIFIC (السادس العلمي) -->
+            <!-- 2. TAB: SCIENTIFIC (السادس العلمي - كافة المواد) -->
             <div id="scientific" class="tab-panel">
-                <div class="section-title">مواد السادس العلمي (المدرسين والدروس)</div>
+                <div class="section-title">مواد السادس العلمي</div>
                 <div id="scientific-subjects-list">
                     <div class="subject-accordion">
                         <div class="subject-header" onclick="toggleAccordion(this)">
@@ -146,10 +167,8 @@
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                         <div class="subject-body">
-                            <div class="teachers-list">
-                                <a href="#" class="teacher-btn"><span>أ. عقيل الزبيدي</span> <i class="fa-solid fa-play"></i></a>
-                            </div>
-                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس لهذه المادة</button>
+                            <div class="teachers-list"><a href="#" class="teacher-btn"><span>أ. عقيل الزبيدي</span> <i class="fa-solid fa-play"></i></a></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
                         </div>
                     </div>
                     <div class="subject-accordion">
@@ -158,19 +177,77 @@
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                         <div class="subject-body">
-                            <div class="teachers-list">
-                                <a href="#" class="teacher-btn"><span>أ. حيدر وليد</span> <i class="fa-solid fa-play"></i></a>
-                            </div>
-                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس لهذه المادة</button>
+                            <div class="teachers-list"><a href="#" class="teacher-btn"><span>أ. حيدر وليد</span> <i class="fa-solid fa-play"></i></a></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-atom" style="color:#48cae4;"></i> <strong>الفيزياء</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-flask" style="color:#48cae4;"></i> <strong>الكيمياء</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-dna" style="color:#48cae4;"></i> <strong>الأحياء</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-language" style="color:#48cae4;"></i> <strong>اللغة الإنكليزية</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-kaaba" style="color:#48cae4;"></i> <strong>التربية الإسلامية</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. TAB: LITERARY (السادس الأدبي) -->
+            <!-- 3. TAB: LITERARY (السادس الأدبي - كافة المواد) -->
             <div id="literary" class="tab-panel">
                 <div class="section-title">مواد السادس الأدبي</div>
                 <div id="literary-subjects-list">
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-book" style="color:#e0a96d;"></i> <strong>اللغة العربية</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
                     <div class="subject-accordion">
                         <div class="subject-header" onclick="toggleAccordion(this)">
                             <div><i class="fa-solid fa-landmark" style="color:#e0a96d;"></i> <strong>التاريخ</strong></div>
@@ -178,7 +255,57 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس لهذه المادة</button>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-earth-americas" style="color:#e0a96d;"></i> <strong>الجغرافية</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-chart-pie" style="color:#e0a96d;"></i> <strong>الاقتصاد</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-brain" style="color:#e0a96d;"></i> <strong>الفلسفة والمنطق</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-language" style="color:#e0a96d;"></i> <strong>اللغة الإنكليزية</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                        </div>
+                    </div>
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-kaaba" style="color:#e0a96d;"></i> <strong>التربية الإسلامية</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
                         </div>
                     </div>
                 </div>
@@ -186,7 +313,7 @@
 
             <!-- 4. TAB: LECTURES (قسم المحاضرات) -->
             <div id="lectures" class="tab-panel">
-                <div class="section-title">المحاضرات المرئية</div>
+                <div class="section-title">قسم المحاضرات والدروس</div>
                 <div id="lectures-container">
                     <div class="video-card">
                         <div class="video-preview"><div class="play-btn"><i class="fa-solid fa-play"></i></div></div>
@@ -198,7 +325,7 @@
                 </div>
             </div>
 
-            <!-- 5. TAB: PDF (رفع وتحميل الملازم) -->
+            <!-- 5. TAB: PDF (قسم الملازم والكتب) -->
             <div id="pdf" class="tab-panel">
                 <div class="section-title">قسم الملازم والكتب (تحميل مباشر)</div>
                 <div id="pdf-container">
@@ -212,41 +339,63 @@
                 </div>
             </div>
 
-            <!-- 6. TAB: EXAMS (الاختبارات) -->
+            <!-- 6. TAB: EXAMS (قسم الامتحانات) -->
             <div id="exams" class="tab-panel">
-                <div class="section-title">الاختبارات والامتحانات</div>
+                <div class="section-title">قسم الامتحانات والاختبارات</div>
                 <div id="exams-container">
                     <div class="admin-box" style="margin-bottom:12px;">
                         <h4 style="font-size:14px; color:#ffffff;">اختبار الفيزياء الشامل</h4>
-                        <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد: 15 دقيقة</p>
-                        <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">س1: عرف المتسعة وما هي أشكالها؟</p>
+                        <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد للاختبار: 15 دقيقة</p>
+                        <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">س1: عرف المتسعة وما هي أشكالها العملية؟</p>
                         <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="startExam('اختبار الفيزياء', 15)"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 7. TAB: RESULTS & AI CORRECTION (قسم التصحيح الفوري) -->
+            <!-- 7. TAB: RESULTS & AI CORRECTION (قسم التصحيح بالذكاء الاصطناعي مع الوقت) -->
             <div id="results" class="tab-panel">
-                <div class="section-title">التصحيح الفوري بالذكاء الاصطناعي (ChatGPT)</div>
+                <div class="section-title">قسم التصحيح بالذكاء الاصطناعي</div>
                 <div class="admin-box">
-                    <h3><i class="fa-solid fa-robot"></i> تصحيح إجابة الطالب</h3>
+                    <h3><i class="fa-solid fa-robot"></i> تصحيح إجابة الطالب وتوليد الدرجة</h3>
+                    <div class="form-group">
+                        <label>الوقت المسموح به للتصحيح (بالدقائق):</label>
+                        <input type="number" id="correction-time-allowed" class="form-control" value="5">
+                    </div>
                     <div class="form-group">
                         <label>إجابة الطالب المكتوبة:</label>
-                        <textarea id="student-answer" class="form-control" placeholder="اكتب إجابتك هنا ليتم تصحيحها وإعطاء الدرجة..."></textarea>
+                        <textarea id="student-answer" class="form-control" placeholder="اكتب إجابتك هنا ليتم تصحيحها بالذكاء الاصطناعي وإرسال الدرجة..."></textarea>
                     </div>
-                    <button class="btn-submit" style="background:#0077b6;" onclick="correctWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تصحيح وإرسال الدرجة</button>
+                    <button class="btn-submit" style="background:#0077b6;" onclick="correctWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تصحيح وإرسال الدرجة فوراً</button>
                 </div>
                 <div id="ai-result-box" class="admin-box" style="display:none; border-color:#48cae4;">
-                    <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> نتيجة التصحيح والتقييم</h3>
+                    <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> تقرير التصحيح والنتيجة</h3>
                     <p id="ai-output" style="font-size:13px; line-height:1.6; color:#fff;"></p>
                 </div>
             </div>
 
-            <!-- 8. TAB: ADMIN DASHBOARD (لوحة التحكم والإدارة) -->
+            <!-- 8. TAB: ADMIN DASHBOARD (لوحة التحكم الشاملة) -->
             <div id="profile" class="tab-panel">
                 <div class="section-title">لوحة التحكم والإدارة الشاملة</div>
 
-                <!-- 1. مولد كودات الاشتراك -->
+                <!-- 1. إضافة إعلان جديد للواجهة -->
+                <div class="admin-box">
+                    <h3><i class="fa-solid fa-bullhorn"></i> إضافة إعلان جديد للواجهة</h3>
+                    <div class="form-group">
+                        <label>عنوان الإعلان:</label>
+                        <input type="text" id="ad-title-input" class="form-control" placeholder="مثال: انضم لقناتنا الرسمية">
+                    </div>
+                    <div class="form-group">
+                        <label>صورة الإعلان (من الاستوديو/الملفات):</label>
+                        <input type="file" id="ad-img-input" accept="image/*" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>رابط الإعلان (تلغرام / يوتيوب / إنستغرام):</label>
+                        <input type="text" id="ad-link-input" class="form-control" placeholder="https://t.me/example">
+                    </div>
+                    <button class="btn-submit" style="background:#0077b6;" onclick="addAd()"><i class="fa-solid fa-plus"></i> نشر الإعلان بالواجهة</button>
+                </div>
+
+                <!-- 2. مولد كودات الاشتراك -->
                 <div class="admin-box">
                     <h3><i class="fa-solid fa-key"></i> توليد كودات الاشتراك التلقائي</h3>
                     <div class="form-group">
@@ -259,20 +408,6 @@
                     </div>
                     <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="generateCode()"><i class="fa-solid fa-wand-magic-sparkles"></i> توليد كود جديد</button>
                     <div id="generated-code-box" style="margin-top:10px; font-size:14px; font-weight:bold; color:#48cae4; text-align:center;"></div>
-                </div>
-
-                <!-- 2. رفع محاضرة فيديو -->
-                <div class="admin-box">
-                    <h3><i class="fa-solid fa-video"></i> إضافة محاضرة جديدة</h3>
-                    <div class="form-group">
-                        <label>عنوان المحاضرة:</label>
-                        <input type="text" id="lecture-title" class="form-control" placeholder="اسم المحاضرة والمادة">
-                    </div>
-                    <div class="form-group">
-                        <label>اسم الأستاذ والمدة:</label>
-                        <input type="text" id="lecture-author" class="form-control" placeholder="أحمد عبد الكريم • 45 دقيقة">
-                    </div>
-                    <button class="btn-submit" style="background:#0077b6;" onclick="addLecture()"><i class="fa-solid fa-plus"></i> نشر المحاضرة</button>
                 </div>
 
                 <!-- 3. رفع ملزمة من الجهاز -->
@@ -289,7 +424,7 @@
                     <button class="btn-submit" style="background:#e63946;" onclick="uploadPdf()"><i class="fa-solid fa-upload"></i> رفع وتوفير للتحميل</button>
                 </div>
 
-                <!-- 4. إضافة اختبار مع وقت -->
+                <!-- 4. إضافة اختبار جديد -->
                 <div class="admin-box">
                     <h3><i class="fa-solid fa-clock"></i> إضافة اختبار جديد مع وقت</h3>
                     <div class="form-group">
@@ -333,7 +468,7 @@
             <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
             <div class="nav-item" onclick="switchTab('lectures', this)"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
             <div class="nav-item" onclick="switchTab('pdf', this)"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
-            <div class="nav-item" onclick="switchTab('exams', this)"><i class="fa-solid fa-pen-to-square"></i>الاختبارات</div>
+            <div class="nav-item" onclick="switchTab('exams', this)"><i class="fa-solid fa-pen-to-square"></i>الامتحانات</div>
             <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-solid fa-gears"></i>الإدارة</div>
         </div>
     </div>
@@ -399,22 +534,33 @@
             }
         }
 
-        function addLecture() {
-            let title = document.getElementById('lecture-title').value;
-            let author = document.getElementById('lecture-author').value;
-            if(!title || !author) { alert('أدخل بيانات المحاضرة'); return; }
+        // إضافة إعلان للواجهة من لوحة التحكم
+        function addAd() {
+            let title = document.getElementById('ad-title-input').value;
+            let link = document.getElementById('ad-link-input').value;
+            let imgInput = document.getElementById('ad-img-input');
 
-            let html = `
-                <div class="video-card">
-                    <div class="video-preview"><div class="play-btn"><i class="fa-solid fa-play"></i></div></div>
-                    <div class="video-details">
-                        <div style="font-weight:700;">${title}</div>
-                        <div style="font-size:12px; color:#8d99ae;">${author}</div>
-                    </div>
-                </div>`;
-            document.getElementById('lectures-container').innerHTML += html;
-            alert('تم نشر المحاضرة بنجاح!');
-            switchTab('lectures');
+            if(!title || !link || !imgInput.files[0]) {
+                alert('يرجى كتابة عنوان ورابط الإعلان واختيار صورة');
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let imgSrc = e.target.result;
+                let html = `
+                    <div class="ad-card">
+                        <img src="${imgSrc}" class="ad-img" alt="إعلان">
+                        <div class="ad-details">
+                            <div class="ad-title">${title}</div>
+                            <a href="${link}" target="_blank" class="ad-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> فتح الرابط</a>
+                        </div>
+                    </div>`;
+                document.getElementById('ads-display-list').innerHTML += html;
+                alert('تم نشر الإعلان بالواجهة الرئيسية بنجاح!');
+                switchTab('home');
+            };
+            reader.readAsDataURL(imgInput.files[0]);
         }
 
         function uploadPdf() {
@@ -446,7 +592,7 @@
             let html = `
                 <div class="admin-box" style="margin-bottom:12px;">
                     <h4 style="font-size:14px; color:#ffffff;">${title}</h4>
-                    <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد: ${time} دقيقة</p>
+                    <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد للاختبار: ${time} دقيقة</p>
                     <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">${questions}</p>
                     <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="startExam('${title}', ${time})"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
                 </div>`;
@@ -462,11 +608,12 @@
 
         function correctWithAI() {
             let answer = document.getElementById('student-answer').value;
+            let timeAllowed = document.getElementById('correction-time-allowed').value;
             if(!answer) { alert('أدخل الإجابة للتصحيح'); return; }
             document.getElementById('ai-result-box').style.display = 'block';
-            document.getElementById('ai-output').innerText = 'جاري التصحيح والتقييم... ⏳';
+            document.getElementById('ai-output').innerText = `جاري التصحيح بالذكاء الاصطناعي (الوقت المخصص: ${timeAllowed} دقائق)... ⏳`;
             setTimeout(() => {
-                document.getElementById('ai-output').innerText = '✅ التقييم والدرجة: 95/100\n\nتصحيح الذكاء الاصطناعي: الإجابة نموذجية وممتازة، تم شرح المفاهيم بالشكل المطلوب!';
+                document.getElementById('ai-output').innerText = '✅ التقييم والدرجة: 95/100\n\nتقرير الذكاء الاصطناعي: إجابة نموذجية وممتازة، تم توضيح التعاريف والمفاهيم بالشكل المطلوب!';
             }, 1200);
         }
 
