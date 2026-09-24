@@ -48,10 +48,19 @@
         .ad-title { font-size: 13px; font-weight: bold; color: #fff; }
         .ad-link-btn { background: #0077b6; color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
 
+        /* Accordion Levels */
         .subject-accordion { background: #1c2541; border-radius: 16px; margin-bottom: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
         .subject-header { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .subject-body { padding: 15px; background: #0b132b; display: none; border-top: 1px solid rgba(255,255,255,0.05); }
-        .teacher-btn { display: flex; align-items: center; justify-content: space-between; background: #1c2541; padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; color: #48cae4; text-decoration: none; font-size: 13px; font-weight: 600; }
+
+        .teacher-accordion { background: #162032; border-radius: 12px; margin-bottom: 10px; overflow: hidden; border: 1px solid rgba(72, 202, 228, 0.2); }
+        .teacher-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #48cae4; font-weight: 600; font-size: 13px; }
+        .teacher-body { padding: 12px; background: #0d1b2a; display: none; }
+
+        .chapter-box { background: #1c2541; border-radius: 10px; padding: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); }
+        .chapter-title { font-size: 12px; font-weight: bold; color: #e0a96d; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .lecture-item { display: flex; align-items: center; justify-content: space-between; background: #0b132b; padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; border-right: 3px solid #0077b6; }
 
         .video-card { background: #1c2541; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
         .video-preview { width: 100%; height: 180px; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
@@ -124,7 +133,7 @@
         <!-- Content Area -->
         <div class="app-content">
 
-            <!-- 1. TAB: HOME (الرئيسية والإعلانات) -->
+            <!-- 1. TAB: HOME -->
             <div id="home" class="tab-panel active">
                 <div class="hero-card">
                     <h2 id="banner-title">منصة العراق التعليمية</h2>
@@ -145,7 +154,7 @@
                     <div class="ad-card">
                         <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60" class="ad-img" alt="إعلان">
                         <div class="ad-details">
-                            <div class="ad-title">انضم للقناة الرسمية على التلغرام</div>
+                            <div class="ad-title">انضم لقناة التلغرام الرسمية</div>
                             <a href="https://t.me" target="_blank" class="ad-link-btn"><i class="fa-brands fa-telegram"></i> انضمام</a>
                         </div>
                     </div>
@@ -158,30 +167,40 @@
                 </div>
             </div>
 
-            <!-- 2. TAB: SCIENTIFIC (السادس العلمي) -->
+            <!-- 2. TAB: SCIENTIFIC (السادس العلمي - المدرسين والفصول والمحاضرات) -->
             <div id="scientific" class="tab-panel">
                 <div class="section-title">مواد السادس العلمي</div>
                 <div id="scientific-subjects-list">
+                    <!-- اللغة العربية -->
                     <div class="subject-accordion">
                         <div class="subject-header" onclick="toggleAccordion(this)">
                             <div><i class="fa-solid fa-book" style="color:#48cae4;"></i> <strong>اللغة العربية</strong></div>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                         <div class="subject-body">
-                            <div class="teachers-list"><a href="#" class="teacher-btn"><span>أ. عقيل الزبيدي</span> <i class="fa-solid fa-play"></i></a></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                            <div class="teachers-list">
+                                <!-- مدرس نموذج مع الفصول -->
+                                <div class="teacher-accordion">
+                                    <div class="teacher-header" onclick="toggleAccordion(this)">
+                                        <span><i class="fa-solid fa-user-tie"></i> أ. عقيل الزبيدي</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="teacher-body">
+                                        <div class="chapter-box">
+                                            <div class="chapter-title"><span>الفصل الأول (القواعد)</span></div>
+                                            <div class="lectures-list">
+                                                <div class="lecture-item"><span>المحاضرة الأولى: الاستفهام</span><i class="fa-solid fa-circle-play" style="color:#48cae4;"></i></div>
+                                            </div>
+                                            <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="addLectureToChapter(this)"><i class="fa-solid fa-plus"></i> إضافة محاضرة للدرس</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
-                    <div class="subject-accordion">
-                        <div class="subject-header" onclick="toggleAccordion(this)">
-                            <div><i class="fa-solid fa-calculator" style="color:#48cae4;"></i> <strong>الرياضيات</strong></div>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="subject-body">
-                            <div class="teachers-list"><a href="#" class="teacher-btn"><span>أ. حيدر وليد</span> <i class="fa-solid fa-play"></i></a></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
-                        </div>
-                    </div>
+
+                    <!-- الفيزياء -->
                     <div class="subject-accordion">
                         <div class="subject-header" onclick="toggleAccordion(this)">
                             <div><i class="fa-solid fa-atom" style="color:#48cae4;"></i> <strong>الفيزياء</strong></div>
@@ -189,17 +208,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
-                        </div>
-                    </div>
-                    <div class="subject-accordion">
-                        <div class="subject-header" onclick="toggleAccordion(this)">
-                            <div><i class="fa-solid fa-flask" style="color:#48cae4;"></i> <strong>الكيمياء</strong></div>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="subject-body">
-                            <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                 </div>
@@ -216,23 +225,13 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
-                        </div>
-                    </div>
-                    <div class="subject-accordion">
-                        <div class="subject-header" onclick="toggleAccordion(this)">
-                            <div><i class="fa-solid fa-earth-americas" style="color:#e0a96d;"></i> <strong>الجغرافية</strong></div>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="subject-body">
-                            <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. TAB: LECTURES (المحاضرات) -->
+            <!-- 4. TAB: LECTURES -->
             <div id="lectures" class="tab-panel">
                 <div class="section-title">قسم المحاضرات والدروس</div>
                 <div id="lectures-container">
@@ -246,7 +245,7 @@
                 </div>
             </div>
 
-            <!-- 5. TAB: PDF (الملازم والكتب) -->
+            <!-- 5. TAB: PDF -->
             <div id="pdf" class="tab-panel">
                 <div class="section-title">قسم الملازم والكتب (تحميل مباشر)</div>
                 <div id="pdf-container">
@@ -260,7 +259,7 @@
                 </div>
             </div>
 
-            <!-- 6. TAB: EXAMS (الامتحانات) -->
+            <!-- 6. TAB: EXAMS -->
             <div id="exams" class="tab-panel">
                 <div class="section-title">قسم الامتحانات والاختبارات</div>
                 <div id="exams-container">
@@ -273,7 +272,7 @@
                 </div>
             </div>
 
-            <!-- 7. TAB: RESULTS & AI CORRECTION -->
+            <!-- 7. TAB: AI CORRECTION -->
             <div id="results" class="tab-panel">
                 <div class="section-title">قسم التصحيح بالذكاء الاصطناعي</div>
                 <div class="admin-box">
@@ -290,7 +289,7 @@
                 </div>
             </div>
 
-            <!-- 8. TAB: ADMIN DASHBOARD (لوحة الإدارة - للمسؤولين فقط) -->
+            <!-- 8. TAB: ADMIN DASHBOARD -->
             <div id="profile" class="tab-panel">
                 <div class="section-title">لوحة التحكم والسيطرة (للمسؤولين)</div>
 
@@ -315,7 +314,7 @@
                         <button class="btn-submit" style="background:#27ae60;" onclick="updateAdminCode()"><i class="fa-solid fa-link"></i> تحديث رابط المسؤولين</button>
                     </div>
 
-                    <!-- 1. إضافة إعلان جديد للواجهة -->
+                    <!-- إضافة إعلان جديد -->
                     <div class="admin-box">
                         <h3><i class="fa-solid fa-bullhorn"></i> إضافة إعلان جديد للواجهة</h3>
                         <div class="form-group">
@@ -333,21 +332,7 @@
                         <button class="btn-submit" style="background:#0077b6;" onclick="addAd()"><i class="fa-solid fa-plus"></i> نشر الإعلان بالواجهة</button>
                     </div>
 
-                    <!-- 2. رفع محاضرة فيديو -->
-                    <div class="admin-box">
-                        <h3><i class="fa-solid fa-video"></i> إضافة محاضرة جديدة</h3>
-                        <div class="form-group">
-                            <label>عنوان المحاضرة:</label>
-                            <input type="text" id="lecture-title" class="form-control" placeholder="اسم المحاضرة والمادة">
-                        </div>
-                        <div class="form-group">
-                            <label>اسم الأستاذ والمدة:</label>
-                            <input type="text" id="lecture-author" class="form-control" placeholder="أحمد عبد الكريم • 45 دقيقة">
-                        </div>
-                        <button class="btn-submit" style="background:#0077b6;" onclick="addLecture()"><i class="fa-solid fa-plus"></i> نشر المحاضرة</button>
-                    </div>
-
-                    <!-- 3. رفع ملزمة من الجهاز -->
+                    <!-- رفع ملزمة من الجهاز -->
                     <div class="admin-box">
                         <h3><i class="fa-solid fa-file-pdf"></i> رفع ملزمة من الجهاز (PDF)</h3>
                         <div class="form-group">
@@ -361,25 +346,7 @@
                         <button class="btn-submit" style="background:#e63946;" onclick="uploadPdf()"><i class="fa-solid fa-upload"></i> رفع وتوفير للتحميل</button>
                     </div>
 
-                    <!-- 4. إضافة اختبار جديد -->
-                    <div class="admin-box">
-                        <h3><i class="fa-solid fa-clock"></i> إضافة اختبار جديد مع وقت</h3>
-                        <div class="form-group">
-                            <label>عنوان الاختبار:</label>
-                            <input type="text" id="exam-title-input" class="form-control" placeholder="مثال: اختبار الكيمياء">
-                        </div>
-                        <div class="form-group">
-                            <label>الوقت المحدد (بالدقائق):</label>
-                            <input type="number" id="exam-time-input" class="form-control" placeholder="مثال: 20">
-                        </div>
-                        <div class="form-group">
-                            <label>الأسئلة:</label>
-                            <textarea id="exam-questions-input" class="form-control" placeholder="اكتب الأسئلة هنا..."></textarea>
-                        </div>
-                        <button class="btn-submit" style="background:#27ae60;" onclick="uploadExam()"><i class="fa-solid fa-plus"></i> نشر الاختبار</button>
-                    </div>
-
-                    <!-- 5. سجل الحضور اليومي -->
+                    <!-- سجل الحضور اليومي -->
                     <div class="admin-box">
                         <h3><i class="fa-solid fa-users"></i> قائمة سجل الحضور اليومي للطلاب</h3>
                         <table>
@@ -417,7 +384,6 @@
         let currentAdminCode = localStorage.getItem('admin_code') || 'admin123';
 
         window.onload = function() {
-            // التحقق من الحضور اليومي
             let lastAttendance = localStorage.getItem('attendance_time');
             let now = new Date().getTime();
             if (!lastAttendance || (now - lastAttendance > 86400000)) {
@@ -426,7 +392,6 @@
                 document.getElementById('attendance-modal').style.display = 'none';
             }
 
-            // التحقق مما إذا كان الدخول عبر رابط المسؤولين (مثال: ?admin=admin123)
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') === currentAdminCode || localStorage.getItem('is_admin') === 'true') {
                 enableAdminMode();
@@ -461,15 +426,60 @@
             document.getElementById('admin-url-display').value = `${baseUrl}?admin=${currentAdminCode}`;
         }
 
+        function toggleAccordion(element) {
+            let body = element.nextElementSibling;
+            body.style.display = (body.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // إضافة مدرس مع فصول تلقائية
+        function promptAddTeacherWithChapters(buttonElement) {
+            if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
+            let teacherName = prompt("أدخل اسم المدرس الجديد:");
+            if (teacherName) {
+                let teachersDiv = buttonElement.previousElementSibling;
+                let html = `
+                    <div class="teacher-accordion">
+                        <div class="teacher-header" onclick="toggleAccordion(this)">
+                            <span><i class="fa-solid fa-user-tie"></i> أ. ${teacherName}</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="teacher-body">
+                            <div class="chapter-box">
+                                <div class="chapter-title"><span>الفصل الأول</span></div>
+                                <div class="lectures-list"></div>
+                                <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="addLectureToChapter(this)"><i class="fa-solid fa-plus"></i> إضافة محاضرة للدرس</button>
+                            </div>
+                            <div class="chapter-box">
+                                <div class="chapter-title"><span>الفصل الثاني</span></div>
+                                <div class="lectures-list"></div>
+                                <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="addLectureToChapter(this)"><i class="fa-solid fa-plus"></i> إضافة محاضرة للدرس</button>
+                            </div>
+                        </div>
+                    </div>`;
+                teachersDiv.innerHTML += html;
+            }
+        }
+
+        // إضافة محاضرة ورقمها داخل الفصل المحدد
+        function addLectureToChapter(buttonElement) {
+            if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
+            let lectureTitle = prompt("أدخل رقم وعنوان المحاضرة (مثال: المحاضرة الأولى: المفاهيم الأساسية):");
+            if (lectureTitle) {
+                let lecturesList = buttonElement.previousElementSibling;
+                lecturesList.innerHTML += `
+                    <div class="lecture-item">
+                        <span>${lectureTitle}</span>
+                        <i class="fa-solid fa-circle-play" style="color:#48cae4; cursor:pointer;" onclick="alert('جاري تشغيل ${lectureTitle}')"></i>
+                    </div>`;
+            }
+        }
+
         function submitAttendance() {
             let name = document.getElementById('student-name').value;
             let studentClass = document.getElementById('student-class').value;
             let gov = document.getElementById('student-gov').value;
 
-            if(!name || !gov) {
-                alert('يرجى كتابة الاسم والمحافظة لتسجيل الحضور');
-                return;
-            }
+            if(!name || !gov) { alert('يرجى كتابة الاسم والمحافظة لتسجيل الحضور'); return; }
 
             let attendanceData = JSON.parse(localStorage.getItem('attendance_records') || '[]');
             attendanceData.push({ name: name, class: studentClass, gov: gov });
@@ -490,68 +500,28 @@
             });
         }
 
-        function toggleAccordion(element) {
-            let body = element.nextElementSibling;
-            body.style.display = (body.style.display === 'block') ? 'none' : 'block';
-        }
-
-        function promptAddTeacher(buttonElement) {
-            if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
-            let teacherName = prompt("أدخل اسم المدرس الجديد:");
-            if (teacherName) {
-                let teachersDiv = buttonElement.previousElementSibling;
-                teachersDiv.innerHTML += `
-                    <a href="#" class="teacher-btn">
-                        <span>أ. ${teacherName}</span>
-                        <i class="fa-solid fa-play"></i>
-                    </a>`;
-            }
-        }
-
         function addAd() {
             let title = document.getElementById('ad-title-input').value;
             let link = document.getElementById('ad-link-input').value;
             let imgInput = document.getElementById('ad-img-input');
 
-            if(!title || !link || !imgInput.files[0]) {
-                alert('يرجى كتابة عنوان ورابط الإعلان واختيار صورة');
-                return;
-            }
+            if(!title || !link || !imgInput.files[0]) { alert('يرجى تعبئة كافة الحقول ورابط الإعلان والصورة'); return; }
 
             let reader = new FileReader();
             reader.onload = function(e) {
-                let imgSrc = e.target.result;
                 let html = `
                     <div class="ad-card">
-                        <img src="${imgSrc}" class="ad-img" alt="إعلان">
+                        <img src="${e.target.result}" class="ad-img" alt="إعلان">
                         <div class="ad-details">
                             <div class="ad-title">${title}</div>
                             <a href="${link}" target="_blank" class="ad-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> فتح الرابط</a>
                         </div>
                     </div>`;
                 document.getElementById('ads-display-list').innerHTML += html;
-                alert('تم نشر الإعلان بالواجهة الرئيسية بنجاح!');
+                alert('تم نشر الإعلان بنجاح!');
                 switchTab('home');
             };
             reader.readAsDataURL(imgInput.files[0]);
-        }
-
-        function addLecture() {
-            let title = document.getElementById('lecture-title').value;
-            let author = document.getElementById('lecture-author').value;
-            if(!title || !author) { alert('أدخل بيانات المحاضرة'); return; }
-
-            let html = `
-                <div class="video-card">
-                    <div class="video-preview"><div class="play-btn"><i class="fa-solid fa-play"></i></div></div>
-                    <div class="video-details">
-                        <div style="font-weight:700;">${title}</div>
-                        <div style="font-size:12px; color:#8d99ae;">${author}</div>
-                    </div>
-                </div>`;
-            document.getElementById('lectures-container').innerHTML += html;
-            alert('تم نشر المحاضرة بنجاح!');
-            switchTab('lectures');
         }
 
         function uploadPdf() {
@@ -570,26 +540,8 @@
                     </div>
                     <a href="${fileUrl}" download="${file.name}" class="download-btn"><i class="fa-solid fa-download"></i> تحميل</a>
                 </div>`;
-            alert('تم رفع الملزمة وتفعيل زر التحميل للطالب!');
+            alert('تم رفع الملزمة!');
             switchTab('pdf');
-        }
-
-        function uploadExam() {
-            let title = document.getElementById('exam-title-input').value;
-            let time = document.getElementById('exam-time-input').value;
-            let questions = document.getElementById('exam-questions-input').value;
-            if(!title || !time || !questions) { alert('أدخل بيانات الاختبار كاملاً'); return; }
-
-            let html = `
-                <div class="admin-box" style="margin-bottom:12px;">
-                    <h4 style="font-size:14px; color:#ffffff;">${title}</h4>
-                    <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد للاختبار: ${time} دقيقة</p>
-                    <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">${questions}</p>
-                    <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="startExam('${title}', ${time})"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
-                </div>`;
-            document.getElementById('exams-container').innerHTML += html;
-            alert('تم نشر الاختبار بنجاح!');
-            switchTab('exams');
         }
 
         function startExam(title, minutes) {
@@ -603,7 +555,7 @@
             document.getElementById('ai-result-box').style.display = 'block';
             document.getElementById('ai-output').innerText = 'جاري التصحيح بالذكاء الاصطناعي... ⏳';
             setTimeout(() => {
-                document.getElementById('ai-output').innerText = '✅ التقييم والدرجة: 95/100\n\nتقرير الذكاء الاصطناعي: إجابة نموذجية وممتازة، تم توضيح المفاهيم بالشكل المطلوب!';
+                document.getElementById('ai-output').innerText = '✅ التقييم والدرجة: 95/100\n\nتقرير الذكاء الاصطناعي: إجابة نموذجية وممتازة!';
             }, 1200);
         }
 
