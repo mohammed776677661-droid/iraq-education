@@ -62,7 +62,7 @@
 
         /* Video Player Card */
         .video-card { background: #1c2541; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
-        .video-preview { width: 100%; height: 200px; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
+        .video-preview { width: 100%; height: 180px; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
         .play-btn { width: 55px; height: 55px; background: rgba(0,119,182,0.85); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; cursor: pointer; }
         .video-details { padding: 15px; }
         .video-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
@@ -79,11 +79,14 @@
         .bar-container { height: 8px; background: #0b132b; border-radius: 10px; overflow: hidden; }
         .bar-fill { height: 100%; background: linear-gradient(90deg, #0077b6, #48cae4); border-radius: 10px; }
 
-        /* Settings Form Input */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { font-size: 12px; color: #8d99ae; display: block; margin-bottom: 6px; }
-        .form-control { width: 100%; background: #0b132b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: #fff; font-size: 14px; }
-        .btn-submit { width: 100%; background: #0077b6; color: white; padding: 14px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; }
+        /* Admin Dashboard & Forms */
+        .admin-box { background: #1c2541; padding: 16px; border-radius: 18px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.08); }
+        .admin-box h3 { font-size: 15px; color: #e0a96d; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { font-size: 12px; color: #8d99ae; display: block; margin-bottom: 5px; }
+        .form-control { width: 100%; background: #0b132b; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; color: #fff; font-size: 13px; }
+        .btn-submit { width: 100%; background: #0077b6; color: white; padding: 12px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-submit:active { transform: scale(0.98); }
 
         /* Bottom Nav Bar */
         .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: #1c2541; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); z-index: 20; padding-bottom: 5px; }
@@ -144,14 +147,16 @@
                     <div class="quick-btn" onclick="switchTab('results')"><i class="fa-solid fa-chart-line"></i>النتائج</div>
                 </div>
 
-                <div class="section-title">أحدث المحاضرات <span>عرض الكل</span></div>
-                <div class="video-card" onclick="switchTab('lectures')">
-                    <div class="video-preview">
-                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    </div>
-                    <div class="video-details">
-                        <div class="video-title">الفيزياء - الفصل الأول</div>
-                        <div class="video-author">الأستاذ أحمد عبد الكريم • 45 دقيقة</div>
+                <div class="section-title">أحدث المحاضرات</div>
+                <div id="home-lectures-list">
+                    <div class="video-card">
+                        <div class="video-preview">
+                            <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                        <div class="video-details">
+                            <div class="video-title">الفيزياء - الفصل الأول</div>
+                            <div class="video-author">الأستاذ أحمد عبد الكريم • 45 دقيقة</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -183,14 +188,15 @@
             <!-- 4. TAB: LECTURES -->
             <div id="lectures" class="tab-panel">
                 <div class="section-title">المحاضرات المرئية</div>
-                <div class="video-card">
-                    <div class="video-preview">
-                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    </div>
-                    <div class="video-details">
-                        <div class="video-title">الفيزياء - الفصل الأول (المتسعات)</div>
-                        <div class="video-author">الأستاذ أحمد عبد الكريم</div>
-                        <p style="font-size: 12px; color: #8d99ae; margin-top: 8px;">في هذه المحاضرة ستتناول مفاهيم الفصل الأول من مادة الفيزياء مع حل أمثلة وزارية.</p>
+                <div id="lectures-container">
+                    <div class="video-card">
+                        <div class="video-preview">
+                            <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                        <div class="video-details">
+                            <div class="video-title">الفيزياء - الفصل الأول (المتسعات)</div>
+                            <div class="video-author">الأستاذ أحمد عبد الكريم</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,30 +204,32 @@
             <!-- 5. TAB: PDF (الملازم) -->
             <div id="pdf" class="tab-panel">
                 <div class="section-title">الملازم وملفات الـ PDF</div>
-                <div class="pdf-item">
-                    <div class="pdf-info">
-                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div><div style="font-size:13px; font-weight:700;">ملزمة الرياضيات - السادس العلمي</div><div style="font-size:11px; color:#8d99ae;">PDF • 12.4 MB</div></div>
+                <div id="pdf-container">
+                    <div class="pdf-item">
+                        <div class="pdf-info">
+                            <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                            <div><div style="font-size:13px; font-weight:700;">ملزمة الرياضيات - السادس العلمي</div><div style="font-size:11px; color:#8d99ae;">PDF • 12.4 MB</div></div>
+                        </div>
+                        <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
                     </div>
-                    <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
-                </div>
-                <div class="pdf-item">
-                    <div class="pdf-info">
-                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div><div style="font-size:13px; font-weight:700;">ملزمة الفيزياء - الفصل الأول</div><div style="font-size:11px; color:#8d99ae;">PDF • 8.7 MB</div></div>
-                    </div>
-                    <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
-                </div>
-                <div class="pdf-item">
-                    <div class="pdf-info">
-                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div><div style="font-size:13px; font-weight:700;">ملزمة قواعد اللغة العربية</div><div style="font-size:11px; color:#8d99ae;">PDF • 10.1 MB</div></div>
-                    </div>
-                    <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
                 </div>
             </div>
 
-            <!-- 6. TAB: RESULTS (النتائج) -->
+            <!-- 6. TAB: EXAMS (الاختبارات) -->
+            <div id="exams" class="tab-panel">
+                <div class="section-title">الأسئلة والاختبارات</div>
+                <div id="exams-container">
+                    <div class="subject-item" style="margin-bottom:10px;">
+                        <div class="subject-left">
+                            <div class="subject-icon" style="color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i></div>
+                            <div class="subject-info"><h4>اختبار الفيزياء الشامل</h4><p>عدد الأسئلة: 20 | المدة: 30 دقيقة</p></div>
+                        </div>
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. TAB: RESULTS -->
             <div id="results" class="tab-panel">
                 <div class="section-title">نتائج الطالب التفصيلية</div>
                 <div class="hero-card" style="margin-bottom:15px;">
@@ -236,47 +244,83 @@
                     <div class="bar-label"><span>الرياضيات</span><span>85%</span></div>
                     <div class="bar-container"><div class="bar-fill" style="width: 85%;"></div></div>
                 </div>
-                <div class="result-bar-card">
-                    <div class="bar-label"><span>الفيزياء</span><span>88%</span></div>
-                    <div class="bar-container"><div class="bar-fill" style="width: 88%;"></div></div>
-                </div>
             </div>
 
-            <!-- 7. TAB: NOTIFICATIONS -->
+            <!-- 8. TAB: NOTIFICATIONS -->
             <div id="notifications" class="tab-panel">
                 <div class="section-title">الإشعارات والتنبيهات</div>
                 <div class="subject-item" style="margin-bottom:10px;">
                     <div class="subject-left">
                         <div class="subject-icon" style="color:#e0a96d;"><i class="fa-solid fa-bell"></i></div>
-                        <div class="subject-info"><h4>تم إضافة محاضرة جديدة</h4><p>كيمياء - الفصل الثالث | اليوم 10:00 ص</p></div>
-                    </div>
-                </div>
-                <div class="subject-item">
-                    <div class="subject-left">
-                        <div class="subject-icon" style="color:#e63946;"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div class="subject-info"><h4>ملزمة جديدة متاحة</h4><p>ملزمة الفيزياء الشاملة جاهزة للتحميل</p></div>
+                        <div class="subject-info"><h4>مرحباً بك في المنصة</h4><p>تم تفعيل لوحة التحكم بنجاح</p></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 8. TAB: SETTINGS & PROFILE (الإعدادات وتغيير الشعار والاسم) -->
+            <!-- 9. TAB: ADMIN DASHBOARD (لوحة التحكم الداخلية الكاملة) -->
             <div id="profile" class="tab-panel">
-                <div class="section-title">إعدادات المنصة وتخصيص التطبيق</div>
-                <div class="video-card" style="padding:15px;">
+                <div class="section-title">لوحة التحكم الداخلية وإدارة المنصة</div>
+
+                <!-- 1. الهوية والتصميم -->
+                <div class="admin-box">
+                    <h3><i class="fa-solid fa-palette"></i> تخصيص الشعار واسم المنصة</h3>
                     <div class="form-group">
-                        <label>تغيير شعار المنصة (من الاستوديو/الملفات):</label>
+                        <label>رفع الشعار (من الاستوديو):</label>
                         <input type="file" id="logo-file-input" accept="image/*" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>اسم المنصة الرئيسي:</label>
+                        <label>اسم المنصة:</label>
                         <input type="text" id="input-app-title" class="form-control" value="منصة العراق التعليمية">
                     </div>
                     <div class="form-group">
-                        <label>الوصف / الشعار اللفظي:</label>
+                        <label>الوصف اللفظي:</label>
                         <input type="text" id="input-app-subtitle" class="form-control" value="معاً نحو مستقبل أفضل">
                     </div>
-                    <button class="btn-submit" onclick="saveSettings()">حفظ التغيرات</button>
+                    <button class="btn-submit" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات</button>
                 </div>
+
+                <!-- 2. رفع محاضرة جديدة -->
+                <div class="admin-box">
+                    <h3><i class="fa-solid fa-video"></i> إضافة محاضرة فيديو</h3>
+                    <div class="form-group">
+                        <label>عنوان المحاضرة والمادة:</label>
+                        <input type="text" id="lecture-title" class="form-control" placeholder="مثال: الكيمياء - الفصل الثاني">
+                    </div>
+                    <div class="form-group">
+                        <label>اسم الأستاذ والمدة:</label>
+                        <input type="text" id="lecture-author" class="form-control" placeholder="مثال: الأستاذ علي حسين • 40 دقيقة">
+                    </div>
+                    <button class="btn-submit" style="background:#0077b6;" onclick="addLecture()"><i class="fa-solid fa-plus"></i> نشر المحاضرة</button>
+                </div>
+
+                <!-- 3. رفع ملزمة جديد (PDF) -->
+                <div class="admin-box">
+                    <h3><div class="fa-solid fa-file-pdf"></div> إضافة ملزمة (PDF)</h3>
+                    <div class="form-group">
+                        <label>عنوان الملزمة والمرحلة:</label>
+                        <input type="text" id="pdf-title" class="form-control" placeholder="مثال: ملزمة الأحياء - السادس العلمي">
+                    </div>
+                    <div class="form-group">
+                        <label>حجم الملف أو الوصف:</label>
+                        <input type="text" id="pdf-size" class="form-control" placeholder="مثال: PDF • 15 MB">
+                    </div>
+                    <button class="btn-submit" style="background:#e63946;" onclick="addPdf()"><i class="fa-solid fa-upload"></i> إضافة الملزمة</button>
+                </div>
+
+                <!-- 4. إضافة اختبار جديد -->
+                <div class="admin-box">
+                    <h3><i class="fa-solid fa-pen-to-square"></i> إضافة اختبار جديد</h3>
+                    <div class="form-group">
+                        <label>عنوان الاختبار المادة:</label>
+                        <input type="text" id="exam-title" class="form-control" placeholder="مثال: اختبار اللغة العربية الشامل">
+                    </div>
+                    <div class="form-group">
+                        <label>تفاصيل الاختبار (الأسئلة والوقت):</label>
+                        <input type="text" id="exam-details" class="form-control" placeholder="مثال: عدد الأسئلة: 15 | المدة: 20 دقيقة">
+                    </div>
+                    <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="addExam()"><i class="fa-solid fa-square-plus"></i> إنشاء الاختبار</button>
+                </div>
+
             </div>
 
         </div>
@@ -287,12 +331,12 @@
             <div class="nav-item" onclick="switchTab('scientific', this)"><i class="fa-solid fa-book-bookmark"></i>المواد</div>
             <div class="nav-item" onclick="switchTab('lectures', this)"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
             <div class="nav-item" onclick="switchTab('pdf', this)"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
-            <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-solid fa-gear"></i>الإعدادات</div>
+            <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-solid fa-gears"></i>لوحة التحكم</div>
         </div>
     </div>
 
     <script>
-        // Switch Active Tabs
+        // التنقل بين الأقسام
         function switchTab(tabId, element) {
             let panels = document.querySelectorAll('.tab-panel');
             panels.forEach(p => p.classList.remove('active'));
@@ -307,7 +351,7 @@
             }
         }
 
-        // Save Settings (Title & Logo from Gallery)
+        // حفظ إعدادات الهوية والتصميم
         function saveSettings() {
             let titleInput = document.getElementById('input-app-title').value;
             let subtitleInput = document.getElementById('input-app-subtitle').value;
@@ -321,7 +365,6 @@
                 document.getElementById('app-subtitle-text').innerText = subtitleInput;
             }
 
-            // Image from File System / Studio
             if (fileInput.files && fileInput.files[0]) {
                 let reader = new FileReader();
                 reader.onload = function (e) {
@@ -330,8 +373,85 @@
                 reader.readAsDataURL(fileInput.files[0]);
             }
 
-            alert('تم حفظ الإعدادات والتحديث بنجاح!');
-            switchTab('home');
+            alert('تم حفظ البيانات والتعديلات بنجاح!');
+        }
+
+        // رفع وإضافة محاضرة
+        function addLecture() {
+            let title = document.getElementById('lecture-title').value;
+            let author = document.getElementById('lecture-author').value;
+
+            if(!title || !author) { alert('الرجاء إدخال جميع معلومات المحاضرة'); return; }
+
+            let html = `
+                <div class="video-card">
+                    <div class="video-preview">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    <div class="video-details">
+                        <div class="video-title">${title}</div>
+                        <div class="video-author">${author}</div>
+                    </div>
+                </div>`;
+
+            document.getElementById('lectures-container').innerHTML += html;
+            document.getElementById('home-lectures-list').innerHTML += html;
+
+            document.getElementById('lecture-title').value = '';
+            document.getElementById('lecture-author').value = '';
+
+            alert('تم إضافة المحاضرة ونشرها بنجاح!');
+            switchTab('lectures');
+        }
+
+        // إضافة ملزمة PDF
+        function addPdf() {
+            let title = document.getElementById('pdf-title').value;
+            let size = document.getElementById('pdf-size').value;
+
+            if(!title || !size) { alert('الرجاء إدخال اسم وحجم الملزمة'); return; }
+
+            let html = `
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div><div style="font-size:13px; font-weight:700;">${title}</div><div style="font-size:11px; color:#8d99ae;">${size}</div></div>
+                    </div>
+                    <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
+                </div>`;
+
+            document.getElementById('pdf-container').innerHTML += html;
+
+            document.getElementById('pdf-title').value = '';
+            document.getElementById('pdf-size').value = '';
+
+            alert('تم نشر الملزمة بنجاح!');
+            switchTab('pdf');
+        }
+
+        // إضافة اختبار
+        function addExam() {
+            let title = document.getElementById('exam-title').value;
+            let details = document.getElementById('exam-details').value;
+
+            if(!title || !details) { alert('الرجاء تعبئة بيانات الاختبار'); return; }
+
+            let html = `
+                <div class="subject-item" style="margin-bottom:10px;">
+                    <div class="subject-left">
+                        <div class="subject-icon" style="color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i></div>
+                        <div class="subject-info"><h4>${title}</h4><p>${details}</p></div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </div>`;
+
+            document.getElementById('exams-container').innerHTML += html;
+
+            document.getElementById('exam-title').value = '';
+            document.getElementById('exam-details').value = '';
+
+            alert('تم إضافة الاختبار بنجاح!');
+            switchTab('exams');
         }
     </script>
 </body>
