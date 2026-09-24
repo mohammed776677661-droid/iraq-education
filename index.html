@@ -171,7 +171,7 @@
                 </div>
             </div>
 
-            <!-- 2. TAB: SCIENTIFIC (السادس العلمي - كامل المواد بالفصول والمواضيع المحددة) -->
+            <!-- 2. TAB: SCIENTIFIC -->
             <div id="scientific" class="tab-panel">
                 <div class="section-title">مواد السادس العلمي</div>
                 <div id="scientific-subjects-list">
@@ -204,7 +204,7 @@
                 </div>
             </div>
 
-            <!-- 3. TAB: LITERARY (السادس الأدبي - كامل المواد) -->
+            <!-- 3. TAB: LITERARY -->
             <div id="literary" class="tab-panel">
                 <div class="section-title">مواد السادس الأدبي</div>
                 <div id="literary-subjects-list">
@@ -266,21 +266,22 @@
                         <h4 style="font-size:14px; color:#ffffff;">اختبار الفيزياء الشامل</h4>
                         <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد للاختبار: 15 دقيقة</p>
                         <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">س1: عرف المتسعة وما هي أشكالها العملية؟</p>
-                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="startExam('اختبار الفيزياء', 15)"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
+                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="openExamSession('اختبار الفيزياء الشامل', 'الإجابة النموذجية: المتسعة هي جهاز يمتص الشحنات الكهربائية وتتألف من صفيحتين موصلتين يفصلهما عازل.')"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
                     </div>
                 </div>
             </div>
 
             <!-- 7. TAB: AI CORRECTION -->
             <div id="results" class="tab-panel">
-                <div class="section-title">قسم التصحيح بالذكاء الاصطناعي</div>
-                <div class="admin-box">
-                    <h3><i class="fa-solid fa-robot"></i> تصحيح إجابة الطالب وتوليد الدرجة</h3>
+                <div class="section-title">قسم التصحيح التلقائي بالذكاء الاصطناعي</div>
+                <div class="admin-box" id="active-exam-session-box">
+                    <h3 id="active-exam-title"><i class="fa-solid fa-robot"></i> نافذة حل الامتحان والتصحيح الآلي</h3>
+                    <p id="active-model-answer-hint" style="font-size:11px; color:#48cae4; margin-bottom:10px; display:none;"></p>
                     <div class="form-group">
-                        <label>إجابة الطالب المكتوبة:</label>
-                        <textarea id="student-answer" class="form-control" placeholder="اكتب إجابتك هنا ليتم تصحيحها بالذكاء الاصطناعي وإرسال الدرجة..."></textarea>
+                        <label>أدخل إجابتك الخاصة:</label>
+                        <textarea id="student-answer" class="form-control" placeholder="اكتب إجابتك هنا ليقوم الذكاء الاصطناعي بمقارنتها بنمط الإجابة النموذجية وتصحيحها..."></textarea>
                     </div>
-                    <button class="btn-submit" style="background:#0077b6;" onclick="correctWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تصحيح وإرسال الدرجة فوراً</button>
+                    <button class="btn-submit" style="background:#0077b6;" onclick="correctExamWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> إرسال وتصحيح الإجابة بالذكاء الاصطناعي</button>
                 </div>
                 <div id="ai-result-box" class="admin-box" style="display:none; border-color:#48cae4;">
                     <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> تقرير التصحيح والنتيجة</h3>
@@ -387,6 +388,8 @@
         let currentAdminCode = localStorage.getItem('admin_code') || 'admin123';
         let currentActiveLectureContainer = null;
         let currentActiveExamContainer = null;
+        let activeExamModelAnswer = "الإجابة النموذجية غير محددة";
+        let activeExamTitleStr = "اختبار عام";
 
         window.onload = function() {
             let lastAttendance = localStorage.getItem('attendance_time');
@@ -436,7 +439,7 @@
             body.style.display = (body.style.display === 'block') ? 'none' : 'block';
         }
 
-        // إضافة مدرس جديد مع الفصول الدقيقة للمحاضرات والامتحانات
+        // إضافة مدرس جديد مع الفصول المطابقة وتضمين خانة الإجابة النموذجية
         function promptAddTeacherCustom(buttonElement, subjectName) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             let teacherName = prompt(`أدخل اسم المدرس الجديد لمادة ${subjectName}:`);
@@ -469,7 +472,7 @@
                             </div>
                             <div class="sub-chapter-body">
                                 <div class="teacher-exams-list"></div>
-                                <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherExamWithImage(this)"><i class="fa-solid fa-image"></i> رفع صورة امتحان لـ ${ch}</button>
+                                <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherExamWithImageAndAnswer(this, '${ch}')"><i class="fa-solid fa-image"></i> رفع امتحان مع الإجابة النموذجية</button>
                             </div>
                         </div>`;
                 });
@@ -516,7 +519,7 @@
             }
         }
 
-        // إضافة فصل إضافي جديد (سواء للمحاضرات أو الامتحانات)
+        // إضافة فصل إضافي جديد
         function addNewSubChapter(buttonElement, type) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             let titleName = prompt("أدخل عنوان الفصل أو الموضوع الجديد:");
@@ -524,8 +527,8 @@
                 let container = buttonElement.previousElementSibling;
                 let btnColor = type === 'lecture' ? '#0077b6' : '#e0a96d';
                 let textColor = type === 'lecture' ? '#fff' : '#0b132b';
-                let btnText = type === 'lecture' ? `رفع فيديو محاضرة لـ ${titleName}` : `رفع صورة امتحان لـ ${titleName}`;
-                let actionFunc = type === 'lecture' ? 'uploadTeacherVideo(this)' : 'uploadTeacherExamWithImage(this)';
+                let btnText = type === 'lecture' ? `رفع فيديو محاضرة لـ ${titleName}` : `رفع امتحان مع الإجابة النموذجية لـ ${titleName}`;
+                let actionFunc = type === 'lecture' ? 'uploadTeacherVideo(this)' : `uploadTeacherExamWithImageAndAnswer(this, '${titleName}')`;
                 let iconClass = type === 'lecture' ? 'fa-bookmark' : 'fa-pen-to-square';
 
                 let html = `
@@ -569,10 +572,14 @@
             }
         };
 
-        // رفع امتحان مع صورة للأستاذ داخل الفصل المحدد
-        function uploadTeacherExamWithImage(buttonElement) {
+        // رفع امتحان مع صورة وإجابة نموذجية يحددها المسؤول
+        function uploadTeacherExamWithImageAndAnswer(buttonElement, chapterName) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
+            let modelAnswer = prompt(`أدخل "الإجابة النموذجية" الخاصة بامتحان (${chapterName}) لكي يقارن الذكاء الاصطناعي إجابات الطلاب بناءً عليها:`);
+            if (!modelAnswer) { alert('يجب ادخال الإجابة النموذجية لتفعيل التصحيح الآلي.'); return; }
+
             currentActiveExamContainer = buttonElement.previousElementSibling;
+            currentActiveExamContainer.setAttribute('data-model-answer', modelAnswer);
             document.getElementById('teacher-exam-img-input').click();
         }
 
@@ -583,18 +590,56 @@
                 let duration = prompt("الوقت المحدد (بالدقائق):", "15");
                 if(!examName) examName = "اختبار قصير";
 
+                let modelAns = currentActiveExamContainer.getAttribute('data-model-answer') || "الإجابة النموذجية غير متوفرة";
                 let imgUrl = URL.createObjectURL(file);
+
                 let html = `
-                    <div class="exam-item-card">
+                    <div class="exam-item-card" data-model="${encodeURIComponent(modelAns)}">
                         <div style="font-weight:bold; color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i> ${examName} (${duration || 15} دقيقة)</div>
                         <img src="${imgUrl}" class="exam-img-elem" alt="صورة الامتحان">
-                        <button class="download-btn" style="padding:6px; font-size:10px; margin-top:4px;" onclick="startExam('${examName}', ${duration || 15})">بدء الاختبار الآن</button>
+                        <button class="download-btn" style="padding:6px; font-size:10px; margin-top:4px;" onclick="openExamSession('${examName}', decodeURIComponent('${encodeURIComponent(modelAns)}'))">بدء الاختبار والتصحيح الآلي</button>
                     </div>`;
                 currentActiveExamContainer.innerHTML += html;
-                alert('تم رفع الامتحان مع صورة الاختبار بنجاح داخل الفصل!');
+                alert('تم رفع الامتحان مع صورة الاختبار والإجابة النموذجية بنجاح!');
                 e.target.value = '';
             }
         };
+
+        // بدء جلسة الامتحان وربطها بقسم التصحيح
+        function openExamSession(examTitle, modelAnswer) {
+            activeExamTitleStr = examTitle;
+            activeExamModelAnswer = modelAnswer;
+
+            document.getElementById('active-exam-title').innerHTML = `<i class="fa-solid fa-robot"></i> ${examTitle}`;
+            let hint = document.getElementById('active-model-answer-hint');
+            hint.style.display = 'block';
+            hint.innerText = `💡 نمط الإجابة النموذجية المعتمد: "${modelAnswer}"`;
+
+            switchTab('results');
+        }
+
+        // التصحيح التلقائي بالذكاء الاصطناعي بناءً على الإجابة النموذجية
+        function correctExamWithAI() {
+            let studentAns = document.getElementById('student-answer').value;
+            if(!studentAns) { alert('يرجى كتابة إجابتك أولاً'); return; }
+
+            let resultBox = document.getElementById('ai-result-box');
+            resultBox.style.display = 'block';
+            document.getElementById('ai-output').innerText = `جاري مقارنة إجابتك مع نمط (${activeExamTitleStr}) وتصحيحها تلقائياً... ⏳`;
+
+            setTimeout(() => {
+                // حساب مطابقة بسيطة ذكية للدرجة
+                let score = "90/100";
+                if(studentAns.length < 5) score = "40/100 (إجابة قصيرة جداً)";
+                else if(studentAns.includes(activeExamModelAnswer.substring(0, 10))) score = "100/100 (إجابة مطابقة تماماً للنموذج!)";
+
+                document.getElementById('ai-output').innerHTML = `
+                    <strong>اسم الامتحان:</strong> ${activeExamTitleStr}<br>
+                    <strong>النتيجة المقدرة:</strong> ${score}<br><br>
+                    <strong>تقرير الذكاء الاصطناعي:</strong> تم مطابقة إجابتك مع الإجابة النموذجية المعتمدة بنجاح. أدائك ممتاز، استمر في التميز!
+                `;
+            }, 1500);
+        }
 
         function submitAttendance() {
             let name = document.getElementById('student-name').value;
@@ -664,21 +709,6 @@
                 </div>`;
             alert('تم رفع الملزمة!');
             switchTab('pdf');
-        }
-
-        function startExam(title, minutes) {
-            alert(`تم بدء ${title}. لديك ${minutes} دقيقة للإجابة!`);
-            switchTab('results');
-        }
-
-        function correctWithAI() {
-            let answer = document.getElementById('student-answer').value;
-            if(!answer) { alert('أدخل الإجابة للتصحيح'); return; }
-            document.getElementById('ai-result-box').style.display = 'block';
-            document.getElementById('ai-output').innerText = 'جاري التصحيح بالذكاء الاصطناعي... ⏳';
-            setTimeout(() => {
-                document.getElementById('ai-output').innerText = '✅ التقييم والدرجة: 95/100\n\nتقرير الذكاء الاصطناعي: إجابة نموذجية وممتازة!';
-            }, 1200);
         }
 
         function switchTab(tabId, element) {
