@@ -2,233 +2,677 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>منصة العراق التعليمية</title>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-body{background:#0d1b2a;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.app-container{width:100%;max-width:430px;height:100vh;max-height:932px;background:#0b132b;display:flex;flex-direction:column;position:relative;overflow:hidden}
-@media(min-width:450px){.app-container{height:92vh;border-radius:35px;border:8px solid #1c2541}}
-.app-header{background:linear-gradient(135deg,#1c2541,#0b132b);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff14}
-.header-brand{display:flex;align-items:center;gap:12px}
-.brand-logo{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #e0a96d;background:#fff}
-.brand-title{font-size:16px;font-weight:700}
-.brand-subtitle{font-size:11px;color:#e0a96d}
-.role-badge{background:#e0a96d33;color:#e0a96d;padding:4px 8px;border-radius:8px;font-size:10px;font-weight:bold}
-.app-content{flex:1;overflow-y:auto;padding:15px 15px 90px;scrollbar-width:none}
-.app-content::-webkit-scrollbar{display:none}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-.hero-card{background:linear-gradient(135deg,#1c2541,#3a506b);border-radius:20px;padding:20px;text-align:center;margin-bottom:15px;border:1px solid #e0a96d4d}
-.section-title{font-size:15px;font-weight:700;margin:15px 0 10px;display:flex;justify-content:space-between;align-items:center}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:15px}
-.quick-btn{background:#1c2541;padding:12px 4px;border-radius:14px;text-align:center;cursor:pointer;font-size:9px;border:1px solid #ffffff0d}
-.quick-btn i{font-size:16px;margin-bottom:6px;display:block;color:#48cae4}
-.grades-container{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.grade-card{background:linear-gradient(135deg,#1c2541,#162032);border-radius:16px;padding:16px;text-align:center;cursor:pointer;border:1px solid #48cae44d;display:flex;flex-direction:column;align-items:center;gap:8px}
-.grade-card i{font-size:24px;color:#e0a96d}
-.grade-card span{font-size:13px;font-weight:bold}
-.feature-card{background:linear-gradient(135deg,#1c2541,#162032);padding:14px;border-radius:16px;margin-bottom:10px;border:1px solid #e0a96d55;cursor:pointer}
-.feature-card-title{font-size:13px;font-weight:bold;color:#ffd700}
-.feature-card-desc{font-size:11px;color:#a3cef1;margin-top:3px}
-.subject-accordion,.teacher-accordion{background:#1c2541;border-radius:16px;margin-bottom:10px;overflow:hidden;border:1px solid #ffffff0d}
-.subject-header,.teacher-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.teacher-header{color:#48cae4;font-size:13px;font-weight:600}
-.subject-body,.teacher-body{padding:15px;background:#0b132b;display:none;border-top:1px solid #ffffff0d}
-.chapter-box{background:#1c2541;padding:10px;border-radius:8px;margin-bottom:8px;border-right:3px solid #e0a96d;font-size:11px}
-.admin-box{background:#1c2541;padding:16px;border-radius:18px;margin-bottom:15px;border:1px solid #ffffff14}
-.admin-box h3{font-size:15px;color:#e0a96d;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.form-group{margin-bottom:12px}
-.form-group label{font-size:12px;color:#8d99ae;display:block;margin-bottom:5px}
-.form-control{width:100%;background:#0b132b;border:1px solid #ffffff1a;border-radius:10px;padding:10px;color:#fff;font-size:13px}
-textarea.form-control{resize:vertical;min-height:70px}
-.btn-submit{width:100%;background:#0077b6;color:white;padding:12px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer}
-.small-btn{padding:7px 10px;border:0;border-radius:8px;color:#fff;cursor:pointer;font-size:11px}
-.btn-green{background:#27ae60}.btn-red{background:#e63946}.btn-blue{background:#0077b6}.btn-gold{background:#e0a96d;color:#0b132b}
-.bottom-nav{position:absolute;bottom:0;left:0;right:0;height:70px;background:#1c2541;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #ffffff14;z-index:20}
-.nav-item{display:flex;flex-direction:column;align-items:center;color:#8d99ae;font-size:10px;cursor:pointer;gap:4px}
-.nav-item i{font-size:18px}.nav-item.active{color:#e0a96d}
-.modal-overlay{position:absolute;inset:0;background:#0b132bf7;z-index:999;display:none;flex-direction:column;justify-content:center;padding:25px;backdrop-filter:blur(10px)}
-.modal-box{background:#1c2541;padding:22px;border-radius:20px;border:1px solid #e0a96d}
-.modal-box h2{font-size:18px;color:#e0a96d;text-align:center;margin-bottom:15px}
-.announcement{background:#162032;border-radius:14px;padding:12px;margin-bottom:8px;border-right:4px solid #48cae4}
-.announcement-title{font-size:13px;font-weight:bold}
-.announcement-desc{font-size:10px;color:#8d99ae;margin-top:4px}
-.timer{color:#ffd700;font-weight:bold;font-size:15px}
-.ai-message{background:#162032;border-radius:12px;padding:12px;line-height:1.8;font-size:12px}
-table{width:100%;border-collapse:collapse;font-size:11px}
-th,td{padding:8px;text-align:right;border-bottom:1px solid #ffffff14}
-th{color:#e0a96d}
-video{width:100%;border-radius:12px;margin-top:8px;background:#000}
-.preview-img{width:80px;height:80px;object-fit:cover;border-radius:12px;border:2px solid #e0a96d;margin-top:8px}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+-webkit-tap-highlight-color:transparent
+}
+
+body{
+background:#0d1b2a;
+color:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh
+}
+
+.app-container{
+width:100%;
+max-width:430px;
+height:100vh;
+max-height:932px;
+background:#0b132b;
+display:flex;
+flex-direction:column;
+position:relative;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,.5)
+}
+
+@media(min-width:450px){
+.app-container{
+border-radius:35px;
+height:92vh;
+border:8px solid #1c2541
+}
+}
+
+.modal-overlay{
+position:absolute;
+inset:0;
+background:rgba(11,19,43,.98);
+z-index:999;
+display:flex;
+flex-direction:column;
+justify-content:center;
+padding:25px;
+backdrop-filter:blur(10px)
+}
+
+.modal-box{
+background:#1c2541;
+padding:22px;
+border-radius:20px;
+border:1px solid #e0a96d;
+max-height:90vh;
+overflow:auto
+}
+
+.modal-box h2{
+font-size:18px;
+color:#e0a96d;
+text-align:center;
+margin-bottom:15px
+}
+
+.app-header{
+background:linear-gradient(135deg,#1c2541,#0b132b);
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid rgba(255,255,255,.08);
+z-index:10
+}
+
+.header-brand{
+display:flex;
+align-items:center;
+gap:12px
+}
+
+.brand-logo{
+width:42px;
+height:42px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #e0a96d;
+background:#fff
+}
+
+.brand-title{
+font-size:16px;
+font-weight:700
+}
+
+.brand-subtitle{
+font-size:11px;
+color:#e0a96d
+}
+
+.role-badge{
+background:rgba(224,169,109,.2);
+color:#e0a96d;
+padding:4px 8px;
+border-radius:8px;
+font-size:10px;
+font-weight:bold
+}
+
+.app-content{
+flex:1;
+overflow-y:auto;
+padding:15px;
+padding-bottom:90px;
+scrollbar-width:none
+}
+
+.app-content::-webkit-scrollbar{
+display:none
+}
+
+.tab-panel{
+display:none;
+animation:fadeIn .3s ease-in-out
+}
+
+.tab-panel.active{
+display:block
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(8px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.hero-card{
+background:linear-gradient(135deg,#1c2541,#3a506b);
+border-radius:20px;
+padding:20px;
+text-align:center;
+margin-bottom:15px;
+border:1px solid rgba(224,169,109,.3)
+}
+
+.section-title{
+font-size:15px;
+font-weight:700;
+margin:15px 0 10px;
+color:#fff;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.grid-4{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:6px;
+margin-bottom:15px
+}
+
+.quick-btn{
+background:#1c2541;
+padding:12px 4px;
+border-radius:14px;
+text-align:center;
+cursor:pointer;
+font-size:9px;
+color:#f1faee;
+border:1px solid rgba(255,255,255,.05)
+}
+
+.quick-btn i{
+font-size:16px;
+margin-bottom:6px;
+display:block;
+color:#48cae4
+}
+
+.grades-container{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-bottom:15px
+}
+
+.grade-card{
+background:linear-gradient(135deg,#1c2541,#162032);
+border-radius:16px;
+padding:16px;
+text-align:center;
+cursor:pointer;
+border:1px solid rgba(72,202,228,.3);
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:8px
+}
+
+.grade-card i{
+font-size:24px;
+color:#e0a96d
+}
+
+.grade-card span{
+font-size:13px;
+font-weight:bold
+}
+
+.subject-accordion,
+.teacher-accordion,
+.admin-box,
+.chapter-box,
+.announcement-card,
+.exam-card,
+.game-card,
+.schedule-card{
+background:#1c2541;
+border-radius:16px;
+margin-bottom:10px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.06)
+}
+
+.subject-header,
+.teacher-header{
+padding:14px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+cursor:pointer
+}
+
+.subject-body,
+.teacher-body{
+padding:15px;
+background:#0b132b;
+display:none
+}
+
+.teacher-header{
+background:#162032;
+color:#48cae4;
+font-size:13px
+}
+
+.form-group{
+margin-bottom:12px
+}
+
+.form-group label{
+font-size:12px;
+color:#8d99ae;
+display:block;
+margin-bottom:5px
+}
+
+.form-control{
+width:100%;
+background:#0b132b;
+border:1px solid rgba(255,255,255,.1);
+border-radius:10px;
+padding:10px;
+color:#fff;
+font-size:13px;
+outline:none
+}
+
+textarea.form-control{
+resize:vertical;
+min-height:70px
+}
+
+.btn-submit{
+width:100%;
+background:#0077b6;
+color:#fff;
+padding:11px;
+border-radius:10px;
+border:none;
+font-size:12px;
+font-weight:700;
+cursor:pointer;
+margin-top:5px
+}
+
+.btn-danger{
+background:#e63946
+}
+
+.btn-success{
+background:#27ae60
+}
+
+.btn-gold{
+background:#e0a96d;
+color:#0b132b
+}
+
+.btn-dark{
+background:#162032
+}
+
+.chapter-box{
+padding:11px;
+border-right:3px solid #e0a96d;
+font-size:11px;
+cursor:pointer
+}
+
+.announcement-card{
+padding:12px;
+border-right:4px solid #48cae4
+}
+
+.announcement-card img{
+width:100%;
+max-height:180px;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:8px
+}
+
+.announcement-title{
+font-size:13px;
+font-weight:bold;
+color:#e0a96d
+}
+
+.announcement-link{
+display:block;
+color:#48cae4;
+font-size:11px;
+margin-top:7px;
+text-decoration:none
+}
+
+.exam-card{
+padding:14px
+}
+
+.exam-question{
+background:#0b132b;
+padding:12px;
+border-radius:10px;
+margin-bottom:10px
+}
+
+.option{
+display:block;
+background:#162032;
+padding:8px;
+border-radius:8px;
+margin-top:5px;
+cursor:pointer;
+font-size:11px
+}
+
+.option:hover{
+background:#243452
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+font-size:11px
+}
+
+th,td{
+padding:8px;
+text-align:right;
+border-bottom:1px solid rgba(255,255,255,.08)
+}
+
+th{
+color:#e0a96d
+}
+
+.stat-box{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-bottom:10px
+}
+
+.stat{
+background:#162032;
+border-radius:12px;
+padding:12px;
+text-align:center
+}
+
+.stat strong{
+display:block;
+font-size:18px;
+color:#e0a96d
+}
+
+.stat span{
+font-size:10px;
+color:#8d99ae
+}
+
+.bottom-nav{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+height:70px;
+background:#1c2541;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(255,255,255,.08);
+z-index:20;
+padding-bottom:5px
+}
+
+.nav-item{
+display:flex;
+flex-direction:column;
+align-items:center;
+color:#8d99ae;
+font-size:10px;
+cursor:pointer;
+gap:4px
+}
+
+.nav-item i{
+font-size:18px
+}
+
+.nav-item.active{
+color:#e0a96d
+}
+
+.preview-image{
+width:100%;
+border-radius:12px;
+margin-top:8px;
+display:none
+}
+
+.timer{
+text-align:center;
+background:#162032;
+padding:10px;
+border-radius:10px;
+color:#ffd166;
+font-weight:bold;
+margin-bottom:10px
+}
+
+.ai-box{
+background:linear-gradient(135deg,#162032,#1c2541);
+border:1px solid #48cae4;
+padding:14px;
+border-radius:15px;
+margin-top:10px
+}
+
+.motivation{
+background:linear-gradient(135deg,#3a506b,#1c2541);
+border:1px solid #e0a96d;
+padding:18px;
+border-radius:18px;
+text-align:center;
+margin-bottom:10px
+}
+
+.motivation i{
+font-size:30px;
+color:#ffd166;
+margin-bottom:8px
+}
+
+.game-card{
+padding:18px;
+text-align:center
+}
+
+.game-card i{
+font-size:35px;
+color:#48cae4;
+margin-bottom:10px
+}
+
+.hidden{
+display:none!important
+}
 </style>
 </head>
 
 <body>
 
-<!-- الحضور الإجباري -->
-<div id="mandatory-attendance-modal" class="modal-overlay">
+<!-- ================= تسجيل الحضور ================= -->
+
+<div id="attendance-modal" class="modal-overlay hidden">
 <div class="modal-box">
-<h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور</h2>
+
+<h2>
+<i class="fa-solid fa-clipboard-user"></i>
+تسجيل الحضور الإجباري
+</h2>
 
 <div class="form-group">
-<label>اسم الطالب الثلاثي</label>
-<input id="m-att-name" class="form-control">
+<label>الاسم الثلاثي</label>
+<input id="attendance-name" class="form-control">
 </div>
 
 <div class="form-group">
 <label>المحافظة</label>
-<input id="m-att-gov" class="form-control">
+<input id="attendance-gov" class="form-control">
 </div>
 
-<button class="btn-submit btn-gold" onclick="submitMandatoryAttendance()">
+<button class="btn-submit btn-gold" onclick="submitAttendance()">
 تسجيل الحضور والدخول
 </button>
+
 </div>
 </div>
 
-<!-- التفعيل -->
-<div id="access-modal" class="modal-overlay">
+
+<!-- ================= تفعيل المنصة ================= -->
+
+<div id="access-modal" class="modal-overlay hidden">
 <div class="modal-box">
-<h2><i class="fa-solid fa-key"></i> تفعيل دخول المنصة</h2>
+
+<h2>
+<i class="fa-solid fa-key"></i>
+تفعيل منصة العراق التعليمية
+</h2>
 
 <div class="form-group">
-<label>كود التفعيل</label>
+<label>كود التفعيل الشهري أو السنوي</label>
 <input id="access-code-input" class="form-control">
 </div>
 
-<button class="btn-submit btn-blue" onclick="verifyAccessCode()">
-تحقق ودخول
+<button class="btn-submit" onclick="verifyAccessCode()">
+تفعيل المنصة
 </button>
 
-<button class="btn-submit btn-gold" style="margin-top:8px" onclick="activateFreeTrialMonth()">
+<button class="btn-submit btn-gold" onclick="activateTrial()">
 🎁 تجربة مجانية لمدة شهر
 </button>
+
+<p style="font-size:10px;color:#8d99ae;margin-top:10px;text-align:center">
+التجربة المجانية لمدة 30 يوماً
+</p>
+
 </div>
 </div>
 
-<!-- رفع المحاضرة -->
-<div id="lecture-modal" class="modal-overlay">
+
+<!-- ================= الامتحان ================= -->
+
+<div id="exam-modal" class="modal-overlay hidden">
 <div class="modal-box">
-<h2><i class="fa-solid fa-video"></i> إضافة محاضرة</h2>
 
-<div class="form-group">
-<label>عنوان المحاضرة</label>
-<input id="lecture-title" class="form-control">
+<h2 id="exam-modal-title">الامتحان</h2>
+
+<div id="exam-timer" class="timer">
+الوقت: 00:00
 </div>
 
-<div class="form-group">
-<label>الفصل</label>
-<input id="lecture-chapter" class="form-control">
-</div>
+<div id="exam-questions"></div>
 
-<div class="form-group">
-<label>ملف الفيديو</label>
-<input id="lecture-file" type="file" accept="video/*" class="form-control">
-</div>
-
-<button class="btn-submit btn-green" onclick="saveLecture()">
-رفع المحاضرة
+<button class="btn-submit btn-success" onclick="submitExam()">
+<i class="fa-solid fa-check"></i>
+تسليم الامتحان
 </button>
 
-<button class="btn-submit btn-red" style="margin-top:8px" onclick="closeModal('lecture-modal')">
-إلغاء
-</button>
 </div>
 </div>
 
-<!-- إنشاء الامتحان -->
-<div id="exam-create-modal" class="modal-overlay">
-<div class="modal-box">
-<h2><i class="fa-solid fa-file-circle-plus"></i> إنشاء امتحان</h2>
-
-<div class="form-group">
-<label>عنوان الامتحان</label>
-<input id="new-exam-title" class="form-control">
-</div>
-
-<div class="form-group">
-<label>مدة الامتحان بالدقائق</label>
-<input id="new-exam-duration" type="number" value="20" class="form-control">
-</div>
-
-<div class="form-group">
-<label>السؤال</label>
-<textarea id="new-exam-question" class="form-control"></textarea>
-</div>
-
-<div class="form-group">
-<label>الإجابة النموذجية</label>
-<textarea id="new-exam-answer" class="form-control"></textarea>
-</div>
-
-<button class="btn-submit btn-green" onclick="saveTeacherExam()">
-حفظ الامتحان
-</button>
-
-<button class="btn-submit btn-red" style="margin-top:8px" onclick="closeModal('exam-create-modal')">
-إلغاء
-</button>
-</div>
-</div>
 
 <div class="app-container">
 
-<header class="app-header">
+<!-- HEADER -->
+
+<div class="app-header">
+
 <div class="header-brand">
-<img id="app-logo-img" class="brand-logo"
-src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%231c2541'/><path d='M30 65 Q50 45 50 75 Q50 45 70 65' fill='%23e0a96d'/><polygon points='50,25 75,38 50,50 25,38' fill='%230077b6'/></svg>">
+
+<img
+id="app-logo"
+class="brand-logo"
+src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%231c2541'/><path d='M30 65 Q50 45 50 75 Q50 45 70 65' fill='%23e0a96d'/><polygon points='50,25 75,38 50,50 25,38' fill='%230077b6'/></svg>"
+>
 
 <div>
-<div id="app-title-text" class="brand-title">منصة العراق التعليمية</div>
-<div class="brand-subtitle">معاً نحو مستقبل أفضل</div>
+<div class="brand-title" id="platform-title">
+منصة العراق التعليمية
+</div>
+
+<div class="brand-subtitle">
+معاً نحو مستقبل أفضل
 </div>
 </div>
 
-<div id="user-role-badge" class="role-badge">طالب</div>
-</header>
+</div>
+
+<div id="role-badge" class="role-badge">
+طالب
+</div>
+
+</div>
+
+
+<!-- CONTENT -->
 
 <div class="app-content">
 
-<!-- الرئيسية -->
+
+<!-- ================= HOME ================= -->
+
 <div id="home" class="tab-panel active">
 
 <div class="hero-card">
-<h2 id="banner-title">منصة العراق التعليمية</h2>
-<p>أهلاً بك في المنصة التعليمية</p>
+
+<h2 id="hero-title">
+منصة العراق التعليمية
+</h2>
+
+<p id="hero-description">
+أهلاً بك في المنصة التعليمية
+</p>
+
 </div>
 
-<div class="section-title">الأقسام الرئيسية</div>
+
+<div class="section-title">
+الأقسام الرئيسية
+</div>
 
 <div class="grid-4">
 
 <div class="quick-btn" onclick="switchTab('lectures')">
-<i class="fa-solid fa-circle-play"></i>
+<i class="fa-solid fa-video"></i>
 المحاضرات
 </div>
 
-<div class="quick-btn" onclick="switchTab('pdf')">
-<i class="fa-solid fa-file-pdf"></i>
-الملازم
-</div>
-
 <div class="quick-btn" onclick="switchTab('exams')">
-<i class="fa-solid fa-pen-to-square"></i>
+<i class="fa-solid fa-file-pen"></i>
 الامتحانات
 </div>
 
-<div class="quick-btn" onclick="switchTab('support')">
-<i class="fa-solid fa-headset"></i>
-الدعم
+<div class="quick-btn" onclick="switchTab('schedule')">
+<i class="fa-solid fa-calendar-days"></i>
+الجدول
+</div>
+
+<div class="quick-btn" onclick="switchTab('games')">
+<i class="fa-solid fa-gamepad"></i>
+الألعاب
 </div>
 
 </div>
+
 
 <div class="section-title">
-<i class="fa-solid fa-graduation-cap"></i>
+<i class="fa-solid fa-graduation-cap" style="color:#48cae4"></i>
 المراحل الدراسية
 </div>
 
@@ -240,181 +684,131 @@ src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 
 </div>
 
 <div class="grade-card" onclick="switchTab('literary')">
-<i class="fa-solid fa-book-open"></i>
+<i class="fa-solid fa-book"></i>
 <span>السادس الأدبي</span>
 </div>
 
 </div>
 
-<div class="feature-card" onclick="switchTab('motivation')">
-<div class="feature-card-title">
+
+<!-- التحفيز -->
+
+<div class="grade-card" onclick="switchTab('motivation')">
+
 <i class="fa-solid fa-fire"></i>
+
+<span>
 التحفيزات الذكية
-</div>
-<div class="feature-card-desc">
-تحفيز عراقي للطالب كل 10 دقائق
-</div>
+</span>
+
 </div>
 
-<div class="feature-card" onclick="switchTab('schedule')">
-<div class="feature-card-title">
-<i class="fa-solid fa-calendar-days"></i>
-جدول وتنظيم الوقت
-</div>
-<div class="feature-card-desc">
-أنشئ جداول دراسية ونظم وقتك
-</div>
-</div>
 
-<div class="feature-card" onclick="switchTab('competition')">
-<div class="feature-card-title">
-<i class="fa-solid fa-trophy"></i>
-المسابقات
-</div>
-<div class="feature-card-desc">
-تابع ساعات مشاهدة المحاضرات
-</div>
-</div>
+<!-- الإعلانات -->
 
 <div class="section-title">
-<i class="fa-solid fa-bullhorn"></i>
+
+<span>
+<i class="fa-solid fa-bullhorn" style="color:#e0a96d"></i>
 الإعلانات
+</span>
+
 </div>
 
 <div id="announcements-container"></div>
 
-<div class="feature-card" onclick="switchTab('daily-results')">
-<div class="feature-card-title">
-<i class="fa-solid fa-square-poll-vertical"></i>
-تقييم اليوم
-</div>
-<div class="feature-card-desc">
-درجاتك ومستواك خلال آخر 24 ساعة
-</div>
-</div>
+
+<!-- النتائج -->
+
+<div class="chapter-box"
+onclick="switchTab('daily-results')">
+
+<i class="fa-solid fa-chart-line"></i>
+
+تقييم الطالب خلال 24 ساعة
 
 </div>
 
-<!-- العلمي -->
+
+<!-- الدعم -->
+
+<div class="chapter-box"
+onclick="openSupport()"
+style="border-color:#48cae4">
+
+<i class="fa-solid fa-headset"></i>
+
+التواصل مع الدعم
+
+</div>
+
+</div>
+
+
+<!-- ================= SCIENTIFIC ================= -->
+
 <div id="scientific" class="tab-panel">
-<div class="section-title">مواد السادس العلمي</div>
-<div id="scientific-subjects-list"></div>
+
+<div class="section-title">
+مواد السادس العلمي
 </div>
 
-<!-- الأدبي -->
+<div id="scientific-list"></div>
+
+</div>
+
+
+<!-- ================= LITERARY ================= -->
+
 <div id="literary" class="tab-panel">
-<div class="section-title">مواد السادس الأدبي</div>
-<div id="literary-subjects-list"></div>
+
+<div class="section-title">
+مواد السادس الأدبي
 </div>
 
-<!-- المحاضرات -->
+<div id="literary-list"></div>
+
+</div>
+
+
+<!-- ================= LECTURES ================= -->
+
 <div id="lectures" class="tab-panel">
 
 <div class="section-title">
+
+<span>
+<i class="fa-solid fa-video"></i>
 المحاضرات
-<button class="small-btn btn-green admin-only-btn" onclick="openLectureModal()" style="display:none">
-+ إضافة
-</button>
+</span>
+
 </div>
 
 <div id="lectures-container"></div>
 
 </div>
 
-<!-- الملازم -->
-<div id="pdf" class="tab-panel">
 
-<div class="section-title">الملازم والكتب</div>
+<!-- ================= EXAMS ================= -->
 
-<div class="chapter-box">
-<strong>ملزمة الفيزياء الشاملة</strong>
-<button class="btn-submit" style="margin-top:8px">
-تحميل الملزمة
-</button>
-</div>
-
-</div>
-
-<!-- الامتحانات -->
 <div id="exams" class="tab-panel">
 
 <div class="section-title">
+
+<span>
+<i class="fa-solid fa-pen-to-square"></i>
 امتحانات المدرسين
-</div>
-
-<div id="all-teacher-exams"></div>
+</span>
 
 </div>
 
-<!-- النتائج -->
-<div id="daily-results" class="tab-panel">
-
-<div class="section-title">
-<i class="fa-solid fa-chart-line"></i>
-مستوى الطالب خلال 24 ساعة
-</div>
-
-<div class="admin-box">
-
-<div id="student-level" class="ai-message">
-جاري حساب المستوى...
-</div>
-
-<table style="margin-top:12px">
-<thead>
-<tr>
-<th>المادة</th>
-<th>الامتحان</th>
-<th>الدرجة</th>
-<th>الوقت</th>
-</tr>
-</thead>
-
-<tbody id="daily-results-body"></tbody>
-
-</table>
+<div id="student-exams-container"></div>
 
 </div>
 
-</div>
 
-<!-- التصحيح -->
-<div id="results" class="tab-panel">
+<!-- ================= MOTIVATION ================= -->
 
-<div class="section-title">
-التصحيح والتقييم
-</div>
-
-<div class="admin-box">
-
-<h3 id="active-exam-title"></h3>
-
-<div id="exam-timer-display" class="timer">
-الوقت المتبقي
-</div>
-
-<div class="ai-message" style="margin-top:10px">
-<strong>السؤال:</strong>
-<div id="active-question"></div>
-</div>
-
-<div class="form-group" style="margin-top:12px">
-<label>إجابتك</label>
-<textarea id="student-answer-text" class="form-control"></textarea>
-</div>
-
-<button class="btn-submit" onclick="correctExamWithAI()">
-<i class="fa-solid fa-wand-magic-sparkles"></i>
-تصحيح وتقييم
-</button>
-
-<div id="ai-result-box" class="ai-message" style="display:none;margin-top:12px"></div>
-
-</div>
-
-</div>
-
-<!-- التحفيز -->
 <div id="motivation" class="tab-panel">
 
 <div class="section-title">
@@ -422,128 +816,173 @@ src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 
 التحفيزات الذكية
 </div>
 
-<div class="admin-box">
+<div class="motivation">
 
-<div id="motivation-message" class="ai-message">
-راح توصل، بس لا تستسلم 🔥
+<i class="fa-solid fa-bolt"></i>
+
+<h3 id="motivation-text">
+شد حيلك بطل 🇮🇶
+</h3>
+
+<p style="font-size:11px;color:#a3cef1;margin-top:8px">
+راح توصلك رسالة تحفيزية كل 10 دقائق
+</p>
+
 </div>
 
-<button class="btn-submit btn-blue" style="margin-top:10px" onclick="generateMotivation()">
-تحفيز الآن
+<button class="btn-submit" onclick="generateMotivation()">
+تحفيزني الآن
 </button>
 
 </div>
 
-</div>
 
-<!-- الجدول -->
+<!-- ================= SCHEDULE ================= -->
+
 <div id="schedule" class="tab-panel">
 
 <div class="section-title">
+
+<span>
 <i class="fa-solid fa-calendar-days"></i>
-تنظيم الوقت والجداول
+تنظيم الوقت والجدول
+</span>
+
 </div>
 
 <div class="admin-box">
 
+<h3>
+إنشاء جدول دراسي
+</h3>
+
 <div class="form-group">
-<label>اسم الجدول</label>
-<input id="schedule-name" class="form-control">
+<label>عدد ساعات الدراسة</label>
+<input id="study-hours" type="number" class="form-control" value="5">
 </div>
 
 <div class="form-group">
-<label>المادة</label>
-<input id="schedule-subject" class="form-control">
+<label>عدد المواد</label>
+<input id="study-subjects" type="number" class="form-control" value="5">
 </div>
 
-<div class="form-group">
-<label>وقت الدراسة</label>
-<input id="schedule-time" type="time" class="form-control">
-</div>
-
-<button class="btn-submit btn-green" onclick="addSchedule()">
-إضافة للجدول
+<button class="btn-submit" onclick="createSchedule()">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+إنشاء جدول بالذكاء الاصطناعي
 </button>
 
 </div>
 
-<div id="schedules-container"></div>
-
-<button class="btn-submit btn-gold" onclick="generateTenSchedules()">
-إضافة 10 جداول تنظيم وقت
-</button>
+<div id="schedule-result"></div>
 
 </div>
 
-<!-- المسابقات -->
-<div id="competition" class="tab-panel">
+
+<!-- ================= GAMES ================= -->
+
+<div id="games" class="tab-panel">
 
 <div class="section-title">
-<i class="fa-solid fa-trophy"></i>
-المسابقات
+<i class="fa-solid fa-gamepad"></i>
+الألعاب
 </div>
 
-<div class="admin-box">
+<div class="game-card">
 
-<div style="text-align:center">
-<div style="color:#8d99ae">
-إجمالي دقائق المشاهدة
-</div>
+<i class="fa-solid fa-brain"></i>
 
-<div id="my-watch-hours-display"
-style="font-size:22px;color:#e0a96d;font-weight:bold">
-0 دقيقة
-</div>
+<h3>
+اختبار سرعة الذاكرة
+</h3>
 
-</div>
+<p style="font-size:11px;color:#8d99ae;margin:8px">
+لعبة بسيطة أثناء الاستراحة
+</p>
 
-</div>
-
-</div>
-
-<!-- الدعم -->
-<div id="support" class="tab-panel">
-
-<div class="section-title">
-<i class="fa-solid fa-headset"></i>
-تواصل مع الدعم
-</div>
-
-<div class="admin-box">
-
-<div class="form-group">
-<label>اسمك</label>
-<input id="support-name" class="form-control">
-</div>
-
-<div class="form-group">
-<label>رسالتك</label>
-<textarea id="support-message" class="form-control"></textarea>
-</div>
-
-<button class="btn-submit btn-blue" onclick="sendSupport()">
-إرسال للدعم
+<button class="btn-submit" onclick="startMemoryGame()">
+ابدأ اللعبة
 </button>
 
-<a href="https://t.me/muhammed9996"
-target="_blank"
-class="btn-submit"
-style="display:block;text-align:center;text-decoration:none;margin-top:10px;background:#0088cc">
-فتح دعم التليجرام
-</a>
+</div>
+
+
+<div class="game-card">
+
+<i class="fa-solid fa-calculator"></i>
+
+<h3>
+تحدي الحساب
+</h3>
+
+<button class="btn-submit" onclick="startMathGame()">
+ابدأ
+</button>
 
 </div>
 
 </div>
 
-<!-- الإدارة -->
+
+<!-- ================= DAILY RESULTS ================= -->
+
+<div id="daily-results" class="tab-panel">
+
+<div class="section-title">
+<i class="fa-solid fa-chart-column"></i>
+تقييم الطالب خلال 24 ساعة
+</div>
+
+<div class="stat-box">
+
+<div class="stat">
+<strong id="total-score">
+0
+</strong>
+<span>
+مجموع الدرجات
+</span>
+</div>
+
+<div class="stat">
+<strong id="exam-count">
+0
+</strong>
+<span>
+عدد الامتحانات
+</span>
+</div>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>المادة</th>
+<th>الدرجة</th>
+<th>الوقت</th>
+</tr>
+</thead>
+
+<tbody id="results-table"></tbody>
+
+</table>
+
+</div>
+
+
+<!-- ================= ADMIN ================= -->
+
 <div id="profile" class="tab-panel">
 
 <div class="section-title">
+<i class="fa-solid fa-gears"></i>
 لوحة تحكم الإدارة
 </div>
 
-<!-- المنصة -->
+
+<!-- تخصيص المنصة -->
+
 <div class="admin-box">
 
 <h3>
@@ -552,31 +991,59 @@ style="display:block;text-align:center;text-decoration:none;margin-top:10px;back
 </h3>
 
 <div class="form-group">
-<label>اسم المنصة</label>
-<input id="platform-name-input" class="form-control">
+
+<label>
+اسم المنصة
+</label>
+
+<input
+id="admin-platform-name"
+class="form-control"
+>
+
 </div>
 
-<button class="btn-submit btn-blue" onclick="updatePlatformName()">
+<button
+class="btn-submit"
+onclick="savePlatformName()"
+>
 حفظ الاسم
 </button>
 
+
 <div class="form-group" style="margin-top:12px">
-<label>صورة المنصة من الاستديو</label>
-<input id="platform-logo-file"
+
+<label>
+صورة المنصة من الاستديو
+</label>
+
+<input
+id="platform-logo-file"
 type="file"
 accept="image/*"
 class="form-control"
-onchange="previewLogo(event)">
-<img id="logo-preview" class="preview-img" style="display:none">
+onchange="previewLogo(event)"
+>
+
+<img
+id="logo-preview"
+class="preview-image"
+>
+
 </div>
 
-<button class="btn-submit btn-green" onclick="updatePlatformLogo()">
+<button
+class="btn-submit btn-success"
+onclick="saveLogo()"
+>
 حفظ صورة المنصة
 </button>
 
 </div>
 
-<!-- إدارة المدرسين -->
+
+<!-- ================= إدارة المدرسين ================= -->
+
 <div class="admin-box">
 
 <h3>
@@ -585,32 +1052,293 @@ onchange="previewLogo(event)">
 </h3>
 
 <div class="form-group">
-<label>اسم المدرس</label>
-<input id="teacher-name-input" class="form-control">
+
+<label>
+اسم المدرس
+</label>
+
+<input
+id="teacher-name"
+class="form-control"
+placeholder="مثال: أ. أحمد"
+>
+
 </div>
 
 <div class="form-group">
-<label>المادة</label>
-<input id="teacher-subject-input" class="form-control">
+
+<label>
+المادة
+</label>
+
+<input
+id="teacher-subject"
+class="form-control"
+placeholder="مثال: الفيزياء"
+>
+
 </div>
 
-<div class="form-group">
-<label>المرحلة</label>
-<select id="teacher-grade-input" class="form-control">
-<option value="scientific">السادس العلمي</option>
-<option value="literary">السادس الأدبي</option>
-</select>
-</div>
-
-<button class="btn-submit btn-green" onclick="addTeacher()">
+<button
+class="btn-submit btn-success"
+onclick="addTeacher()"
+>
 إضافة مدرس
 </button>
 
-<div id="teachers-admin-list" style="margin-top:12px"></div>
+</div>
+
+
+<div class="admin-box">
+
+<h3>
+<i class="fa-solid fa-users"></i>
+المدرسون
+</h3>
+
+<div id="admin-teachers"></div>
 
 </div>
 
-<!-- إدارة الإعلانات -->
+
+<!-- ================= المحاضرات ================= -->
+
+<div class="admin-box">
+
+<h3>
+<i class="fa-solid fa-video"></i>
+لوحة التحكم بالمحاضرات
+</h3>
+
+<div class="form-group">
+
+<label>
+المدرس
+</label>
+
+<select id="lecture-teacher" class="form-control"></select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+الفصل
+</label>
+
+<input
+id="lecture-chapter"
+class="form-control"
+placeholder="الفصل الأول"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+عنوان المحاضرة
+</label>
+
+<input
+id="lecture-title"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+رفع المحاضرة من الجهاز
+</label>
+
+<input
+id="lecture-file"
+type="file"
+accept="video/*,.pdf,.mp4,.webm"
+class="form-control"
+>
+
+</div>
+
+<button
+class="btn-submit btn-success"
+onclick="addLecture()"
+>
+رفع وإضافة المحاضرة
+</button>
+
+</div>
+
+
+<!-- ================= الامتحانات ================= -->
+
+<div class="admin-box">
+
+<h3>
+<i class="fa-solid fa-file-pen"></i>
+إنشاء امتحان للمدرس
+</h3>
+
+<div class="form-group">
+
+<label>
+المدرس
+</label>
+
+<select id="exam-teacher" class="form-control"></select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+اسم الامتحان
+</label>
+
+<input
+id="admin-exam-title"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+المادة
+</label>
+
+<input
+id="admin-exam-subject"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+وقت الامتحان بالدقائق
+</label>
+
+<input
+id="admin-exam-duration"
+type="number"
+class="form-control"
+value="20"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+السؤال
+</label>
+
+<textarea
+id="question-text"
+class="form-control"
+></textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>
+الإجابة 1
+</label>
+
+<input
+id="answer1"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+الإجابة 2
+</label>
+
+<input
+id="answer2"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+الإجابة 3
+</label>
+
+<input
+id="answer3"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+الإجابة 4
+</label>
+
+<input
+id="answer4"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+رقم الإجابة الصحيحة
+</label>
+
+<select
+id="correct-answer"
+class="form-control"
+>
+
+<option value="0">الإجابة 1</option>
+<option value="1">الإجابة 2</option>
+<option value="2">الإجابة 3</option>
+<option value="3">الإجابة 4</option>
+
+</select>
+
+</div>
+
+<button
+class="btn-submit"
+onclick="addQuestionToDraft()"
+>
+إضافة السؤال
+</button>
+
+<div id="draft-questions" style="margin-top:10px"></div>
+
+<button
+class="btn-submit btn-success"
+onclick="saveExam()"
+>
+حفظ الامتحان
+</button>
+
+</div>
+
+
+<!-- ================= الإعلانات ================= -->
+
 <div class="admin-box">
 
 <h3>
@@ -619,58 +1347,162 @@ onchange="previewLogo(event)">
 </h3>
 
 <div class="form-group">
-<label>نوع الإعلان</label>
-<select id="announcement-type" class="form-control">
+
+<label>
+عنوان الإعلان
+</label>
+
+<input
+id="announcement-title"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+نص الإعلان
+</label>
+
+<textarea
+id="announcement-text"
+class="form-control"
+></textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>
+صورة الإعلان من الاستديو
+</label>
+
+<input
+id="announcement-image"
+type="file"
+accept="image/*"
+class="form-control"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+نوع الرابط
+</label>
+
+<select
+id="announcement-type"
+class="form-control"
+>
+
 <option value="telegram">Telegram</option>
 <option value="youtube">YouTube</option>
 <option value="instagram">Instagram</option>
-<option value="general">إعلان عام</option>
+
 </select>
+
 </div>
 
 <div class="form-group">
-<label>عنوان الإعلان</label>
-<input id="announcement-title" class="form-control">
+
+<label>
+الرابط
+</label>
+
+<input
+id="announcement-link"
+class="form-control"
+placeholder="https://..."
+>
+
 </div>
 
-<div class="form-group">
-<label>وصف الإعلان</label>
-<textarea id="announcement-desc" class="form-control"></textarea>
-</div>
-
-<div class="form-group">
-<label>الرابط</label>
-<input id="announcement-link" class="form-control">
-</div>
-
-<button class="btn-submit btn-gold" onclick="addAnnouncement()">
+<button
+class="btn-submit btn-gold"
+onclick="addAnnouncement()"
+>
 نشر الإعلان
 </button>
 
-<div id="admin-announcements-list" style="margin-top:12px"></div>
-
 </div>
 
-<!-- الحضور -->
+
+<!-- ================= توليد الأكواد ================= -->
+
 <div class="admin-box">
 
 <h3>
-<i class="fa-solid fa-users"></i>
-الحضور
+<i class="fa-solid fa-key"></i>
+توليد أكواد التفعيل
 </h3>
 
-<table>
-<thead>
-<tr>
-<th>الاسم</th>
-<th>المحافظة</th>
-<th>النوع</th>
-</tr>
-</thead>
+<div class="form-group">
 
-<tbody id="attendance-table-body"></tbody>
+<label>
+نوع الكود
+</label>
 
-</table>
+<select id="code-type" class="form-control">
+
+<option value="monthly">
+شهري
+</option>
+
+<option value="annual">
+سنوي
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+الكود
+</label>
+
+<input
+id="generated-code"
+class="form-control"
+readonly
+style="text-align:center;color:#ffd166;font-size:18px;font-weight:bold"
+>
+
+</div>
+
+<button
+class="btn-submit"
+onclick="generateCode()"
+>
+توليد كود
+</button>
+
+<button
+class="btn-submit btn-success"
+onclick="saveGeneratedCode()"
+>
+اعتماد الكود
+</button>
+
+<div id="codes-list" style="margin-top:10px"></div>
+
+</div>
+
+
+<!-- ================= حضور المدرسين ================= -->
+
+<div class="admin-box">
+
+<h3>
+<i class="fa-solid fa-user-check"></i>
+حضور المدرسين
+</h3>
+
+<div id="teacher-attendance-list"></div>
 
 </div>
 
@@ -678,31 +1510,48 @@ onchange="previewLogo(event)">
 
 </div>
 
-<!-- التنقل -->
+
+<!-- ================= NAV ================= -->
+
 <div class="bottom-nav">
 
-<div class="nav-item active" onclick="switchTab('home',this)">
+<div
+class="nav-item active"
+onclick="switchTab('home',this)"
+>
 <i class="fa-solid fa-house"></i>
 الرئيسية
 </div>
 
-<div class="nav-item" onclick="switchTab('lectures',this)">
-<i class="fa-solid fa-circle-play"></i>
+<div
+class="nav-item"
+onclick="switchTab('lectures',this)"
+>
+<i class="fa-solid fa-video"></i>
 المحاضرات
 </div>
 
-<div class="nav-item" onclick="switchTab('exams',this)">
+<div
+class="nav-item"
+onclick="switchTab('exams',this)"
+>
 <i class="fa-solid fa-pen-to-square"></i>
 الامتحانات
 </div>
 
-<div class="nav-item" onclick="switchTab('support',this)">
-<i class="fa-solid fa-headset"></i>
-الدعم
+<div
+class="nav-item"
+onclick="switchTab('games',this)"
+>
+<i class="fa-solid fa-gamepad"></i>
+الألعاب
 </div>
 
-<div id="nav-admin-btn" class="nav-item" style="display:none"
-onclick="switchTab('profile',this)">
+<div
+id="admin-nav"
+class="nav-item hidden"
+onclick="switchTab('profile',this)"
+>
 <i class="fa-solid fa-gears"></i>
 الإدارة
 </div>
@@ -711,20 +1560,32 @@ onclick="switchTab('profile',this)">
 
 </div>
 
+
 <script>
 
-const SUPABASE_URL='https://adimnuekbfiqciduzbnn.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_8GMkOL_Ar4NqomOYS-onRg_hVjmuhxt';
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+'https://adimnuekbfiqciduzbnn.supabase.co';
+
+const SUPABASE_ANON_KEY =
+'sb_publishable_8GMkOL_Ar4NqomOYS-onRg_hVjmuhxt';
 
 const {createClient}=supabase;
-const db=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-let isAdmin=false;
-let watchMinutes=parseInt(localStorage.getItem('student_watch_minutes')||'0');
-let activeExam=null;
-let examTimer=null;
+const db=createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
 
-const sciSubjects=[
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const subjectsScientific=[
 "التربية الإسلامية",
 "اللغة العربية",
 "اللغة الإنكليزية",
@@ -734,7 +1595,7 @@ const sciSubjects=[
 "الأحياء"
 ];
 
-const litSubjects=[
+const subjectsLiterary=[
 "التربية الإسلامية",
 "اللغة العربية",
 "اللغة الإنكليزية",
@@ -744,1087 +1605,340 @@ const litSubjects=[
 "الفلسفة والمنطق"
 ];
 
+let teachers=
+JSON.parse(
+localStorage.getItem("teachers")||"[]"
+);
+
+let lectures=
+JSON.parse(
+localStorage.getItem("lectures")||"[]"
+);
+
+let exams=
+JSON.parse(
+localStorage.getItem("exams")||"[]"
+);
+
+let announcements=
+JSON.parse(
+localStorage.getItem("announcements")||"[]"
+);
+
+let activationCodes=
+JSON.parse(
+localStorage.getItem("activation_codes")||"[]"
+);
+
+let dailyResults=
+JSON.parse(
+localStorage.getItem("daily_results")||"[]"
+);
+
+let draftQuestions=[];
+
+let activeExam=null;
+
+let examTimer=null;
+
+let logoData="";
+
+let motivationTimer=null;
+
+
+/* =========================================================
+   START
+========================================================= */
+
 window.onload=function(){
 
-check24HourReset();
-loadBranding();
-loadSubjects();
-loadLectures();
-loadTeachers();
-loadAnnouncements();
-loadSchedules();
-loadDailyResults();
-updateWatchDisplay();
-
-const params=new URLSearchParams(location.search);
-
-if(params.get('admin')==='admin123'){
-enableAdminMode();
-}else{
-checkPlatformAccess();
-checkMandatoryAttendance();
-}
-
-setInterval(generateMotivation,600000);
-
-};
-
-function switchTab(id,element){
-
-document.querySelectorAll('.tab-panel')
-.forEach(x=>x.classList.remove('active'));
-
-const target=document.getElementById(id);
-
-if(target)target.classList.add('active');
-
-if(element){
-
-document.querySelectorAll('.nav-item')
-.forEach(x=>x.classList.remove('active'));
-
-element.classList.add('active');
-
-}
-
-}
-
-function toggleAccordion(el){
-
-const body=el.nextElementSibling;
-
-body.style.display=
-body.style.display==='block'?'none':'block';
-
-}
-
-function closeModal(id){
-
-document.getElementById(id).style.display='none';
-
-}
-
-function openLectureModal(){
-
-document.getElementById('lecture-modal').style.display='flex';
-
-}
-
-function loadBranding(){
-
-const name=localStorage.getItem('platform_name');
-
-const logo=localStorage.getItem('platform_logo');
-
-if(name){
-
-document.getElementById('app-title-text').innerText=name;
-document.getElementById('banner-title').innerText=name;
-
-}
-
-if(logo){
-
-document.getElementById('app-logo-img').src=logo;
-
-}
-
-}
-
-function updatePlatformName(){
-
-const value=document.getElementById('platform-name-input').value.trim();
-
-if(!value)return;
-
-localStorage.setItem('platform_name',value);
+resetDailyData();
 
 loadBranding();
 
-alert('تم تحديث اسم المنصة');
+renderSubjects();
 
-}
+renderTeachers();
 
-function previewLogo(event){
+renderLectures();
 
-const file=event.target.files[0];
+renderExams();
 
-if(!file)return;
+renderAnnouncements();
 
-const reader=new FileReader();
+renderResults();
 
-reader.onload=function(e){
+renderCodes();
 
-const preview=document.getElementById('logo-preview');
+renderTeacherAttendance();
 
-preview.src=e.target.result;
+startMotivationTimer();
 
-preview.style.display='block';
-
-};
-
-reader.readAsDataURL(file);
-
-}
-
-function updatePlatformLogo(){
-
-const file=document.getElementById('platform-logo-file').files[0];
-
-if(!file)return alert('اختر صورة أولاً');
-
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-localStorage.setItem('platform_logo',e.target.result);
-
-loadBranding();
-
-alert('تم تحديث صورة المنصة');
+checkAccess();
 
 };
 
-reader.readAsDataURL(file);
 
-}
+/* =========================================================
+   24 HOUR RESET
+========================================================= */
 
-function loadSubjects(){
+function resetDailyData(){
 
-renderSubjects('scientific',sciSubjects);
-renderSubjects('literary',litSubjects);
-
-}
-
-function renderSubjects(grade,subjects){
-
-const container=document.getElementById(
-grade==='scientific'
-?'scientific-subjects-list'
-:'literary-subjects-list'
+const last=
+parseInt(
+localStorage.getItem("daily_reset")||"0"
 );
 
-container.innerHTML='';
+const now=Date.now();
 
-subjects.forEach(subject=>{
+if(!last || now-last>=86400000){
 
-const teachers=getTeachers()
-.filter(t=>t.grade===grade&&t.subject===subject);
+dailyResults=[];
 
-let teacherHTML='';
+localStorage.setItem(
+"daily_results",
+JSON.stringify([])
+);
 
-teachers.forEach(t=>{
-
-teacherHTML+=`
-
-<div class="teacher-accordion">
-
-<div class="teacher-header"
-onclick="toggleAccordion(this)">
-
-<span>
-<i class="fa-solid fa-user-tie"></i>
-${t.name}
-</span>
-
-<i class="fa-solid fa-chevron-down"></i>
-
-</div>
-
-<div class="teacher-body">
-
-<div id="teacher-lectures-${t.id}"></div>
-
-<div id="teacher-exams-${t.id}"></div>
-
-<button class="small-btn btn-blue"
-onclick="openLectureForTeacher('${t.id}')">
-+ إضافة محاضرة
-</button>
-
-<button class="small-btn btn-gold"
-onclick="openExamForTeacher('${t.id}')">
-+ إضافة امتحان
-</button>
-
-</div>
-
-</div>
-`;
-
-});
-
-container.innerHTML+=`
-
-<div class="subject-accordion">
-
-<div class="subject-header"
-onclick="toggleAccordion(this)">
-
-<div>
-<i class="fa-solid fa-book"></i>
-<strong>${subject}</strong>
-</div>
-
-<i class="fa-solid fa-chevron-down"></i>
-
-</div>
-
-<div class="subject-body">
-
-${teacherHTML||`
-<div style="color:#8d99ae;font-size:11px">
-لا يوجد مدرس مضاف لهذه المادة حالياً
-</div>
-`}
-
-</div>
-
-</div>
-`;
-
-});
-
-loadTeacherContent();
-
-}
-
-function getTeachers(){
-
-return JSON.parse(
-localStorage.getItem('teachers')||'[]'
+localStorage.setItem(
+"daily_reset",
+now.toString()
 );
 
 }
 
-function addTeacher(){
+}
 
-const name=document.getElementById('teacher-name-input').value.trim();
-const subject=document.getElementById('teacher-subject-input').value.trim();
-const grade=document.getElementById('teacher-grade-input').value;
 
-if(!name||!subject){
+/* =========================================================
+   ACCESS
+========================================================= */
 
-alert('أدخل اسم المدرس والمادة');
+function checkAccess(){
+
+const adminCode=
+localStorage.getItem("admin_code")||"admin123";
+
+const params=
+new URLSearchParams(location.search);
+
+if(params.get("admin")===adminCode){
+
+enableAdmin();
 
 return;
 
 }
 
-const teachers=getTeachers();
+const authorized=
+localStorage.getItem("platform_authorized");
 
-teachers.push({
+const trial=
+parseInt(
+localStorage.getItem("trial_expiry")||"0"
+);
 
-id:'teacher_'+Date.now(),
-name,
-subject,
-grade
+if(
+authorized!=="true" &&
+Date.now()>trial
+){
 
-});
-
-localStorage.setItem('teachers',JSON.stringify(teachers));
-
-document.getElementById('teacher-name-input').value='';
-document.getElementById('teacher-subject-input').value='';
-
-loadTeachers();
-loadSubjects();
-
-alert('تمت إضافة المدرس');
+document
+.getElementById("access-modal")
+.classList.remove("hidden");
 
 }
 
-function loadTeachers(){
-
-const container=document.getElementById('teachers-admin-list');
-
-if(!container)return;
-
-const teachers=getTeachers();
-
-container.innerHTML='';
-
-teachers.forEach(t=>{
-
-container.innerHTML+=`
-
-<div class="chapter-box">
-
-<strong>${t.name}</strong>
-
-<div style="color:#8d99ae;margin-top:3px">
-${t.subject} - ${t.grade==='scientific'?'السادس العلمي':'السادس الأدبي'}
-</div>
-
-<button class="small-btn btn-red"
-style="margin-top:6px"
-onclick="deleteTeacher('${t.id}')">
-حذف المدرس
-</button>
-
-</div>
-`;
-
-});
+checkAttendance();
 
 }
 
-function deleteTeacher(id){
 
-let teachers=getTeachers();
+/* =========================================================
+   ACTIVATION
+========================================================= */
 
-teachers=teachers.filter(t=>t.id!==id);
+function verifyAccessCode(){
 
-localStorage.setItem('teachers',JSON.stringify(teachers));
+const input=
+document
+.getElementById("access-code-input")
+.value
+.trim()
+.toUpperCase();
 
-loadTeachers();
-loadSubjects();
+const found=
+activationCodes.find(
+c=>c.code===input && Date.now()<c.expiry
+);
 
-}
+if(!found){
 
-function openLectureForTeacher(id){
-
-localStorage.setItem('selected_teacher',id);
-
-openLectureModal();
-
-}
-
-function saveLecture(){
-
-const title=document.getElementById('lecture-title').value.trim();
-const chapter=document.getElementById('lecture-chapter').value.trim();
-const file=document.getElementById('lecture-file').files[0];
-
-if(!title||!chapter||!file){
-
-alert('أكمل جميع الحقول');
+alert("الكود غير صحيح أو منتهي الصلاحية");
 
 return;
 
 }
 
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-const lectures=JSON.parse(
-localStorage.getItem('lectures')||'[]'
+localStorage.setItem(
+"platform_authorized",
+"true"
 );
 
-lectures.push({
+document
+.getElementById("access-modal")
+.classList.add("hidden");
 
-id:'lecture_'+Date.now(),
-teacherId:localStorage.getItem('selected_teacher')||'general',
-title,
-chapter,
-fileName:file.name,
-data:e.target.result,
-createdAt:new Date().toLocaleString('ar-IQ')
-
-});
-
-localStorage.setItem('lectures',JSON.stringify(lectures));
-
-closeModal('lecture-modal');
-
-document.getElementById('lecture-title').value='';
-document.getElementById('lecture-chapter').value='';
-document.getElementById('lecture-file').value='';
-
-loadLectures();
-loadTeacherContent();
-
-alert('تمت إضافة المحاضرة');
-
-};
-
-reader.readAsDataURL(file);
-
-}
-
-function getLectures(){
-
-return JSON.parse(
-localStorage.getItem('lectures')||'[]'
+alert(
+found.type==="annual"
+?"تم تفعيل الاشتراك السنوي"
+:"تم تفعيل الاشتراك الشهري"
 );
 
 }
 
-function loadLectures(){
 
-const container=document.getElementById('lectures-container');
+function activateTrial(){
 
-if(!container)return;
+localStorage.setItem(
+"trial_expiry",
+(Date.now()+30*86400000).toString()
+);
 
-const lectures=getLectures();
+localStorage.setItem(
+"platform_authorized",
+"false"
+);
 
-container.innerHTML='';
+document
+.getElementById("access-modal")
+.classList.add("hidden");
 
-if(!lectures.length){
+alert(
+"تم تفعيل التجربة المجانية لمدة شهر كامل 🎁"
+);
 
-container.innerHTML=`
-<div class="chapter-box">
-لا توجد محاضرات حالياً
-</div>`;
+}
+
+
+/* =========================================================
+   CODE GENERATOR
+========================================================= */
+
+function generateCode(){
+
+const chars=
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+let code="";
+
+for(let i=0;i<12;i++){
+
+code+=
+chars[
+Math.floor(
+Math.random()*chars.length
+)
+];
+
+}
+
+document
+.getElementById("generated-code")
+.value=code;
+
+}
+
+
+function saveGeneratedCode(){
+
+const code=
+document
+.getElementById("generated-code")
+.value;
+
+const type=
+document
+.getElementById("code-type")
+.value;
+
+if(!code){
+
+alert("قم بتوليد الكود أولاً");
 
 return;
 
 }
 
-lectures.forEach(l=>{
+const expiry=
+type==="annual"
+?Date.now()+365*86400000
+:Date.now()+30*86400000;
 
-container.innerHTML+=`
+activationCodes.push({
 
-<div class="chapter-box">
-
-<strong style="color:#48cae4">
-<i class="fa-solid fa-video"></i>
-${l.title}
-</strong>
-
-<div style="color:#8d99ae;margin-top:4px">
-الفصل: ${l.chapter}
-</div>
-
-<video controls src="${l.data}"></video>
-
-<div style="margin-top:8px">
-
-<button class="small-btn btn-red"
-onclick="deleteLecture('${l.id}')">
-حذف
-</button>
-
-<button class="small-btn btn-blue"
-onclick="recordWatchTime(10)">
-احتساب 10 دقائق
-</button>
-
-</div>
-
-</div>
-`;
+code,
+type,
+expiry,
+createdAt:new Date().toISOString()
 
 });
 
+localStorage.setItem(
+"activation_codes",
+JSON.stringify(activationCodes)
+);
+
+renderCodes();
+
+alert(
+`تم اعتماد الكود ${code}`
+);
+
 }
 
-function loadTeacherContent(){
 
-const lectures=getLectures();
+function renderCodes(){
 
-lectures.forEach(l=>{
-
-const box=document.getElementById(
-'teacher-lectures-'+l.teacherId
-);
+const box=
+document.getElementById("codes-list");
 
 if(!box)return;
+
+box.innerHTML="";
+
+activationCodes.forEach((c,i)=>{
+
+const type=
+c.type==="annual"
+?"سنوي"
+:"شهري";
+
+const expired=
+Date.now()>c.expiry;
 
 box.innerHTML+=`
 
 <div class="chapter-box">
 
-<strong>${l.title}</strong>
+<strong>${c.code}</strong>
 
-<div>الفصل: ${l.chapter}</div>
+<div style="font-size:10px;color:#8d99ae">
 
-<video controls src="${l.data}"></video>
-
-<button class="small-btn btn-red"
-onclick="deleteLecture('${l.id}')">
-حذف
-</button>
-
-</div>
-`;
-
-});
-
-}
-
-function deleteLecture(id){
-
-let lectures=getLectures();
-
-lectures=lectures.filter(x=>x.id!==id);
-
-localStorage.setItem('lectures',JSON.stringify(lectures));
-
-loadLectures();
-loadSubjects();
-
-}
-
-function openExamForTeacher(id){
-
-localStorage.setItem('selected_teacher',id);
-
-document.getElementById('exam-create-modal').style.display='flex';
-
-}
-
-function saveTeacherExam(){
-
-const teacherId=localStorage.getItem('selected_teacher');
-
-const title=document.getElementById('new-exam-title').value.trim();
-const duration=parseInt(document.getElementById('new-exam-duration').value);
-const question=document.getElementById('new-exam-question').value.trim();
-const answer=document.getElementById('new-exam-answer').value.trim();
-
-if(!title||!question||!answer){
-
-alert('أكمل بيانات الامتحان');
-
-return;
-
-}
-
-const exams=JSON.parse(
-localStorage.getItem('teacher_exams')||'[]'
-);
-
-exams.push({
-
-id:'exam_'+Date.now(),
-teacherId,
-title,
-duration,
-question,
-answer
-
-});
-
-localStorage.setItem('teacher_exams',JSON.stringify(exams));
-
-closeModal('exam-create-modal');
-
-loadSubjects();
-loadTeacherExams();
-
-alert('تم إنشاء الامتحان');
-
-}
-
-function loadTeacherExams(){
-
-const container=document.getElementById('all-teacher-exams');
-
-if(!container)return;
-
-const exams=JSON.parse(
-localStorage.getItem('teacher_exams')||'[]'
-);
-
-const teachers=getTeachers();
-
-container.innerHTML='';
-
-exams.forEach(e=>{
-
-const teacher=teachers.find(t=>t.id===e.teacherId);
-
-container.innerHTML+=`
-
-<div class="chapter-box">
-
-<div style="color:#e0a96d;font-weight:bold">
-${e.title}
-</div>
-
-<div style="color:#8d99ae;margin-top:4px">
-المدرس:
-${teacher?teacher.name:'عام'}
-</div>
-
-<div style="color:#8d99ae">
-المدة: ${e.duration} دقيقة
-</div>
-
-<button class="small-btn btn-green"
-style="margin-top:7px"
-onclick="startExam('${e.id}')">
-بدء الامتحان
-</button>
-
-</div>
-`;
-
-});
-
-}
-
-function startExam(id){
-
-const exams=JSON.parse(
-localStorage.getItem('teacher_exams')||'[]'
-);
-
-const exam=exams.find(x=>x.id===id);
-
-if(!exam)return;
-
-activeExam=exam;
-
-document.getElementById('active-exam-title').innerText=exam.title;
-document.getElementById('active-question').innerText=exam.question;
-document.getElementById('student-answer-text').value='';
-document.getElementById('ai-result-box').style.display='none';
-
-let seconds=exam.duration*60;
-
-clearInterval(examTimer);
-
-examTimer=setInterval(()=>{
-
-const m=Math.floor(seconds/60);
-const s=seconds%60;
-
-document.getElementById('exam-timer-display').innerText=
-`الوقت المتبقي: ${m}:${s<10?'0':''}${s}`;
-
-if(seconds<=0){
-
-clearInterval(examTimer);
-
-correctExamWithAI();
-
-}
-
-seconds--;
-
-},1000);
-
-switchTab('results');
-
-}
-
-function correctExamWithAI(){
-
-if(!activeExam)return;
-
-clearInterval(examTimer);
-
-const studentAnswer=
-document.getElementById('student-answer-text').value.trim();
-
-if(!studentAnswer){
-
-alert('اكتب الإجابة أولاً');
-
-return;
-
-}
-
-const model=activeExam.answer.toLowerCase();
-const student=studentAnswer.toLowerCase();
-
-let score=0;
-
-if(student===model){
-
-score=100;
-
-}else{
-
-const modelWords=model.split(/\s+/);
-const matched=modelWords.filter(w=>student.includes(w)).length;
-
-score=Math.min(
-100,
-Math.round((matched/Math.max(modelWords.length,1))*100)
-);
-
-}
-
-let evaluation='';
-
-if(score>=90)evaluation='ممتاز جداً 🔥';
-else if(score>=75)evaluation='جيد جداً 👏';
-else if(score>=60)evaluation='جيد، استمر';
-else evaluation='تحتاج مراجعة المادة أكثر';
-
-const box=document.getElementById('ai-result-box');
-
-box.style.display='block';
-
-box.innerHTML=`
-
-<strong>التقييم الذكي</strong><br><br>
-
-الدرجة:
-<span style="color:#e0a96d;font-size:20px">
-${score}/100
-</span>
+النوع: ${type}
 
 <br>
 
-التقييم:
-${evaluation}
-
-`;
-
-addDailyResult(
-activeExam.title,
-score
-);
-
-}
-
-function addDailyResult(name,score){
-
-const records=JSON.parse(
-localStorage.getItem('daily_results')||'[]'
-);
-
-records.push({
-
-name,
-score,
-time:new Date().toLocaleTimeString('ar-IQ',{
-hour:'2-digit',
-minute:'2-digit'
-})
-
-});
-
-localStorage.setItem(
-'daily_results',
-JSON.stringify(records)
-);
-
-loadDailyResults();
-
-}
-
-function loadDailyResults(){
-
-const records=JSON.parse(
-localStorage.getItem('daily_results')||'[]'
-);
-
-const body=document.getElementById('daily-results-body');
-
-if(!body)return;
-
-body.innerHTML='';
-
-records.forEach(r=>{
-
-body.innerHTML+=`
-
-<tr>
-<td>عام</td>
-<td>${r.name}</td>
-<td>${r.score}/100</td>
-<td>${r.time}</td>
-</tr>
-
-`;
-
-});
-
-let avg=0;
-
-if(records.length){
-
-avg=records.reduce((a,b)=>a+b.score,0)/records.length;
-
-}
-
-document.getElementById('student-level').innerHTML=
-
-records.length
-?`مستواك خلال آخر 24 ساعة: <strong>${Math.round(avg)}%</strong>`
-:`لا توجد درجات مسجلة خلال آخر 24 ساعة`;
-
-}
-
-function check24HourReset(){
-
-const last=localStorage.getItem('daily_reset');
-
-const now=Date.now();
-
-if(!last||now-parseInt(last)>=86400000){
-
-localStorage.removeItem('daily_results');
-
-localStorage.setItem('daily_reset',now.toString());
-
-}
-
-}
-
-function recordWatchTime(minutes){
-
-watchMinutes+=minutes;
-
-localStorage.setItem(
-'student_watch_minutes',
-watchMinutes
-);
-
-updateWatchDisplay();
-
-}
-
-function updateWatchDisplay(){
-
-const el=document.getElementById(
-'my-watch-hours-display'
-);
-
-if(el)el.innerText=`${watchMinutes} دقيقة`;
-
-}
-
-const IraqiMotivations=[
-
-"شد حيلك بطل، بعدك تكدر توصل 🔥",
-"لا تخلي التعب يوقفك، كمّل وراح تشوف النتيجة 💪",
-"تره كل دقيقة تقراها اليوم تفيدك باچر 📚",
-"يلا بطل، ركز هسه وخلّي النجاح يحچي عنك 🔥",
-"لا تستعجل، المهم تستمر خطوة بخطوة 👏",
-"شدها وياك، الامتحان ما يخوف إذا أنت مستعد 💯",
-"هسه وقت الجد، خلّي تعبك اليوم يفرحك باچر ❤️",
-"أنت تكدر، بس لا تستسلم 💪"
-
-];
-
-function generateMotivation(){
-
-const random=
-IraqiMotivations[
-Math.floor(Math.random()*IraqiMotivations.length)
-];
-
-const el=document.getElementById('motivation-message');
-
-if(el)el.innerText=random;
-
-}
-
-function addSchedule(){
-
-const name=document.getElementById('schedule-name').value;
-const subject=document.getElementById('schedule-subject').value;
-const time=document.getElementById('schedule-time').value;
-
-if(!name||!subject||!time){
-
-alert('أكمل بيانات الجدول');
-
-return;
-
-}
-
-const schedules=JSON.parse(
-localStorage.getItem('schedules')||'[]'
-);
-
-schedules.push({
-id:Date.now(),
-name,
-subject,
-time
-});
-
-localStorage.setItem(
-'schedules',
-JSON.stringify(schedules)
-);
-
-loadSchedules();
-
-}
-
-function loadSchedules(){
-
-const container=
-document.getElementById('schedules-container');
-
-if(!container)return;
-
-const schedules=JSON.parse(
-localStorage.getItem('schedules')||'[]'
-);
-
-container.innerHTML='';
-
-schedules.forEach(s=>{
-
-container.innerHTML+=`
-
-<div class="chapter-box">
-
-<strong>${s.name}</strong>
-
-<div style="color:#48cae4">
-${s.subject}
-</div>
-
-<div style="color:#e0a96d">
-${s.time}
-</div>
+الحالة:
+${expired?"منتهي":"فعال"}
 
 </div>
 
-`;
-
-});
-
-}
-
-function generateTenSchedules(){
-
-const subjects=[
-"رياضيات",
-"فيزياء",
-"كيمياء",
-"أحياء",
-"عربي",
-"إنكليزي",
-"إسلامية",
-"مراجعة",
-"حل أسئلة",
-"اختبار ذاتي"
-];
-
-const schedules=JSON.parse(
-localStorage.getItem('schedules')||'[]'
-);
-
-subjects.forEach((subject,index)=>{
-
-schedules.push({
-
-id:Date.now()+index,
-name:`جدول ${index+1}`,
-subject,
-time:`${8+index}:00`
-
-});
-
-});
-
-localStorage.setItem(
-'schedules',
-JSON.stringify(schedules)
-);
-
-loadSchedules();
-
-}
-
-function addAnnouncement(){
-
-const type=document.getElementById('announcement-type').value;
-const title=document.getElementById('announcement-title').value.trim();
-const desc=document.getElementById('announcement-desc').value.trim();
-const link=document.getElementById('announcement-link').value.trim();
-
-if(!title)return alert('أدخل عنوان الإعلان');
-
-const announcements=JSON.parse(
-localStorage.getItem('announcements')||'[]'
-);
-
-announcements.push({
-id:Date.now(),
-type,
-title,
-desc,
-link
-});
-
-localStorage.setItem(
-'announcements',
-JSON.stringify(announcements)
-);
-
-loadAnnouncements();
-
-alert('تم نشر الإعلان');
-
-}
-
-function loadAnnouncements(){
-
-const container=document.getElementById(
-'announcements-container'
-);
-
-const adminList=document.getElementById(
-'admin-announcements-list'
-);
-
-const announcements=JSON.parse(
-localStorage.getItem('announcements')||'[]'
-);
-
-if(container){
-
-container.innerHTML='';
-
-announcements.forEach(a=>{
-
-let icon='fa-bullhorn';
-
-if(a.type==='telegram')icon='fa-brands fa-telegram';
-if(a.type==='youtube')icon='fa-brands fa-youtube';
-if(a.type==='instagram')icon='fa-brands fa-instagram';
-
-container.innerHTML+=`
-
-<div class="announcement">
-
-<div class="announcement-title">
-
-<i class="${icon}"></i>
-${a.title}
-
-</div>
-
-<div class="announcement-desc">
-${a.desc}
-</div>
-
-${a.link?`
-
-<a href="${a.link}"
-target="_blank"
-style="display:inline-block;margin-top:7px;color:#48cae4">
-فتح الإعلان
-</a>
-
-`:''}
-
-</div>
-
-`;
-
-});
-
-}
-
-if(adminList){
-
-adminList.innerHTML='';
-
-announcements.forEach(a=>{
-
-adminList.innerHTML+=`
-
-<div class="chapter-box">
-
-<strong>${a.title}</strong>
-
-<button class="small-btn btn-red"
-style="margin-top:6px"
-onclick="deleteAnnouncement(${a.id})">
+<button
+class="btn-submit btn-danger"
+onclick="deleteCode(${i})"
+>
 حذف
 </button>
 
@@ -1836,72 +1950,63 @@ onclick="deleteAnnouncement(${a.id})">
 
 }
 
-}
 
-function deleteAnnouncement(id){
+function deleteCode(i){
 
-let list=JSON.parse(
-localStorage.getItem('announcements')||'[]'
-);
-
-list=list.filter(x=>x.id!==id);
+activationCodes.splice(i,1);
 
 localStorage.setItem(
-'announcements',
-JSON.stringify(list)
+"activation_codes",
+JSON.stringify(activationCodes)
 );
 
-loadAnnouncements();
+renderCodes();
 
 }
 
-function sendSupport(){
 
-const name=document.getElementById('support-name').value;
-const message=document.getElementById('support-message').value;
+/* =========================================================
+   ATTENDANCE
+========================================================= */
 
-if(!name||!message){
+function checkAttendance(){
 
-alert('أدخل الاسم والرسالة');
-
-return;
-
-}
-
-const text=
-`طلب دعم من ${name}%0A%0A${message}`;
-
-window.open(
-`https://t.me/muhammed9996?text=${text}`,
-'_blank'
+const last=
+parseInt(
+localStorage.getItem("attendance_time")||"0"
 );
 
-}
+if(
+!last ||
+Date.now()-last>=86400000
+){
 
-function checkMandatoryAttendance(){
-
-const last=localStorage.getItem(
-'attendance_time'
-);
-
-if(!last||Date.now()-parseInt(last)>=86400000){
-
-document.getElementById(
-'mandatory-attendance-modal'
-).style.display='flex';
+document
+.getElementById("attendance-modal")
+.classList.remove("hidden");
 
 }
 
 }
 
-async function submitMandatoryAttendance(){
 
-const name=document.getElementById('m-att-name').value.trim();
-const gov=document.getElementById('m-att-gov').value.trim();
+async function submitAttendance(){
+
+const name=
+document
+.getElementById("attendance-name")
+.value
+.trim();
+
+const gov=
+document
+.getElementById("attendance-gov")
+.value
+.trim();
 
 if(!name||!gov){
 
-alert('أدخل الاسم والمحافظة');
+alert("أدخل الاسم والمحافظة");
 
 return;
 
@@ -1909,13 +2014,15 @@ return;
 
 try{
 
-await db.from('attendance').insert([{
-
+await db
+.from("attendance")
+.insert([
+{
 student_name:name,
 governorate:gov,
-user_type:'student'
-
-}]);
+created_at:new Date().toISOString()
+}
+]);
 
 }catch(e){
 
@@ -1924,95 +2031,1690 @@ console.log(e);
 }
 
 localStorage.setItem(
-'attendance_time',
-Date.now()
+"attendance_time",
+Date.now().toString()
 );
 
-closeModal('mandatory-attendance-modal');
+document
+.getElementById("attendance-modal")
+.classList.add("hidden");
 
-alert('تم تسجيل حضورك');
+alert("تم تسجيل حضورك بنجاح");
 
 }
 
-function checkPlatformAccess(){
 
-if(localStorage.getItem('platform_authorized')==='true')
+/* =========================================================
+   TEACHERS
+========================================================= */
+
+function addTeacher(){
+
+const name=
+document.getElementById("teacher-name").value.trim();
+
+const subject=
+document.getElementById("teacher-subject").value.trim();
+
+if(!name||!subject){
+
+alert("أدخل اسم المدرس والمادة");
+
 return;
 
-const trial=localStorage.getItem(
-'free_trial_expiry'
-);
-
-if(!trial||Date.now()>parseInt(trial)){
-
-document.getElementById(
-'access-modal'
-).style.display='flex';
-
 }
 
-}
+teachers.push({
 
-function verifyAccessCode(){
+id:Date.now().toString(),
 
-const input=document.getElementById(
-'access-code-input'
-).value.trim();
+name,
 
-const code=
-localStorage.getItem('active_system_code')
-||'IRAQ2026CODE';
+subject,
 
-if(input===code){
+attendance:[]
+
+});
 
 localStorage.setItem(
-'platform_authorized',
-'true'
+"teachers",
+JSON.stringify(teachers)
 );
 
-closeModal('access-modal');
+document.getElementById("teacher-name").value="";
+document.getElementById("teacher-subject").value="";
 
-alert('تم التفعيل بنجاح');
+renderTeachers();
+
+alert("تمت إضافة المدرس");
+
+}
+
+
+function renderTeachers(){
+
+const adminBox=
+document.getElementById("admin-teachers");
+
+const lectureSelect=
+document.getElementById("lecture-teacher");
+
+const examSelect=
+document.getElementById("exam-teacher");
+
+if(!adminBox)return;
+
+adminBox.innerHTML="";
+
+lectureSelect.innerHTML=
+'<option value="">اختر المدرس</option>';
+
+examSelect.innerHTML=
+'<option value="">اختر المدرس</option>';
+
+teachers.forEach(t=>{
+
+adminBox.innerHTML+=`
+
+<div class="chapter-box">
+
+<strong>
+${escapeHTML(t.name)}
+</strong>
+
+<div style="color:#8d99ae">
+${escapeHTML(t.subject)}
+</div>
+
+<button
+class="btn-submit btn-success"
+onclick="teacherAttendance('${t.id}')"
+>
+تسجيل حضور المدرس
+</button>
+
+<button
+class="btn-submit btn-danger"
+onclick="deleteTeacher('${t.id}')"
+>
+حذف المدرس
+</button>
+
+</div>
+`;
+
+lectureSelect.innerHTML+=`
+<option value="${t.id}">
+${escapeHTML(t.name)} - ${escapeHTML(t.subject)}
+</option>
+`;
+
+examSelect.innerHTML+=`
+<option value="${t.id}">
+${escapeHTML(t.name)} - ${escapeHTML(t.subject)}
+</option>
+`;
+
+});
+
+}
+
+
+function deleteTeacher(id){
+
+teachers=
+teachers.filter(t=>t.id!==id);
+
+localStorage.setItem(
+"teachers",
+JSON.stringify(teachers)
+);
+
+renderTeachers();
+
+renderTeacherAttendance();
+
+}
+
+
+function teacherAttendance(id){
+
+const teacher=
+teachers.find(t=>t.id===id);
+
+if(!teacher)return;
+
+teacher.attendance.push({
+time:new Date().toISOString()
+});
+
+localStorage.setItem(
+"teachers",
+JSON.stringify(teachers)
+);
+
+renderTeacherAttendance();
+
+alert(
+`تم تسجيل حضور ${teacher.name}`
+);
+
+}
+
+
+function renderTeacherAttendance(){
+
+const box=
+document.getElementById(
+"teacher-attendance-list"
+);
+
+if(!box)return;
+
+box.innerHTML="";
+
+teachers.forEach(t=>{
+
+const today=
+new Date().toDateString();
+
+const attended=
+t.attendance.some(
+a=>new Date(a.time).toDateString()===today
+);
+
+box.innerHTML+=`
+
+<div class="chapter-box">
+
+${escapeHTML(t.name)}
+
+<br>
+
+<span style="color:${attended?"#2a9d8f":"#e63946"}">
+
+${attended?"حاضر اليوم":"لم يسجل الحضور"}
+
+</span>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* =========================================================
+   LECTURES
+========================================================= */
+
+function addLecture(){
+
+const teacherId=
+document
+.getElementById("lecture-teacher")
+.value;
+
+const chapter=
+document
+.getElementById("lecture-chapter")
+.value.trim();
+
+const title=
+document
+.getElementById("lecture-title")
+.value.trim();
+
+const file=
+document
+.getElementById("lecture-file")
+.files[0];
+
+if(!teacherId||!chapter||!title||!file){
+
+alert("أكمل جميع بيانات المحاضرة");
+
+return;
+
+}
+
+const teacher=
+teachers.find(t=>t.id===teacherId);
+
+const url=
+URL.createObjectURL(file);
+
+lectures.push({
+
+id:Date.now().toString(),
+
+teacherId,
+
+teacher:teacher.name,
+
+subject:teacher.subject,
+
+chapter,
+
+title,
+
+fileName:file.name,
+
+fileType:file.type,
+
+url
+
+});
+
+localStorage.setItem(
+"lectures",
+JSON.stringify(lectures)
+);
+
+renderLectures();
+
+alert(
+"تمت إضافة المحاضرة من الجهاز بنجاح"
+);
+
+}
+
+
+function renderLectures(){
+
+const box=
+document.getElementById(
+"lectures-container"
+);
+
+if(!box)return;
+
+box.innerHTML="";
+
+if(!lectures.length){
+
+box.innerHTML=`
+<div class="chapter-box">
+لا توجد محاضرات حالياً
+</div>
+`;
+
+return;
+
+}
+
+lectures.forEach(l=>{
+
+box.innerHTML+=`
+
+<div class="chapter-box">
+
+<div style="color:#48cae4;font-weight:bold">
+
+<i class="fa-solid fa-video"></i>
+
+${escapeHTML(l.title)}
+
+</div>
+
+<div style="color:#8d99ae;margin-top:5px">
+
+المدرس:
+${escapeHTML(l.teacher)}
+
+<br>
+
+الفصل:
+${escapeHTML(l.chapter)}
+
+</div>
+
+<button
+class="btn-submit"
+onclick="openLecture('${l.id}')"
+>
+مشاهدة المحاضرة
+</button>
+
+<button
+class="btn-submit btn-danger"
+onclick="deleteLecture('${l.id}')"
+>
+حذف
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function openLecture(id){
+
+const lecture=
+lectures.find(l=>l.id===id);
+
+if(!lecture)return;
+
+const w=
+window.open("","_blank");
+
+if(!w){
+
+alert("اسمح بفتح النوافذ المنبثقة");
+
+return;
+
+}
+
+if(
+lecture.fileType.includes("video")
+){
+
+w.document.write(`
+
+<html dir="rtl">
+
+<body style="background:#0b132b;color:white;text-align:center">
+
+<h3>${escapeHTML(lecture.title)}</h3>
+
+<video
+src="${lecture.url}"
+controls
+autoplay
+style="width:90%;max-width:800px"
+></video>
+
+</body>
+</html>
+
+`);
 
 }else{
 
-alert('الكود غير صحيح');
+w.location.href=lecture.url;
 
 }
 
 }
 
-function activateFreeTrialMonth(){
+
+function deleteLecture(id){
+
+lectures=
+lectures.filter(l=>l.id!==id);
 
 localStorage.setItem(
-'free_trial_expiry',
-Date.now()+30*86400000
+"lectures",
+JSON.stringify(lectures)
 );
 
-closeModal('access-modal');
-
-alert('تم تفعيل التجربة المجانية لمدة شهر');
+renderLectures();
 
 }
 
-function enableAdminMode(){
 
-isAdmin=true;
+/* =========================================================
+   EXAMS
+========================================================= */
 
+function addQuestionToDraft(){
+
+const question=
+document
+.getElementById("question-text")
+.value.trim();
+
+const answers=[
+document.getElementById("answer1").value,
+document.getElementById("answer2").value,
+document.getElementById("answer3").value,
+document.getElementById("answer4").value
+];
+
+const correct=
+parseInt(
+document.getElementById("correct-answer").value
+);
+
+if(!question||answers.some(a=>!a)){
+
+alert("أكمل السؤال وجميع الإجابات");
+
+return;
+
+}
+
+draftQuestions.push({
+
+question,
+answers,
+correct
+
+});
+
+document.getElementById("question-text").value="";
+document.getElementById("answer1").value="";
+document.getElementById("answer2").value="";
+document.getElementById("answer3").value="";
+document.getElementById("answer4").value="";
+
+renderDraftQuestions();
+
+}
+
+
+function renderDraftQuestions(){
+
+const box=
+document.getElementById("draft-questions");
+
+box.innerHTML="";
+
+draftQuestions.forEach((q,i)=>{
+
+box.innerHTML+=`
+
+<div class="chapter-box">
+
+السؤال ${i+1}:
+${escapeHTML(q.question)}
+
+<button
+class="btn-submit btn-danger"
+onclick="removeDraftQuestion(${i})"
+>
+حذف السؤال
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function removeDraftQuestion(i){
+
+draftQuestions.splice(i,1);
+
+renderDraftQuestions();
+
+}
+
+
+function saveExam(){
+
+const teacherId=
+document
+.getElementById("exam-teacher")
+.value;
+
+const title=
+document
+.getElementById("admin-exam-title")
+.value.trim();
+
+const subject=
+document
+.getElementById("admin-exam-subject")
+.value.trim();
+
+const duration=
+parseInt(
+document
+.getElementById("admin-exam-duration")
+.value
+);
+
+if(
+!teacherId||
+!title||
+!subject||
+!duration||
+!draftQuestions.length
+){
+
+alert("أكمل بيانات الامتحان وأضف سؤالاً واحداً على الأقل");
+
+return;
+
+}
+
+const teacher=
+teachers.find(t=>t.id===teacherId);
+
+exams.push({
+
+id:Date.now().toString(),
+
+teacherId,
+
+teacher:teacher.name,
+
+subject,
+
+title,
+
+duration,
+
+questions:[...draftQuestions],
+
+createdAt:new Date().toISOString()
+
+});
+
+localStorage.setItem(
+"exams",
+JSON.stringify(exams)
+);
+
+draftQuestions=[];
+
+renderDraftQuestions();
+
+renderExams();
+
+alert("تم إنشاء الامتحان بنجاح");
+
+}
+
+
+function renderExams(){
+
+const box=
 document.getElementById(
-'user-role-badge'
-).innerText='مسؤول المنصة';
+"student-exams-container"
+);
 
+if(!box)return;
+
+box.innerHTML="";
+
+if(!exams.length){
+
+box.innerHTML=`
+<div class="chapter-box">
+لا توجد امتحانات متاحة حالياً
+</div>
+`;
+
+return;
+
+}
+
+exams.forEach(e=>{
+
+box.innerHTML+=`
+
+<div class="exam-card">
+
+<h3 style="color:#e0a96d">
+${escapeHTML(e.title)}
+</h3>
+
+<p style="font-size:11px;color:#8d99ae;margin-top:5px">
+
+المدرس:
+${escapeHTML(e.teacher)}
+
+<br>
+
+المادة:
+${escapeHTML(e.subject)}
+
+<br>
+
+المدة:
+${e.duration} دقيقة
+
+<br>
+
+عدد الأسئلة:
+${e.questions.length}
+
+</p>
+
+<button
+class="btn-submit btn-success"
+onclick="startExam('${e.id}')"
+>
+بدء الامتحان
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function startExam(id){
+
+const exam=
+exams.find(e=>e.id===id);
+
+if(!exam)return;
+
+activeExam=exam;
+
+document
+.getElementById("exam-modal-title")
+.innerText=exam.title;
+
+const box=
+document.getElementById("exam-questions");
+
+box.innerHTML="";
+
+exam.questions.forEach((q,i)=>{
+
+let html=`
+
+<div class="exam-question">
+
+<strong>
+${i+1}. ${escapeHTML(q.question)}
+</strong>
+
+`;
+
+q.answers.forEach((a,j)=>{
+
+html+=`
+
+<label class="option">
+
+<input
+type="radio"
+name="question_${i}"
+value="${j}"
+>
+
+${escapeHTML(a)}
+
+</label>
+
+`;
+
+});
+
+html+="</div>";
+
+box.innerHTML+=html;
+
+});
+
+document
+.getElementById("exam-modal")
+.classList.remove("hidden");
+
+startExamTimer(exam.duration*60);
+
+}
+
+
+function startExamTimer(seconds){
+
+if(examTimer)
+clearInterval(examTimer);
+
+let remaining=seconds;
+
+updateExamTimer(remaining);
+
+examTimer=setInterval(()=>{
+
+remaining--;
+
+updateExamTimer(remaining);
+
+if(remaining<=0){
+
+clearInterval(examTimer);
+
+submitExam();
+
+}
+
+},1000);
+
+}
+
+
+function updateExamTimer(seconds){
+
+const m=
+Math.floor(seconds/60);
+
+const s=
+seconds%60;
+
+document
+.getElementById("exam-timer")
+.innerText=
+`الوقت: ${m}:${s<10?"0":""}${s}`;
+
+}
+
+
+/* =========================================================
+   AI STYLE CORRECTION
+========================================================= */
+
+function submitExam(){
+
+if(!activeExam)return;
+
+if(examTimer)
+clearInterval(examTimer);
+
+let correct=0;
+
+activeExam.questions.forEach((q,i)=>{
+
+const selected=
+document.querySelector(
+`input[name="question_${i}"]:checked`
+);
+
+if(
+selected &&
+parseInt(selected.value)===q.correct
+){
+
+correct++;
+
+}
+
+});
+
+const total=
+activeExam.questions.length;
+
+const score=
+Math.round((correct/total)*100);
+
+dailyResults.push({
+
+subject:activeExam.subject,
+
+exam:activeExam.title,
+
+score,
+
+time:new Date().toLocaleTimeString("ar-IQ",{
+hour:"2-digit",
+minute:"2-digit"
+})
+
+});
+
+localStorage.setItem(
+"daily_results",
+JSON.stringify(dailyResults)
+);
+
+document
+.getElementById("exam-modal")
+.classList.add("hidden");
+
+renderResults();
+
+alert(
+`تم التصحيح بالذكاء الاصطناعي\n\nالدرجة: ${score}/100`
+);
+
+activeExam=null;
+
+}
+
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+function renderResults(){
+
+const table=
+document.getElementById("results-table");
+
+if(!table)return;
+
+table.innerHTML="";
+
+let total=0;
+
+dailyResults.forEach(r=>{
+
+total+=r.score;
+
+table.innerHTML+=`
+
+<tr>
+
+<td>
+${escapeHTML(r.subject)}
+</td>
+
+<td style="color:#2a9d8f;font-weight:bold">
+${r.score}/100
+</td>
+
+<td>
+${r.time}
+</td>
+
+</tr>
+
+`;
+
+});
+
+document
+.getElementById("total-score")
+.innerText=
+dailyResults.length
+?Math.round(total/dailyResults.length)
+:0;
+
+document
+.getElementById("exam-count")
+.innerText=
+dailyResults.length;
+
+}
+
+
+/* =========================================================
+   ANNOUNCEMENTS
+========================================================= */
+
+function addAnnouncement(){
+
+const title=
+document
+.getElementById("announcement-title")
+.value.trim();
+
+const text=
+document
+.getElementById("announcement-text")
+.value.trim();
+
+const link=
+document
+.getElementById("announcement-link")
+.value.trim();
+
+const type=
+document
+.getElementById("announcement-type")
+.value;
+
+const file=
+document
+.getElementById("announcement-image")
+.files[0];
+
+if(!title||!link){
+
+alert("أدخل عنوان الإعلان والرابط");
+
+return;
+
+}
+
+if(file){
+
+const reader=new FileReader();
+
+reader.onload=function(){
+
+saveAnnouncement(
+title,
+text,
+link,
+type,
+reader.result
+);
+
+};
+
+reader.readAsDataURL(file);
+
+}else{
+
+saveAnnouncement(
+title,
+text,
+link,
+type,
+""
+);
+
+}
+
+}
+
+
+function saveAnnouncement(
+title,
+text,
+link,
+type,
+image
+){
+
+announcements.push({
+
+id:Date.now().toString(),
+
+title,
+
+text,
+
+link,
+
+type,
+
+image
+
+});
+
+localStorage.setItem(
+"announcements",
+JSON.stringify(announcements)
+);
+
+renderAnnouncements();
+
+alert("تم نشر الإعلان");
+
+}
+
+
+function renderAnnouncements(){
+
+const box=
 document.getElementById(
-'nav-admin-btn'
-).style.display='flex';
+"announcements-container"
+);
 
-document.querySelectorAll(
-'.admin-only-btn'
-).forEach(x=>x.style.display='block');
+if(!box)return;
 
-closeModal('access-modal');
-closeModal('mandatory-attendance-modal');
+box.innerHTML="";
+
+if(!announcements.length){
+
+box.innerHTML=`
+<div class="chapter-box">
+لا توجد إعلانات حالياً
+</div>
+`;
+
+return;
+
+}
+
+announcements.forEach((a,i)=>{
+
+const icon=
+a.type==="telegram"
+?"fa-telegram"
+:a.type==="youtube"
+?"fa-youtube"
+:"fa-instagram";
+
+box.innerHTML+=`
+
+<div class="announcement-card">
+
+${
+a.image
+?`<img src="${a.image}">`
+:""
+}
+
+<div class="announcement-title">
+
+<i class="fa-brands ${icon}"></i>
+
+${escapeHTML(a.title)}
+
+</div>
+
+<p style="font-size:11px;color:#a3cef1;margin-top:5px">
+
+${escapeHTML(a.text||"")}
+
+</p>
+
+<a
+href="${escapeHTML(a.link)}"
+target="_blank"
+class="announcement-link"
+>
+فتح الرابط
+</a>
+
+${
+isAdminMode()
+?`
+<button
+class="btn-submit btn-danger"
+onclick="deleteAnnouncement(${i})"
+>
+حذف الإعلان
+</button>
+`
+:""
+}
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function deleteAnnouncement(i){
+
+announcements.splice(i,1);
+
+localStorage.setItem(
+"announcements",
+JSON.stringify(announcements)
+);
+
+renderAnnouncements();
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+function previewLogo(event){
+
+const file=
+event.target.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=function(){
+
+logoData=reader.result;
+
+const img=
+document.getElementById("logo-preview");
+
+img.src=logoData;
+
+img.style.display="block";
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+
+function saveLogo(){
+
+if(!logoData){
+
+alert("اختر صورة أولاً");
+
+return;
+
+}
+
+localStorage.setItem(
+"platform_logo",
+logoData
+);
+
+document
+.getElementById("app-logo")
+.src=logoData;
+
+alert("تم حفظ صورة المنصة");
+
+}
+
+
+function savePlatformName(){
+
+const name=
+document
+.getElementById("admin-platform-name")
+.value.trim();
+
+if(!name)return;
+
+localStorage.setItem(
+"platform_name",
+name
+);
+
+document
+.getElementById("platform-title")
+.innerText=name;
+
+document
+.getElementById("hero-title")
+.innerText=name;
+
+alert("تم حفظ اسم المنصة");
+
+}
+
+
+function loadBranding(){
+
+const name=
+localStorage.getItem("platform_name");
+
+const logo=
+localStorage.getItem("platform_logo");
+
+if(name){
+
+document
+.getElementById("platform-title")
+.innerText=name;
+
+document
+.getElementById("hero-title")
+.innerText=name;
+
+document
+.getElementById("admin-platform-name")
+.value=name;
+
+}
+
+if(logo){
+
+document
+.getElementById("app-logo")
+.src=logo;
+
+logoData=logo;
+
+}
+
+}
+
+
+/* =========================================================
+   MOTIVATION
+========================================================= */
+
+const motivations=[
+
+"شد حيلك بطل، التعب اليوم راح يصير فخر باچر 🇮🇶🔥",
+
+"لا تستسلم، كل صفحة تقراها تقربك من حلمك 💪",
+
+"ركز ويا دراستك، أنت تكدر وتسويها 👊",
+
+"بعدك مستمر؟ عاشت إيدك، كمل ولا توقف 🔥",
+
+"ساعة دراسة اليوم أحسن من ندم باچر 📚",
+
+"شد الهمة يا بطل، مستقبلك يستاهل التعب ❤️",
+
+"لا تقارن نفسك بغيرك، قارن نفسك بنفسك أمس 💯",
+
+"باقي شوية وتوصل، لا تخلي التعب يوقفك 🇮🇶"
+
+];
+
+function generateMotivation(){
+
+const msg=
+motivations[
+Math.floor(
+Math.random()*motivations.length
+)
+];
+
+document
+.getElementById("motivation-text")
+.innerText=msg;
+
+}
+
+
+function startMotivationTimer(){
+
+generateMotivation();
+
+if(motivationTimer)
+clearInterval(motivationTimer);
+
+motivationTimer=
+setInterval(
+generateMotivation,
+10*60*1000
+);
+
+}
+
+
+/* =========================================================
+   SCHEDULE
+========================================================= */
+
+function createSchedule(){
+
+const hours=
+parseInt(
+document.getElementById("study-hours").value
+)||5;
+
+const subjects=
+parseInt(
+document.getElementById("study-subjects").value
+)||5;
+
+const names=[
+"الرياضيات",
+"الفيزياء",
+"الكيمياء",
+"اللغة الإنكليزية",
+"اللغة العربية",
+"الأحياء",
+"التاريخ",
+"الجغرافية",
+"التربية الإسلامية",
+"مراجعة عامة"
+];
+
+let html="";
+
+for(let i=0;i<subjects;i++){
+
+const hour=
+Math.floor(i%hours)+1;
+
+html+=`
+
+<div class="schedule-card" style="padding:12px">
+
+<strong style="color:#e0a96d">
+
+الساعة ${hour}
+
+</strong>
+
+<div style="margin-top:5px">
+
+${names[i%names.length]}
+
+</div>
+
+<div style="font-size:10px;color:#8d99ae">
+
+دراسة + مراجعة + استراحة
+
+</div>
+
+</div>
+
+`;
+
+}
+
+html+=`
+
+<button
+class="btn-submit btn-success"
+onclick="shareScheduleAsImage()"
+>
+<i class="fa-solid fa-image"></i>
+إرسال الجدول كصورة للطالب
+</button>
+
+`;
+
+document
+.getElementById("schedule-result")
+.innerHTML=html;
+
+}
+
+
+function shareScheduleAsImage(){
+
+const text=
+"📚 جدول دراسي\n\n"+
+"08:00 الرياضيات\n"+
+"09:00 الفيزياء\n"+
+"10:00 الكيمياء\n"+
+"11:00 اللغة الإنكليزية\n"+
+"12:00 مراجعة عامة\n\n"+
+"🇮🇶 بالتوفيق يا بطل";
+
+const canvas=
+document.createElement("canvas");
+
+canvas.width=900;
+
+canvas.height=1100;
+
+const ctx=canvas.getContext("2d");
+
+ctx.fillStyle="#0b132b";
+
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+ctx.fillStyle="#ffffff";
+
+ctx.font="bold 42px Arial";
+
+ctx.textAlign="center";
+
+ctx.fillText(
+"جدول الطالب الدراسي",
+450,
+100
+);
+
+ctx.font="30px Arial";
+
+const lines=text.split("\n");
+
+lines.forEach((line,i)=>{
+
+ctx.fillText(
+line,
+450,
+180+i*65
+);
+
+});
+
+canvas.toBlob(blob=>{
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+
+a.download="جدول-دراسي.png";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+alert(
+"تم إنشاء صورة الجدول. يمكنك إرسالها للطالب."
+);
+
+});
+
+}
+
+
+/* =========================================================
+   GAMES
+========================================================= */
+
+function startMemoryGame(){
+
+const number=
+Math.floor(
+1000+Math.random()*9000
+);
+
+alert(
+`احفظ الرقم التالي:\n\n${number}\n\nسيظهر لك بعد ثوانٍ للاختبار`
+);
+
+setTimeout(()=>{
+
+const answer=
+prompt("اكتب الرقم الذي حفظته:");
+
+if(answer==number){
+
+alert("ممتاز! ذاكرتك قوية 🔥");
+
+}else{
+
+alert(
+`مو مشكلة، حاول مرة ثانية 💪\nالرقم كان ${number}`
+);
+
+}
+
+},4000);
+
+}
+
+
+function startMathGame(){
+
+const a=
+Math.floor(Math.random()*20)+1;
+
+const b=
+Math.floor(Math.random()*20)+1;
+
+const answer=
+prompt(`احسب:\n\n${a} + ${b} = ؟`);
+
+if(parseInt(answer)==a+b){
+
+alert("صح عليك! 🔥");
+
+}else{
+
+alert(
+`حاول مرة ثانية 💪\nالإجابة الصحيحة: ${a+b}`
+);
+
+}
+
+}
+
+
+/* =========================================================
+   SUBJECTS
+========================================================= */
+
+function renderSubjects(){
+
+renderSubjectList(
+"scientific-list",
+subjectsScientific
+);
+
+renderSubjectList(
+"literary-list",
+subjectsLiterary
+);
+
+}
+
+
+function renderSubjectList(id,list){
+
+const box=
+document.getElementById(id);
+
+box.innerHTML="";
+
+list.forEach(subject=>{
+
+box.innerHTML+=`
+
+<div class="subject-accordion">
+
+<div
+class="subject-header"
+onclick="toggleAccordion(this)"
+>
+
+<strong>
+
+<i class="fa-solid fa-book"></i>
+
+${subject}
+
+</strong>
+
+<i class="fa-solid fa-chevron-down"></i>
+
+</div>
+
+<div class="subject-body">
+
+<div style="font-size:11px;color:#8d99ae">
+
+المحاضرات والامتحانات الخاصة بالمادة تظهر حسب المدرس.
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+function enableAdmin(){
+
+document
+.getElementById("admin-nav")
+.classList.remove("hidden");
+
+document
+.getElementById("role-badge")
+.innerText="مسؤول المنصة";
+
+}
+
+function isAdminMode(){
+
+return !document
+.getElementById("admin-nav")
+.classList.contains("hidden");
+
+}
+
+
+/* =========================================================
+   SUPPORT
+========================================================= */
+
+function openSupport(){
+
+window.open(
+"https://t.me/muhammed9996",
+"_blank"
+);
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function switchTab(id,element){
+
+document
+.querySelectorAll(".tab-panel")
+.forEach(p=>p.classList.remove("active"));
+
+const target=
+document.getElementById(id);
+
+if(target)
+target.classList.add("active");
+
+if(element){
+
+document
+.querySelectorAll(".nav-item")
+.forEach(n=>n.classList.remove("active"));
+
+element.classList.add("active");
+
+}
+
+}
+
+
+/* =========================================================
+   ACCORDION
+========================================================= */
+
+function toggleAccordion(el){
+
+const body=
+el.nextElementSibling;
+
+if(body.style.display==="block"){
+
+body.style.display="none";
+
+}else{
+
+body.style.display="block";
+
+}
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+return String(value||"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
