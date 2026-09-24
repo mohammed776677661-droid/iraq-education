@@ -12,73 +12,82 @@
         .app-container { width: 100%; max-width: 430px; height: 100vh; max-height: 932px; background-color: #0b132b; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         @media (min-width: 450px) { .app-container { border-radius: 35px; height: 92vh; border: 8px solid #1c2541; } }
 
+        /* Modal / Attendance Overlay */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11, 19, 43, 0.98); z-index: 999; display: flex; flex-direction: column; justify-content: center; padding: 25px; backdrop-filter: blur(10px); }
+        .modal-box { background: #1c2541; padding: 22px; border-radius: 20px; border: 1px solid #e0a96d; }
+        .modal-box h2 { font-size: 18px; color: #e0a96d; text-align: center; margin-bottom: 15px; }
+
         /* App Header */
         .app-header { background: linear-gradient(135deg, #1c2541, #0b132b); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 10; }
         .header-brand { display: flex; align-items: center; gap: 12px; }
         .brand-logo { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #e0a96d; background: #fff; }
         .brand-title { font-size: 16px; font-weight: 700; color: #ffffff; }
         .brand-subtitle { font-size: 11px; color: #e0a96d; font-weight: 500; }
-        .header-actions { display: flex; gap: 12px; }
-        .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
-        .badge-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background-color: #e63946; border-radius: 50%; }
 
         /* Main Content Views */
         .app-content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 90px; scrollbar-width: none; }
         .app-content::-webkit-scrollbar { display: none; }
         .tab-panel { display: none; animation: fadeIn 0.3s ease-in-out; }
         .tab-panel.active { display: block; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Hero Banner */
+        /* Cards & Buttons */
         .hero-card { background: linear-gradient(135deg, #1c2541 0%, #3a506b 100%); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; border: 1px solid rgba(224, 169, 109, 0.3); }
-        .hero-card h2 { font-size: 20px; color: #ffffff; margin-bottom: 5px; }
-        .hero-card p { font-size: 12px; color: #e0a96d; }
-
         .section-title { font-size: 16px; font-weight: 700; margin: 15px 0 10px 0; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .category-card { background: #1c2541; padding: 18px 15px; border-radius: 18px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
-        .category-icon { width: 50px; height: 50px; border-radius: 15px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-        .bg-gold { background: #e0a96d; color: #0b132b; }
-        .bg-blue { background: #0077b6; color: #ffffff; }
-
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .quick-btn { background: #1c2541; padding: 12px 8px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 11px; color: #f1faee; }
-        .quick-btn i { font-size: 18px; margin-bottom: 6px; display: block; color: #48cae4; }
-
-        /* Subject Item & PDF List */
-        .subject-item { background: #1c2541; padding: 14px 16px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        .subject-left { display: flex; align-items: center; gap: 14px; }
-        .subject-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(72, 202, 228, 0.15); color: #48cae4; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        
+        .subject-accordion { background: #1c2541; border-radius: 16px; margin-bottom: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .subject-header { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .subject-body { padding: 15px; background: #0b132b; display: none; border-top: 1px solid rgba(255,255,255,0.05); }
+        .teacher-btn { display: flex; align-items: center; justify-content: space-between; background: #1c2541; padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; color: #48cae4; text-decoration: none; font-size: 13px; font-weight: 600; }
 
         .pdf-item { background: #1c2541; padding: 14px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        .pdf-info { display: flex; align-items: center; gap: 12px; }
-        .pdf-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(230, 57, 70, 0.15); color: #e63946; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .download-link { background: #0077b6; color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .download-btn { background: #0077b6; color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; border: none; }
 
-        /* Video Player Card */
-        .video-card { background: #1c2541; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
-        .video-preview { width: 100%; height: 180px; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
-        .play-btn { width: 55px; height: 55px; background: rgba(0,119,182,0.85); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; cursor: pointer; }
-        .video-details { padding: 15px; }
-
-        /* Admin Dashboard & Forms */
         .admin-box { background: #1c2541; padding: 16px; border-radius: 18px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.08); }
         .admin-box h3 { font-size: 15px; color: #e0a96d; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .form-group { margin-bottom: 12px; }
         .form-group label { font-size: 12px; color: #8d99ae; display: block; margin-bottom: 5px; }
         .form-control { width: 100%; background: #0b132b; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; color: #fff; font-size: 13px; }
-        textarea.form-control { resize: vertical; min-height: 70px; }
-        .btn-submit { width: 100%; background: #0077b6; color: white; padding: 12px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-submit { width: 100%; background: #0077b6; color: white; padding: 12px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        th, td { padding: 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        th { color: #e0a96d; }
 
         /* Bottom Nav Bar */
         .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: #1c2541; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); z-index: 20; padding-bottom: 5px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #8d99ae; font-size: 10px; text-decoration: none; cursor: pointer; gap: 4px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #8d99ae; font-size: 10px; cursor: pointer; gap: 4px; }
         .nav-item i { font-size: 18px; }
         .nav-item.active { color: #e0a96d; }
     </style>
 </head>
 <body>
+
+    <!-- نافذة تسجيل الحضور اليومي الإجباري -->
+    <div id="attendance-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور اليومي</h2>
+            <p style="font-size:12px; color:#8d99ae; text-align:center; margin-bottom:15px;">يرجى تسجيل بياناتك لتتمكن من تصفح المنصة اليوم.</p>
+            <div class="form-group">
+                <label>اسم الطالب الثلاثي:</label>
+                <input type="text" id="student-name" class="form-control" placeholder="أدخل اسمك الثلاثي">
+            </div>
+            <div class="form-group">
+                <label>الصف الدراسي:</label>
+                <select id="student-class" class="form-control">
+                    <option value="السادس العلمي">السادس العلمي</option>
+                    <option value="السادس الأدبي">السادس الأدبي</option>
+                    <option value="الثالث المتوسط">الثالث المتوسط</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>المحافظة:</label>
+                <input type="text" id="student-gov" class="form-control" placeholder="مثال: بغداد، الأنبار، البصرة...">
+            </div>
+            <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="submitAttendance()">تسجيل وركوب المنصة</button>
+        </div>
+    </div>
 
     <div class="app-container">
         <!-- Header -->
@@ -90,12 +99,6 @@
                     <div class="brand-subtitle" id="app-subtitle-text">معاً نحو مستقبل أفضل</div>
                 </div>
             </div>
-            <div class="header-actions">
-                <button class="icon-btn" onclick="switchTab('notifications')">
-                    <i class="fa-regular fa-bell"></i>
-                    <div class="badge-dot"></div>
-                </button>
-            </div>
         </div>
 
         <!-- Content Area -->
@@ -105,186 +108,128 @@
             <div id="home" class="tab-panel active">
                 <div class="hero-card">
                     <h2 id="banner-title">منصة العراق التعليمية</h2>
-                    <p id="banner-desc">السادس العلمي | السادس الأدبي - طريقك نحو النجاح</p>
+                    <p id="banner-desc">أهلاً بك في المنصة التعليمية الأولى</p>
                 </div>
-
                 <div class="section-title">المراحل الدراسية</div>
-                <div class="grid-2">
-                    <div class="category-card" onclick="switchTab('scientific')">
-                        <div class="category-icon bg-blue"><i class="fa-solid fa-flask"></i></div>
-                        <h3>السادس العلمي</h3>
-                        <p>جميع المواد والدروس</p>
-                    </div>
-                    <div class="category-card" onclick="switchTab('literary')">
-                        <div class="category-icon bg-gold"><i class="fa-solid fa-book-open"></i></div>
-                        <h3>السادس الأدبي</h3>
-                        <p>جميع المواد والدروس</p>
-                    </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <button class="btn-submit" onclick="switchTab('scientific')"><i class="fa-solid fa-flask"></i> السادس العلمي</button>
+                    <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="switchTab('literary')"><i class="fa-solid fa-book-open"></i> السادس الأدبي</button>
                 </div>
+            </div>
 
-                <div class="section-title">وصول سريع</div>
-                <div class="grid-4">
-                    <div class="quick-btn" onclick="switchTab('lectures')"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
-                    <div class="quick-btn" onclick="switchTab('pdf')"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
-                    <div class="quick-btn" onclick="switchTab('exams')"><i class="fa-solid fa-pen-to-square"></i>الاختبارات</div>
-                    <div class="quick-btn" onclick="switchTab('results')"><i class="fa-solid fa-robot"></i>التصحيح</div>
-                </div>
+            <!-- 2. TAB: SCIENTIFIC (السادس العلمي) -->
+            <div id="scientific" class="tab-panel">
+                <div class="section-title">مواد السادس العلمي (المدرسين والدروس)</div>
+                <div id="scientific-subjects-list">
+                    <!-- المادة الأولى: اللغة العربية -->
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-book" style="color:#48cae4;"></i> <strong>اللغة العربية</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list">
+                                <a href="#" class="teacher-btn"><span>أ. عقيل الزبيدي</span> <i class="fa-solid fa-play"></i></a>
+                            </div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس جديدة لهذه المادة</button>
+                        </div>
+                    </div>
 
-                <div class="section-title">أحدث المحاضرات</div>
-                <div id="home-lectures-list">
-                    <div class="video-card">
-                        <div class="video-preview"><div class="play-btn"><i class="fa-solid fa-play"></i></div></div>
-                        <div class="video-details">
-                            <div style="font-weight:700;">الفيزياء - الفصل الأول</div>
-                            <div style="font-size:12px; color:#8d99ae;">الأستاذ أحمد عبد الكريم • 45 دقيقة</div>
+                    <!-- المادة الثانية: الرياضيات -->
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-calculator" style="color:#48cae4;"></i> <strong>الرياضيات</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list">
+                                <a href="#" class="teacher-btn"><span>أ. حيدر وليد</span> <i class="fa-solid fa-play"></i></a>
+                            </div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس جديدة لهذه المادة</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. TAB: SCIENTIFIC -->
-            <div id="scientific" class="tab-panel">
-                <div class="section-title">مواد السادس العلمي</div>
-                <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-calculator"></i></div><div><h4>الرياضيات</h4><p>التفاضل والتكامل</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
-                <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-atom"></i></div><div><h4>الفيزياء</h4><p>المتسعات والفيزياء الحديثة</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
-            </div>
-
-            <!-- 3. TAB: LITERARY -->
+            <!-- 3. TAB: LITERARY (السادس الأدبي) -->
             <div id="literary" class="tab-panel">
                 <div class="section-title">مواد السادس الأدبي</div>
-                <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-landmark"></i></div><div><h4>التاريخ</h4><p>تاريخ الحديث والمعاصر</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
-            </div>
-
-            <!-- 4. TAB: LECTURES -->
-            <div id="lectures" class="tab-panel">
-                <div class="section-title">المحاضرات المرئية</div>
-                <div id="lectures-container">
-                    <div class="video-card">
-                        <div class="video-preview"><div class="play-btn"><i class="fa-solid fa-play"></i></div></div>
-                        <div class="video-details">
-                            <div style="font-weight:700;">الفيزياء - الفصل الأول (المتسعات)</div>
-                            <div style="font-size:12px; color:#8d99ae;">الأستاذ أحمد عبد الكريم</div>
+                <div id="literary-subjects-list">
+                    <div class="subject-accordion">
+                        <div class="subject-header" onclick="toggleAccordion(this)">
+                            <div><i class="fa-solid fa-landmark" style="color:#e0a96d;"></i> <strong>التاريخ</strong></div>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="subject-body">
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-plus"></i> إضافة مدرس لهذه المادة</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 5. TAB: PDF (الملازم وتحميل الملفات) -->
+            <!-- 4. TAB: PDF (رفع وتحميل الملازم) -->
             <div id="pdf" class="tab-panel">
-                <div class="section-title">الملازم والكتب (تحميل مباشر)</div>
+                <div class="section-title">قسم الملازم والكتب (تحميل مباشر)</div>
                 <div id="pdf-container">
                     <div class="pdf-item">
-                        <div class="pdf-info">
-                            <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
-                            <div>
-                                <div style="font-size:13px; font-weight:700;">ملزمة الفيزياء - السادس العلمي</div>
-                                <div style="font-size:11px; color:#8d99ae;">ملف PDF جاهز</div>
-                            </div>
+                        <div>
+                            <div style="font-size:13px; font-weight:700;">ملزمة الفيزياء الشاملة</div>
+                            <div style="font-size:11px; color:#8d99ae;">PDF • ملف متاح</div>
                         </div>
-                        <a href="#" download="ملزمة_الفيزياء.pdf" class="download-link"><i class="fa-solid fa-download"></i> تحميل</a>
+                        <button class="download-btn" onclick="alert('جاري بدء التحميل...')"><i class="fa-solid fa-download"></i> تحميل</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 6. TAB: EXAMS (الاختبارات مع الوقت المحدد) -->
-            <div id="exams" class="tab-panel">
-                <div class="section-title">الاختبارات والامتحانات</div>
-                <div id="exams-container">
-                    <div class="admin-box" style="margin-bottom:12px;">
-                        <h4 style="font-size:14px; color:#ffffff;">اختبار الفيزياء الشامل</h4>
-                        <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد: 15 دقيقة</p>
-                        <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">س1: عرف المتسعة وما هي أشكالها؟</p>
-                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="startExam('اختبار الفيزياء', 15)"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. TAB: AI CORRECTION (قسم التصحيح الفوري بواسطة AI) -->
-            <div id="results" class="tab-panel">
-                <div class="section-title">التصحيح الفوري بالذكاء الاصطناعي (ChatGPT)</div>
-                <div class="admin-box">
-                    <h3><i class="fa-solid fa-robot"></i> تصحيح إجابة الطالب</h3>
-                    <div class="form-group">
-                        <label>إجابة الطالب المكتوبة:</label>
-                        <textarea id="student-answer" class="form-control" placeholder="اكتب إجابتك هنا ليتم تصحيحها وإعطاء الدرجة..."></textarea>
-                    </div>
-                    <button class="btn-submit" style="background:#0077b6;" onclick="correctWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تصحيح وإرسال الدرجة</button>
-                </div>
-                <div id="ai-result-box" class="admin-box" style="display:none; border-color:#48cae4;">
-                    <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> نتيجة التصحيح والتراخيص</h3>
-                    <p id="ai-output" style="font-size:13px; line-height:1.6; color:#fff;"></p>
-                </div>
-            </div>
-
-            <!-- 8. TAB: NOTIFICATIONS -->
-            <div id="notifications" class="tab-panel">
-                <div class="section-title">الإشعارات والتنبيهات</div>
-                <div class="subject-item">
-                    <div class="subject-left">
-                        <div class="subject-icon" style="color:#e0a96d;"><i class="fa-solid fa-bell"></i></div>
-                        <div><h4>تحديث المنصة</h4><p>تم تفعيل نظام التحميل والتصحيح التلقائي</p></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9. TAB: ADMIN DASHBOARD (لوحة التحكم الشاملة) -->
+            <!-- 5. TAB: ADMIN DASHBOARD (لوحة التحكم الخاصة بالحضور، الكودات، والملازم) -->
             <div id="profile" class="tab-panel">
-                <div class="section-title">لوحة التحكم وإدارة المنصة</div>
+                <div class="section-title">لوحة التحكم والإدارة الشاملة</div>
 
-                <!-- 1. رفع الملازم من الملفات -->
+                <!-- 1. مولد كودات الاشتراك -->
                 <div class="admin-box">
-                    <h3><i class="fa-solid fa-file-circle-plus"></i> رفع ملزمة جديدة (من الملفات)</h3>
+                    <h3><i class="fa-solid fa-key"></i> توليد كودات الاشتراك التلقائي</h3>
+                    <div class="form-group">
+                        <label>نوع الاشتراك:</label>
+                        <select id="code-type" class="form-control">
+                            <option value="أسبوعي">اشتراك أسبوعي</option>
+                            <option value="شهري">اشتراك شهري</option>
+                            <option value="سنوي">اشتراك سنوي</option>
+                        </select>
+                    </div>
+                    <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="generateCode()"><i class="fa-solid fa-wand-magic-sparkles"></i> توليد كود جديد</button>
+                    <div id="generated-code-box" style="margin-top:10px; font-size:14px; font-weight:bold; color:#48cae4; text-align:center;"></div>
+                </div>
+
+                <!-- 2. رفع ملزمة من الجهاز -->
+                <div class="admin-box">
+                    <h3><i class="fa-solid fa-file-pdf"></i> رفع ملزمة من الجهاز</h3>
                     <div class="form-group">
                         <label>عنوان الملزمة:</label>
-                        <input type="text" id="pdf-title-input" class="form-control" placeholder="مثال: ملزمة الكيمياء الشاملة">
+                        <input type="text" id="pdf-upload-title" class="form-control" placeholder="اسم الملزمة">
                     </div>
                     <div class="form-group">
-                        <label>اختر ملف الملزمة (PDF من الجهاز):</label>
-                        <input type="file" id="pdf-file-input" accept=".pdf,application/pdf" class="form-control">
+                        <label>اختر الملف من الجهاز (PDF):</label>
+                        <input type="file" id="pdf-file-input" accept=".pdf" class="form-control">
                     </div>
-                    <button class="btn-submit" style="background:#e63946;" onclick="uploadPdfFile()"><i class="fa-solid fa-upload"></i> رفع الملزمة وتفعيل التحميل</button>
+                    <button class="btn-submit" style="background:#e63946;" onclick="uploadPdf()"><i class="fa-solid fa-upload"></i> رفع وتوفير للتحميل</button>
                 </div>
 
-                <!-- 2. رفع أسئلة الامتحان والوقت -->
+                <!-- 3. لوحة تحكم تسجيل الحضور اليومي -->
                 <div class="admin-box">
-                    <h3><i class="fa-solid fa-clock"></i> إضافة اختبار جديد مع وقت</h3>
-                    <div class="form-group">
-                        <label>عنوان الاختبار:</label>
-                        <input type="text" id="exam-title-input" class="form-control" placeholder="مثال: اختبار الأحياء - الفصل الأول">
-                    </div>
-                    <div class="form-group">
-                        <label>الوقت المحدد للاختبار (بالدقائق):</label>
-                        <input type="number" id="exam-time-input" class="form-control" placeholder="مثال: 20">
-                    </div>
-                    <div class="form-group">
-                        <label>أسئلة الاختبار:</label>
-                        <textarea id="exam-questions-input" class="form-control" placeholder="اكتب الأسئلة هنا..."></textarea>
-                    </div>
-                    <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="uploadExam()"><i class="fa-solid fa-plus"></i> نشر الاختبار</button>
-                </div>
-
-                <!-- 3. إعدادات مفتاح ChatGPT للذكاء الاصطناعي -->
-                <div class="admin-box">
-                    <h3><i class="fa-solid fa-key"></i> ربط الذكاء الاصطناعي (ChatGPT API)</h3>
-                    <div class="form-group">
-                        <label>مفتاح OpenAI API Key (اختياري للتصحيح المباشر):</label>
-                        <input type="password" id="openai-key-input" class="form-control" placeholder="sk-proj-...">
-                    </div>
-                    <button class="btn-submit" style="background:#27ae60;" onclick="saveApiKey()"><i class="fa-solid fa-link"></i> حفظ وربط الذكاء الاصطناعي</button>
-                </div>
-
-                <!-- 4. تخصيص الشعار واسم المنصة -->
-                <div class="admin-box">
-                    <h3><i class="fa-solid fa-palette"></i> تخصيص الشعار والاسم</h3>
-                    <div class="form-group">
-                        <label>رفع الشعار من الاستوديو:</label>
-                        <input type="file" id="logo-file-input" accept="image/*" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>اسم المنصة:</label>
-                        <input type="text" id="input-app-title" class="form-control" value="منصة العراق التعليمية">
-                    </div>
-                    <button class="btn-submit" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات</button>
+                    <h3><i class="fa-solid fa-users"></i> قائمة سجل الحضور اليومي للطلاب</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم الطالب</th>
+                                <th>الصف</th>
+                                <th>المحافظة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-table-body">
+                            <!-- سجل الحضور يظهر هنا -->
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
@@ -294,16 +239,113 @@
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
+            <div class="nav-item" onclick="switchTab('scientific', this)"><i class="fa-solid fa-book-bookmark"></i>المواد</div>
             <div class="nav-item" onclick="switchTab('pdf', this)"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
-            <div class="nav-item" onclick="switchTab('exams', this)"><i class="fa-solid fa-pen-to-square"></i>الاختبارات</div>
-            <div class="nav-item" onclick="switchTab('results', this)"><i class="fa-solid fa-robot"></i>التصحيح</div>
-            <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-solid fa-gears"></i>لوحة التحكم</div>
+            <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-solid fa-gears"></i>الإدارة</div>
         </div>
     </div>
 
     <script>
-        let apiKey = '';
+        // التحقق من الحضور اليومي كل 24 ساعة
+        window.onload = function() {
+            let lastAttendance = localStorage.getItem('attendance_time');
+            let now = new Date().getTime();
 
+            // إذا مر أكثر من 24 ساعة (86400000 ميلي ثانية) يظهر القفل
+            if (!lastAttendance || (now - lastAttendance > 86400000)) {
+                document.getElementById('attendance-modal').style.display = 'flex';
+            } else {
+                document.getElementById('attendance-modal').style.display = 'none';
+            }
+            loadAttendanceList();
+        };
+
+        // تسجيل الحضور
+        function submitAttendance() {
+            let name = document.getElementById('student-name').value;
+            let studentClass = document.getElementById('student-class').value;
+            let gov = document.getElementById('student-gov').value;
+
+            if(!name || !gov) {
+                alert('يرجى كتابة الاسم والمحافظة لتسجيل الحضور');
+                return;
+            }
+
+            let attendanceData = JSON.parse(localStorage.getItem('attendance_records') || '[]');
+            attendanceData.push({ name: name, class: studentClass, gov: gov });
+            localStorage.setItem('attendance_records', JSON.stringify(attendanceData));
+
+            localStorage.setItem('attendance_time', new Date().getTime());
+            document.getElementById('attendance-modal').style.display = 'none';
+            loadAttendanceList();
+            alert('تم تسجيل حضورك بنجاح! يمكنك الآن تصفح المنصة.');
+        }
+
+        // تحميل قائمة الحضور في لوحة التحكم
+        function loadAttendanceList() {
+            let attendanceData = JSON.parse(localStorage.getItem('attendance_records') || '[]');
+            let tbody = document.getElementById('attendance-table-body');
+            tbody.innerHTML = '';
+
+            attendanceData.forEach(item => {
+                tbody.innerHTML += `<tr><td>${item.name}</td><td>${item.class}</td><td>${item.gov}</td></tr>`;
+            });
+        }
+
+        // أُكورديون التنقل
+        function toggleAccordion(element) {
+            let body = element.nextElementSibling;
+            body.style.display = (body.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // إضافة زر مدرس جديد داخل المادة
+        function promptAddTeacher(buttonElement) {
+            let teacherName = prompt("أدخل اسم المدرس الجديد:");
+            if (teacherName) {
+                let teachersDiv = buttonElement.previousElementSibling;
+                teachersDiv.innerHTML += `
+                    <a href="#" class="teacher-btn">
+                        <span>أ. ${teacherName}</span>
+                        <i class="fa-solid fa-play"></i>
+                    </a>`;
+            }
+        }
+
+        // رفع ملزمة من الجهاز وتفعيل زر التحميل
+        function uploadPdf() {
+            let title = document.getElementById('pdf-upload-title').value;
+            let fileInput = document.getElementById('pdf-file-input');
+
+            if(!title || !fileInput.files[0]) {
+                alert('الرجاء كتابة اسم الملزمة واختيار ملف PDF من جهازك');
+                return;
+            }
+
+            let file = fileInput.files[0];
+            let fileUrl = URL.createObjectURL(file);
+
+            let pdfContainer = document.getElementById('pdf-container');
+            pdfContainer.innerHTML += `
+                <div class="pdf-item">
+                    <div>
+                        <div style="font-size:13px; font-weight:700;">${title}</div>
+                        <div style="font-size:11px; color:#8d99ae;">${file.name}</div>
+                    </div>
+                    <a href="${fileUrl}" download="${file.name}" class="download-btn"><i class="fa-solid fa-download"></i> تحميل</a>
+                </div>`;
+
+            alert('تم رفع الملزمة بنجاح وتفعيل زر التحميل للطالب!');
+            switchTab('pdf');
+        }
+
+        // توليد كودات اشتراك تلقائياً
+        function generateCode() {
+            let type = document.getElementById('code-type').value;
+            let randomCode = 'IRAQ-' + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('generated-code-box').innerHTML = `كود ${type}: <br><span style="color:#fff; font-size:18px;">${randomCode}</span>`;
+        }
+
+        // التنقل بين الأقسام
         function switchTab(tabId, element) {
             let panels = document.querySelectorAll('.tab-panel');
             panels.forEach(p => p.classList.remove('active'));
@@ -316,132 +358,6 @@
                 navItems.forEach(n => n.classList.remove('active'));
                 element.classList.add('active');
             }
-        }
-
-        // رفع ملف ملزمة حقيقي وتفعيل التحميل
-        function uploadPdfFile() {
-            let title = document.getElementById('pdf-title-input').value;
-            let fileInput = document.getElementById('pdf-file-input');
-
-            if(!title || !fileInput.files[0]) {
-                alert('الرجاء كتابة عنوان الملزمة واختيار ملف PDF من الجهاز');
-                return;
-            }
-
-            let file = fileInput.files[0];
-            let fileUrl = URL.createObjectURL(file);
-
-            let html = `
-                <div class="pdf-item">
-                    <div class="pdf-info">
-                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
-                        <div>
-                            <div style="font-size:13px; font-weight:700;">${title}</div>
-                            <div style="font-size:11px; color:#8d99ae;">${file.name}</div>
-                        </div>
-                    </div>
-                    <a href="${fileUrl}" download="${file.name}" class="download-link"><i class="fa-solid fa-download"></i> تحميل</a>
-                </div>`;
-
-            document.getElementById('pdf-container').innerHTML += html;
-            alert('تم رفع الملزمة بنجاح وأصبحت متاحة للتحميل للطالب!');
-            switchTab('pdf');
-        }
-
-        // رفع اختبار جديد مع وقت
-        function uploadExam() {
-            let title = document.getElementById('exam-title-input').value;
-            let time = document.getElementById('exam-time-input').value;
-            let questions = document.getElementById('exam-questions-input').value;
-
-            if(!title || !time || !questions) {
-                alert('الرجاء تعبئة جميع بيانات الاختبار والوقت');
-                return;
-            }
-
-            let html = `
-                <div class="admin-box" style="margin-bottom:12px;">
-                    <h4 style="font-size:14px; color:#ffffff;">${title}</h4>
-                    <p style="font-size:12px; color:#8d99ae; margin:5px 0;">الوقت المحدد: ${time} دقيقة</p>
-                    <p style="font-size:12px; color:#e0a96d; margin-bottom:10px;">${questions}</p>
-                    <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="startExam('${title}', ${time})"><i class="fa-solid fa-play"></i> بدء الامتحان الآن</button>
-                </div>`;
-
-            document.getElementById('exams-container').innerHTML += html;
-            alert('تم نشر الاختبار بنجاح!');
-            switchTab('exams');
-        }
-
-        // بدء الاختبار مع مؤقت زمني
-        function startExam(title, minutes) {
-            alert(`تم بدء ${title}. لديك ${minutes} دقيقة للإجابة والتصحيح!`);
-            switchTab('results');
-        }
-
-        // حفظ API Key الخاص بالذكاء الاصطناعي
-        function saveApiKey() {
-            let key = document.getElementById('openai-key-input').value;
-            if(key) {
-                apiKey = key;
-                alert('تم ربط مفتاح ChatGPT بنجاح!');
-            }
-        }
-
-        // التصحيح المباشر عبر الذكاء الاصطناعي
-        async function correctWithAI() {
-            let answer = document.getElementById('student-answer').value;
-            let resultBox = document.getElementById('ai-result-box');
-            let output = document.getElementById('ai-output');
-
-            if(!answer) { alert('الرجاء كتابة إجابة الطالب أولاً'); return; }
-
-            resultBox.style.display = 'block';
-            output.innerText = 'جاري تحليل الإجابة والتصحيح بواسطة الذكاء الاصطناعي... ⏳';
-
-            if(apiKey) {
-                try {
-                    let response = await fetch('https://api.openai.com/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + apiKey
-                        },
-                        body: JSON.stringify({
-                            model: "gpt-3.5-turbo",
-                            messages: [{role: "user", content: "قم بتصحيح إجابة الطالب التالية وإعطائه درجة من 100 وتحديد الأخطاء إن وجدت بشكل مختصر: " + answer}]
-                        })
-                    });
-                    let data = await response.json();
-                    output.innerText = data.choices[0].message.content;
-                } catch(e) {
-                    output.innerText = 'تم التصحيح الفوري: الدرجة التقديرية 90/100. إجابة نموذجية وممتازة!';
-                }
-            } else {
-                // محاكاة ذكية للتصحيح الفوري في حال عدم وضع API
-                setTimeout(() => {
-                    output.innerText = '✅ التقييم والدرجة: 95/100\n\nملاحظة الاستاذ/الذكاء الاصطناعي: الإجابة ممتازة ودقيقة جداً، تم الشرح وتغطية النقاط الأساسية بالشكل المطلوب!';
-                }, 1000);
-            }
-        }
-
-        function saveSettings() {
-            let titleInput = document.getElementById('input-app-title').value;
-            let fileInput = document.getElementById('logo-file-input');
-
-            if(titleInput) {
-                document.getElementById('app-title-text').innerText = titleInput;
-                document.getElementById('banner-title').innerText = titleInput;
-            }
-
-            if (fileInput.files && fileInput.files[0]) {
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('app-logo-img').src = e.target.result;
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            }
-
-            alert('تم حفظ البيانات والتعديلات بنجاح!');
         }
     </script>
 </body>
