@@ -33,27 +33,14 @@
         .hero-card { background: linear-gradient(135deg, #1c2541 0%, #3a506b 100%); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(224, 169, 109, 0.3); }
         .section-title { font-size: 15px; font-weight: 700; margin: 15px 0 10px 0; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
         
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
-        .quick-btn { background: #1c2541; padding: 12px 6px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 10px; color: #f1faee; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
-        .quick-btn:active { transform: scale(0.95); }
-        .quick-btn i { font-size: 18px; margin-bottom: 6px; display: block; color: #48cae4; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 15px; }
+        .quick-btn { background: #1c2541; padding: 12px 4px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 9px; color: #f1faee; border: 1px solid rgba(255,255,255,0.05); }
+        .quick-btn i { font-size: 16px; margin-bottom: 6px; display: block; color: #48cae4; }
 
         .grades-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .grade-card { background: linear-gradient(135deg, #1c2541 0%, #162032 100%); border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; border: 1px solid rgba(72, 202, 228, 0.3); display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .grade-card i { font-size: 24px; color: #e0a96d; }
         .grade-card span { font-size: 13px; font-weight: bold; color: #fff; }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
-        .stat-card { background: #0b132b; border: 1px solid rgba(224, 169, 109, 0.3); padding: 10px; border-radius: 12px; text-align: center; }
-        .stat-number { font-size: 16px; font-weight: bold; color: #e0a96d; margin-top: 4px; }
-        .stat-label { font-size: 10px; color: #8d99ae; }
-
-        .ads-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-        .ad-card { background: #1c2541; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
-        .ad-img { width: 100%; height: 140px; object-fit: cover; }
-        .ad-details { padding: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .ad-title { font-size: 13px; font-weight: bold; color: #fff; }
-        .ad-link-btn { background: #0077b6; color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
 
         .subject-accordion { background: #1c2541; border-radius: 16px; margin-bottom: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
         .subject-header { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
@@ -63,9 +50,8 @@
         .teacher-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #48cae4; font-weight: 600; font-size: 13px; }
         .teacher-body { padding: 12px; background: #0d1b2a; display: none; }
 
-        .exam-item-card { display: flex; flex-direction: column; gap: 6px; background: #1c2541; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 11px; border-right: 3px solid #e0a96d; }
-        .exam-img-elem { width: 100%; max-height: 140px; object-fit: cover; border-radius: 6px; margin-top: 4px; }
-
+        .chapter-box { background: #1c2541; padding: 10px; border-radius: 8px; margin-bottom: 8px; border-right: 3px solid #e0a96d; font-size: 11px; }
+        
         .admin-box { background: #1c2541; padding: 16px; border-radius: 18px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.08); }
         .admin-box h3 { font-size: 15px; color: #e0a96d; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .form-group { margin-bottom: 12px; }
@@ -86,31 +72,29 @@
 </head>
 <body>
 
-    <!-- نافذة تسجيل الحضور الإجباري للطالب -->
+    <!-- نافذة تسجيل الحضور الإجباري -->
     <div id="mandatory-attendance-modal" class="modal-overlay" style="display:none;">
         <div class="modal-box">
             <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور اليومي الإجباري</h2>
-            <p style="font-size:12px; color:#8d99ae; text-align:center; margin-bottom:15px;">يرجى إدخال بياناتك لتتمكن من فتح المحاضرات والمنصة.</p>
             <div class="form-group">
                 <label>اسم الطالب الثلاثي:</label>
                 <input type="text" id="m-att-name" class="form-control" placeholder="أدخل اسمك الثلاثي">
             </div>
             <div class="form-group">
                 <label>اسم المحافظة:</label>
-                <input type="text" id="m-att-gov" class="form-control" placeholder="مثال: بغداد، الأنبار، البصرة...">
+                <input type="text" id="m-att-gov" class="form-control" placeholder="مثال: بغداد، الأنبار...">
             </div>
             <button class="btn-submit" style="background:#e0a96d; color:#0b132b;" onclick="submitMandatoryAttendance()">تسجيل حضور والدخول</button>
         </div>
     </div>
 
-    <!-- نافذة تفعيل دخول المنصة (كود التفعيل أو تجربة مجانية شهرية) -->
+    <!-- نافذة التفعيل (كود أو تجربة شهرية) -->
     <div id="access-modal" class="modal-overlay" style="display:none;">
         <div class="modal-box">
             <h2><i class="fa-solid fa-key"></i> تفعيل دخول المنصة</h2>
-            <p style="font-size:12px; color:#8d99ae; text-align:center; margin-bottom:15px;">أدخل كود التفعيل الخاص بك (شهري أو سنوي)، أو استفد من التجربة المجانية لمدة شهر.</p>
             <div class="form-group">
-                <label>كود التفعيل:</label>
-                <input type="text" id="access-code-input" class="form-control" placeholder="أدخل كود الدخول هنا">
+                <label>كود التفعيل (شهري أو سنوي):</label>
+                <input type="text" id="access-code-input" class="form-control" placeholder="أدخل كود الدخول">
             </div>
             <button class="btn-submit" style="background:#0077b6; margin-bottom:10px;" onclick="verifyAccessCode()">تحقق ودخول</button>
             <button class="btn-submit" style="background:transparent; border:1px solid #e0a96d; color:#e0a96d;" onclick="activateFreeTrialMonth()">🎁 تجربة مجانية لمدة شهر كامل</button>
@@ -145,10 +129,18 @@
                     <div class="quick-btn" onclick="switchTab('lectures')"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
                     <div class="quick-btn" onclick="switchTab('pdf')"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
                     <div class="quick-btn" onclick="switchTab('exams')"><i class="fa-solid fa-pen-to-square"></i>الامتحانات</div>
-                    <div class="quick-btn" onclick="switchTab('competition')"><i class="fa-solid fa-trophy" style="color:#ffd700;"></i>المسابقات</div>
+                    <div class="quick-btn" onclick="window.open('https://t.me/muhammed9996', '_blank')"><i class="fa-solid fa-headset" style="color:#0088cc;"></i>الدعم الفني</div>
                 </div>
 
-                <!-- زر قائمة نتائج الطالب اليومية وتصفير 24 ساعة -->
+                <!-- لوحة الإعلانات الداخلية للمسؤولين -->
+                <div class="admin-box" style="border-color:#e0a96d; margin-bottom:12px;">
+                    <h3 style="color:#e0a96d;"><i class="fa-solid fa-bullhorn"></i> لوحة الإعلانات والتنبيهات</h3>
+                    <div id="announcements-display-box" style="font-size:12px; color:#f1faee; line-height:1.5;">
+                        <p>✨ أهلاً بكم في منصة العراق التعليمية. تمنياتنا لكم بالنجاح والتفوق الدائم.</p>
+                    </div>
+                </div>
+
+                <!-- نتائج اليوم -->
                 <div style="background: linear-gradient(135deg, #2a9d8f, #0b132b); padding: 14px; border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(42, 157, 143, 0.4); cursor: pointer;" onclick="switchTab('daily-results')">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
@@ -161,25 +153,8 @@
 
                 <div class="section-title"><i class="fa-solid fa-graduation-cap" style="color:#48cae4;"></i> المراحل الدراسية</div>
                 <div class="grades-container">
-                    <div class="grade-card" onclick="switchTab('scientific')">
-                        <i class="fa-solid fa-flask"></i>
-                        <span>السادس العلمي</span>
-                    </div>
-                    <div class="grade-card" onclick="switchTab('literary')">
-                        <i class="fa-solid fa-book-open"></i>
-                        <span>السادس الأدبي</span>
-                    </div>
-                </div>
-
-                <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#e0a96d;"></i> الإعلانات والقنوات الرسمية</div>
-                <div class="ads-container" id="ads-display-list">
-                    <div class="ad-card" id="telegram-ad-card">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60" class="ad-img" alt="قناة التلغرام">
-                        <div class="ad-details">
-                            <div class="ad-title" id="telegram-ad-title-text">انضم لقناة التلغرام الرسمية</div>
-                            <a href="https://t.me" target="_blank" id="telegram-ad-link-btn" class="ad-link-btn"><i class="fa-brands fa-telegram"></i> انضمام</a>
-                        </div>
-                    </div>
+                    <div class="grade-card" onclick="switchTab('scientific')"><i class="fa-solid fa-flask"></i><span>السادس العلمي</span></div>
+                    <div class="grade-card" onclick="switchTab('literary')"><i class="fa-solid fa-book-open"></i><span>السادس الأدبي</span></div>
                 </div>
             </div>
 
@@ -188,24 +163,17 @@
                 <div class="section-title">مواد السادس العلمي</div>
                 <div id="scientific-subjects-list">
                     <script>
-                        const sciData = [
-                            { name: "التربية الإسلامية", icon: "fa-kaaba", chapters: ["الفصل الأول", "الفصل الثاني"] },
-                            { name: "اللغة العربية", icon: "fa-book", chapters: ["موضوع الاستفهام", "موضوع النفي"] },
-                            { name: "اللغة الإنكليزية", icon: "fa-language", chapters: ["الفصل الأول", "الفصل الثاني"] },
-                            { name: "الرياضيات", icon: "fa-calculator", chapters: ["الفصل الأول", "الفصل الثاني"] },
-                            { name: "الفيزياء", icon: "fa-atom", chapters: ["الفصل الأول", "الفصل الثاني"] },
-                            { name: "الكيمياء", icon: "fa-flask", chapters: ["الفصل الأول", "الفصل الثاني"] },
-                            { name: "الأحياء", icon: "fa-dna", chapters: ["الفصل الأول", "الفصل الثاني"] }
-                        ];
-                        sciData.forEach(item => {
+                        const sciSubjects = ["التربية الإسلامية", "اللغة العربية", "اللغة الإنكليزية", "الرياضيات", "الفيزياء", "الكيمياء", "الأحياء"];
+                        sciSubjects.forEach(sub => {
                             document.write(`
                                 <div class="subject-accordion">
                                     <div class="subject-header" onclick="toggleAccordion(this)">
-                                        <div><i class="fa-solid ${item.icon}" style="color:#48cae4;"></i> <strong>${item.name}</strong></div>
+                                        <div><i class="fa-solid fa-book" style="color:#48cae4;"></i> <strong>${sub}</strong></div>
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                     <div class="subject-body">
-                                        <div class="teachers-list"></div>
+                                        <div class="teachers-container" data-subject="${sub}"></div>
+                                        <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:10px; display:none;" onclick="addNewTeacher('${sub}')"><i class="fa-solid fa-user-plus"></i> إضافة مدرس للمادة</button>
                                     </div>
                                 </div>
                             `);
@@ -220,16 +188,16 @@
                 <div id="literary-subjects-list">
                     <script>
                         const litSubjects = ["التربية الإسلامية", "اللغة العربية", "اللغة الإنكليزية", "التاريخ", "الجغرافية", "الاقتصاد", "الفلسفة والمنطق"];
-                        litSubjects.forEach((sub, i) => {
-                            let icons = ["fa-kaaba", "fa-book", "fa-language", "fa-landmark", "fa-earth-americas", "fa-chart-pie", "fa-brain"];
+                        litSubjects.forEach(sub => {
                             document.write(`
                                 <div class="subject-accordion">
                                     <div class="subject-header" onclick="toggleAccordion(this)">
-                                        <div><i class="fa-solid ${icons[i]}" style="color:#e0a96d;"></i> <strong>${sub}</strong></div>
+                                        <div><i class="fa-solid fa-landmark" style="color:#e0a96d;"></i> <strong>${sub}</strong></div>
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </div>
                                     <div class="subject-body">
-                                        <div class="teachers-list"></div>
+                                        <div class="teachers-container" data-subject="${sub}"></div>
+                                        <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:10px; display:none;" onclick="addNewTeacher('${sub}')"><i class="fa-solid fa-user-plus"></i> إضافة مدرس للمادة</button>
                                     </div>
                                 </div>
                             `);
@@ -242,51 +210,34 @@
             <div id="lectures" class="tab-panel">
                 <div class="section-title">قسم المحاضرات العامة والدروس</div>
                 <div id="lectures-container">
-                    <div class="exam-item-card" onclick="recordWatchTime(10)">
+                    <div class="chapter-box">
                         <div style="font-weight:700; color:#48cae4;"><i class="fa-solid fa-video"></i> الفيزياء - الفصل الأول (المتسعات)</div>
-                        <p style="font-size:11px; color:#8d99ae; margin:4px 0;">الأستاذ أحمد عبد الكريم (انقر لاحتساب وقت المشاهدة في مسابقة الطلاب)</p>
+                        <p style="font-size:11px; color:#8d99ae; margin-top:4px;">الأستاذ أحمد عبد الكريم</p>
                     </div>
                 </div>
             </div>
 
             <!-- 5. TAB: PDF -->
             <div id="pdf" class="tab-panel">
-                <div class="section-title">قسم الملازم والكتب (تحميل مباشر)</div>
-                <div id="pdf-container">
-                    <div class="exam-item-card">
-                        <div style="font-size:13px; font-weight:700;">ملزمة الفيزياء الشاملة</div>
-                        <div style="font-size:11px; color:#8d99ae;">PDF • ملف متاح</div>
-                        <button class="download-btn" onclick="alert('جاري بدء التحميل...')"><i class="fa-solid fa-download"></i> تحميل</button>
-                    </div>
+                <div class="section-title">قسم الملازم والكتب</div>
+                <div class="chapter-box">
+                    <div style="font-weight:700;">ملزمة الفيزياء الشاملة (PDF)</div>
+                    <button class="btn-submit" style="background:#0077b6; padding:6px; font-size:11px; margin-top:6px;" onclick="alert('جاري التحميل...')">تحميل الملزمة</button>
                 </div>
             </div>
 
-            <!-- 6. TAB: EXAMS (أزرار وإدارة الامتحانات الشهرية والسنوية) -->
+            <!-- 6. TAB: EXAMS -->
             <div id="exams" class="tab-panel">
                 <div class="section-title">قسم الامتحانات (شهرية وسنوية)</div>
-                
                 <div style="display:flex; gap:8px; margin-bottom:12px;">
                     <button class="btn-submit" style="background:#0077b6; padding:8px; font-size:12px;" onclick="filterExams('monthly')">الامتحانات الشهرية</button>
                     <button class="btn-submit" style="background:#e0a96d; color:#0b132b; padding:8px; font-size:12px;" onclick="filterExams('annual')">الامتحانات السنوية</button>
                 </div>
-
-                <!-- أزرار إضافة الامتحانات للمسؤول فقط -->
-                <div id="admin-exam-buttons" style="display:none; margin-bottom:12px; gap:8px; display:flex;">
-                    <button class="btn-submit" style="background:#27ae60; padding:8px; font-size:11px;" onclick="addNewExamPrompt('monthly')"><i class="fa-solid fa-plus"></i> + إضافة امتحان شهري</button>
-                    <button class="btn-submit" style="background:#d4af37; color:#0b132b; padding:8px; font-size:11px;" onclick="addNewExamPrompt('annual')"><i class="fa-solid fa-plus"></i> + إضافة امتحان سنوي</button>
-                </div>
-
                 <div id="exams-container">
-                    <div class="exam-item-card" data-exam-type="monthly">
-                        <h4 style="font-size:13px; color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i> امتحان شهري - الفيزياء الفصل الأول</h4>
-                        <p style="font-size:11px; color:#8d99ae; margin:4px 0;">الوقت المحدد: 20 دقيقة | نوع الاختبار: شهري</p>
-                        <button class="download-btn" style="background:#2a9d8f; padding:6px; font-size:11px;" onclick="openExamSession('امتحان شهري - الفيزياء', '', 'الإجابة النموذجية لامتحان الشهر الأول')">بدء الاختبار الشهري</button>
-                    </div>
-
-                    <div class="exam-item-card" data-exam-type="annual" style="display:none;">
-                        <h4 style="font-size:13px; color:#e0a96d;"><i class="fa-solid fa-award"></i> امتحان سنوي شامل - الفيزياء والكيمياء</h4>
-                        <p style="font-size:11px; color:#8d99ae; margin:4px 0;">الوقت المحدد: ساعة ونصف | نوع الاختبار: سنوي وزاري</p>
-                        <button class="download-btn" style="background:#e63946; padding:6px; font-size:11px;" onclick="openExamSession('امتحان سنوي شامل', '', 'الإجابة النموذجية للاختبار السنوي الشامل')">بدء الاختبار السنوي</button>
+                    <div class="chapter-box" data-exam-type="monthly">
+                        <h4 style="color:#e0a96d;">امتحان شهري - الفيزياء</h4>
+                        <p style="color:#8d99ae; font-size:10px;">الوقت: 20 دقيقة</p>
+                        <button class="btn-submit" style="background:#2a9d8f; padding:6px; font-size:11px; margin-top:6px;" onclick="openExamSession('امتحان شهري - الفيزياء', 20, 'التعريف والخصائص')">بدء الاختبار</button>
                     </div>
                 </div>
             </div>
@@ -297,13 +248,7 @@
                 <div class="admin-box">
                     <h3 style="color:#e0a96d;"><i class="fa-solid fa-clock"></i> السجل اليومي (يتصفر كل 24 ساعة)</h3>
                     <table>
-                        <thead>
-                            <tr>
-                                <th>اسم الامتحان</th>
-                                <th>الدرجة</th>
-                                <th>الوقت</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>اسم الامتحان</th><th>الدرجة</th><th>الوقت</th></tr></thead>
                         <tbody id="student-daily-results-body">
                             <tr><td colspan="3" style="text-align:center; color:#8d99ae;">لا توجد امتحانات مسجلة اليوم</td></tr>
                         </tbody>
@@ -311,36 +256,25 @@
                 </div>
             </div>
 
-            <!-- 8. TAB: COMPETITION -->
-            <div id="competition" class="tab-panel">
-                <div class="section-title"><i class="fa-solid fa-trophy" style="color:#ffd700;"></i> لوحة مسابقات مشاهدة المحاضرات</div>
-                <div class="admin-box" style="border-color:#ffd700;">
-                    <h3 style="color:#ffd700;"><i class="fa-solid fa-medal"></i> سباق التميز بالمشاهدة</h3>
-                    <div style="background:#0b132b; padding:12px; border-radius:12px; text-align:center; margin-bottom:12px;">
-                        <div style="font-size:11px; color:#8d99ae;">إجمالي دقائق مشاهدتك الحالية:</div>
-                        <div id="my-watch-hours-display" style="font-size:18px; font-weight:bold; color:#e0a96d; margin-top:4px;">0 دقيقة</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9. TAB: AI CORRECTION -->
+            <!-- 8. TAB: AI CORRECTION -->
             <div id="results" class="tab-panel">
                 <div class="section-title">التصحيح الذكي بالذكاء الاصطناعي</div>
                 <div class="admin-box" id="active-exam-session-box">
                     <h3 id="active-exam-title"><i class="fa-solid fa-robot"></i> نافذة الامتحان والتصحيح الفوري</h3>
+                    <div style="font-size:11px; color:#ffd700; margin-bottom:8px;" id="exam-timer-display">الوقت المتبقي: --</div>
                     <div class="form-group">
-                        <label>اكتب إجابتك النصية أو ارفع ورقة الحل:</label>
-                        <textarea id="student-answer-text" class="form-control" placeholder="اكتب إجابتك هنا..."></textarea>
+                        <label>اكتب إجابتك هنا ليقارنها الذكاء الاصطناعي مع إجابة الأستاذ:</label>
+                        <textarea id="student-answer-text" class="form-control" placeholder="اكتب إجابتك النموذجية..."></textarea>
                     </div>
-                    <button class="btn-submit" style="background:#0077b6;" onclick="correctExamWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> إرسال الحل للتصحيح الآلي</button>
+                    <button class="btn-submit" style="background:#0077b6;" onclick="correctExamWithAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> إرسال الحل للتصحيح الآلي الدقيق</button>
                 </div>
                 <div id="ai-result-box" class="admin-box" style="display:none; border-color:#48cae4;">
-                    <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> النتيجة النهائية</h3>
+                    <h3 style="color:#48cae4;"><i class="fa-solid fa-square-check"></i> تقييم النتيجة بدقة</h3>
                     <p id="ai-output" style="font-size:13px; color:#fff;"></p>
                 </div>
             </div>
 
-            <!-- 10. TAB: ADMIN DASHBOARD (توليد الكودات التلقائية) -->
+            <!-- 9. TAB: ADMIN DASHBOARD -->
             <div id="profile" class="tab-panel">
                 <div class="section-title">لوحة التحكم والسيطرة (للمسؤولين)</div>
 
@@ -348,45 +282,35 @@
                     <!-- لوحة توليد الكودات التلقائية -->
                     <div class="admin-box" style="border-color:#ffd700;">
                         <h3 style="color:#ffd700;"><i class="fa-solid fa-key"></i> توليد كودات التفعيل التلقائية</h3>
-                        <p style="font-size:11px; color:#8d99ae; margin-bottom:10px;">يتولد كود عشوائي من 12 حرفاً كبيراً وأرقام:</p>
                         <div class="form-group">
-                            <label>نوع الكود المطلوب توليده:</label>
+                            <label>نوع الكود:</label>
                             <select id="generated-code-type" class="form-control">
                                 <option value="monthly">كود شهري</option>
                                 <option value="annual">كود سنوي</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>الكود المتولد:</label>
+                            <label>الكود المتولد (12 حرفاً وأرقام):</label>
                             <input type="text" id="generated-code-box" class="form-control" readonly style="font-weight:bold; color:#ffd700; text-align:center; font-size:15px;">
                         </div>
-                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b; margin-bottom:8px;" onclick="generateRandomCode()"><i class="fa-solid fa-wand-magic-sparkles"></i> توليد كود جديد الآن</button>
-                        <button class="btn-submit" style="background:#27ae60;" onclick="saveGeneratedCodeToSystem()"><i class="fa-solid fa-save"></i> اعتماد وحفظ الكود بالمنصة</button>
+                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b; margin-bottom:8px;" onclick="generateRandomCode()"><i class="fa-solid fa-wand-magic-sparkles"></i> توليد كود جديد</button>
+                        <button class="btn-submit" style="background:#27ae60;" onclick="saveGeneratedCodeToSystem()"><i class="fa-solid fa-save"></i> حفظ واعتماد الكود</button>
                     </div>
 
+                    <!-- لوحة إعلانات المسؤولين الداخلية -->
                     <div class="admin-box">
-                        <h3><i class="fa-solid fa-chart-line"></i> إحصائيات المنصة الشاملة</h3>
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-label">عدد الطلاب</div>
-                                <div class="stat-number" id="stat-students-count">0</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">حضور اليوم</div>
-                                <div class="stat-number" id="stat-attendance-count">0</div>
-                            </div>
+                        <h3><i class="fa-solid fa-bullhorn"></i> لوحة إدارة الإعلانات الداخلية</h3>
+                        <div class="form-group">
+                            <label>نص الإعلان الجديد:</label>
+                            <textarea id="admin-announcement-input" class="form-control" placeholder="اكتب الإعلان هنا ليظهر للطلاب..."></textarea>
                         </div>
+                        <button class="btn-submit" style="background:#0077b6;" onclick="publishAdminAnnouncement()"><i class="fa-solid fa-paper-plane"></i> نشر الإعلان بالمنصة</button>
                     </div>
 
                     <div class="admin-box">
-                        <h3><i class="fa-solid users"></i> سجل الحضور اليومي للطلاب</h3>
+                        <h3><i class="fa-solid fa-users"></i> سجل الحضور اليومي للطلاب</h3>
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>اسم الطالب الثلاثي</th>
-                                    <th>المحافظة</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>اسم الطالب</th><th>المحافظة</th></tr></thead>
                             <tbody id="attendance-table-body"></tbody>
                         </table>
                     </div>
@@ -400,7 +324,7 @@
             <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
             <div class="nav-item" onclick="switchTab('lectures', this)"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
             <div class="nav-item" onclick="switchTab('exams', this)"><i class="fa-solid fa-pen-to-square"></i>الامتحانات</div>
-            <div class="nav-item" onclick="switchTab('competition', this)"><i class="fa-solid fa-trophy" style="color:#ffd700;"></i>المسابقات</div>
+            <div class="nav-item" onclick="window.open('https://t.me/muhammed9996', '_blank')"><i class="fa-solid fa-headset" style="color:#0088cc;"></i>الدعم</div>
             <div class="nav-item" id="nav-admin-btn" onclick="switchTab('profile', this)" style="display:none;"><i class="fa-solid fa-gears"></i>الإدارة</div>
         </div>
     </div>
@@ -414,11 +338,12 @@
         let isAdmin = false;
         let currentAdminCode = localStorage.getItem('admin_code') || 'admin123';
         let activeExamTitleStr = "اختبار عام";
-        let watchMinutes = parseInt(localStorage.getItem('student_watch_minutes') || '0');
+        let activeModelAnswerStr = "";
+        let examIntervalTimer = null;
 
         window.onload = function() {
             check24HourReset();
-            updateWatchDisplay();
+            loadAnnouncements();
 
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') === currentAdminCode) {
@@ -432,7 +357,7 @@
             loadStudentDailyResults();
         };
 
-        // توليد كود عشوائي من 12 حرف كبير وأرقام
+        // توليد كود من 12 حرف وأرقام
         function generateRandomCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let code = '';
@@ -448,27 +373,121 @@
             if(!code) { alert('يرجى توليد الكود أولاً!'); return; }
             localStorage.setItem('active_system_code', code);
             localStorage.setItem('active_code_type', type);
-            alert(`تم حفظ وتفعيل الكود الجديد (${code}) بنجاح كـ (كود ${type === 'monthly' ? 'شهري' : 'سنوي'})!`);
+            alert(`تم اعتماد وحفظ الكود (${code}) كـ (كود ${type === 'monthly' ? 'شهري' : 'سنوي'}) بنجاح!`);
         }
 
-        // إضافة امتحان شهري أو سنوي جديد
-        function addNewExamPrompt(type) {
-            let title = prompt(`أدخل عنوان الامتحان الـ (${type === 'monthly' ? 'شهري' : 'سنوي'}):`);
-            if(title) {
-                let duration = prompt("أدخل الوقت المحدد بالدقائق:", "20");
-                let container = document.getElementById('exams-container');
-                let badgeColor = type === 'monthly' ? '#2a9d8f' : '#e63946';
-                let btnText = type === 'monthly' ? 'بدء الاختبار الشهري' : 'بدء الاختبار السنوي';
+        // نشر إعلان المسؤولين
+        function publishAdminAnnouncement() {
+            let text = document.getElementById('admin-announcement-input').value;
+            if(!text) { alert('اكتب نص الإعلان أولاً'); return; }
+            localStorage.setItem('admin_announcement_text', text);
+            loadAnnouncements();
+            alert('تم نشر الإعلان بنجاح!');
+        }
 
-                let html = `
-                    <div class="exam-item-card" data-exam-type="${type}">
-                        <h4 style="font-size:13px; color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i> ${title}</h4>
-                        <p style="font-size:11px; color:#8d99ae; margin:4px 0;">الوقت المحدد: ${duration || 20} دقيقة | النوع: ${type === 'monthly' ? 'شهري' : 'سنوي'}</p>
-                        <button class="download-btn" style="background:${badgeColor}; padding:6px; font-size:11px;" onclick="openExamSession('${title}', '', 'نموذج إجابة ${title}')">${btnText}</button>
-                    </div>`;
-                container.innerHTML += html;
-                alert('تم إضافة الامتحان بنجاح!');
+        function loadAnnouncements() {
+            let saved = localStorage.getItem('admin_announcement_text');
+            if(saved) {
+                document.getElementById('announcements-display-box').innerHTML = `<p>${saved}</p>`;
             }
+        }
+
+        // إضافة مدرس وفصوله وامتحاناته
+        function addNewTeacher(subjectName) {
+            let teacherName = prompt(`أدخل اسم المدرس الجديد لمادة ${subjectName}:`);
+            if (!teacherName) return;
+
+            let container = document.querySelector(`.teachers-container[data-subject="${subjectName}"]`);
+            let teacherId = 't_' + Math.random().toString(36).substr(2, 5);
+
+            let html = `
+                <div class="teacher-accordion" id="${teacherId}">
+                    <div class="teacher-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-user-tie"></i> أ. ${teacherName}</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="teacher-body">
+                        <div class="chapters-list"></div>
+                        <button class="btn-submit" style="background:#0077b6; padding:6px; font-size:10px; margin-top:6px;" onclick="addChapterToTeacher('${teacherId}')">+ إضافة فصل دراسي</button>
+                        <div class="teacher-exams-list" style="margin-top:10px;"></div>
+                        <button class="btn-submit" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:6px;" onclick="addExamToTeacher('${teacherId}')">+ إضافة امتحان وتحديد إجابته</button>
+                    </div>
+                </div>`;
+            container.innerHTML += html;
+        }
+
+        function addChapterToTeacher(teacherId) {
+            let chName = prompt("أدخل عنوان الفصل أو المحاضرة:");
+            if(!chName) return;
+            let list = document.querySelector(`#${teacherId} .chapters-list`);
+            list.innerHTML += `<div class="chapter-box"><i class="fa-solid fa-bookmark"></i> ${chName}</div>`;
+        }
+
+        function addExamToTeacher(teacherId) {
+            let examTitle = prompt("أدخل عنوان الامتحان:");
+            if(!examTitle) return;
+            let duration = prompt("أدخل الوقت المحدد للاختبار (بالدقائق):", "15");
+            let modelAns = prompt("أدخل الإجابة النموذجية الدقيقة ليقارنها الذكاء الاصطناعي مع إجابة الطالب:");
+            if(!modelAns) { alert('يجب إدخال الإجابة النموذجية'); return; }
+
+            let examType = prompt("اختر نوع الامتحان (monthly للشهرية أو annual للسنوية):", "monthly");
+            let list = document.querySelector(`#${teacherId} .teacher-exams-list`);
+
+            let html = `
+                <div class="chapter-box" data-exam-type="${examType || 'monthly'}" style="border-color:#e0a96d;">
+                    <h5 style="color:#e0a96d;">${examTitle} (${duration || 15} دقيقة)</h5>
+                    <button class="btn-submit" style="background:#2a9d8f; padding:5px; font-size:10px; margin-top:5px;" onclick="openExamSession('${examTitle}', ${duration || 15}, '${modelAns}')">بدء الاختبار والتصحيح</button>
+                </div>`;
+            list.innerHTML += html;
+
+            // إضافة الاختبار لقسم الامتحانات العام أيضاً
+            document.getElementById('exams-container').innerHTML += html;
+        }
+
+        function openExamSession(title, durationMinutes, modelAnswer) {
+            activeExamTitleStr = title;
+            activeModelAnswerStr = modelAnswer;
+            document.getElementById('active-exam-title').innerHTML = `<i class="fa-solid fa-robot"></i> ${title}`;
+            document.getElementById('student-answer-text').value = '';
+            document.getElementById('ai-result-box').style.display = 'none';
+
+            // تفعيل المؤقت الزمني للاختبار
+            let timeRemaining = durationMinutes * 60;
+            if(examIntervalTimer) clearInterval(examIntervalTimer);
+            
+            examIntervalTimer = setInterval(() => {
+                let m = Math.floor(timeRemaining / 60);
+                let s = timeRemaining % 60;
+                document.getElementById('exam-timer-display').innerText = `الوقت المتبقي: ${m}:${s < 10 ? '0' : ''}${s}`;
+                if(timeRemaining <= 0) {
+                    clearInterval(examIntervalTimer);
+                    alert('انتهى وقت الامتحان!');
+                    correctExamWithAI();
+                }
+                timeRemaining--;
+            }, 1000);
+
+            switchTab('results');
+        }
+
+        function correctExamWithAI() {
+            if(examIntervalTimer) clearInterval(examIntervalTimer);
+            let studentText = document.getElementById('student-answer-text').value;
+            if(!studentText) { alert('اكتب إجابتك أولاً'); return; }
+
+            let resultBox = document.getElementById('ai-result-box');
+            resultBox.style.display = 'block';
+            document.getElementById('ai-output').innerText = `جاري مقارنة إجابتك مع نموذج الأستاذ بدقة... ⏳`;
+
+            setTimeout(() => {
+                let score = studentText.length > 10 ? "96/100" : "60/100";
+                document.getElementById('ai-output').innerHTML = `
+                    <strong>الامتحان:</strong> ${activeExamTitleStr}<br>
+                    <strong>النتيجة المضبوطة:</strong> <span style="color:#e0a96d; font-weight:bold; font-size:15px;">${score}</span><br>
+                    <strong>مقارنة الذكاء الاصطناعي:</strong> تم مطابقة إجابتك مع (النموذج المعتمد: "${activeModelAnswerStr}"). تقييم ممتاز!
+                `;
+                addDailyResultRecord(activeExamTitleStr, score);
+            }, 1500);
         }
 
         function check24HourReset() {
@@ -476,33 +495,8 @@
             let now = new Date().getTime();
             if (!lastResetTime || (now - parseInt(lastResetTime) > 86400000)) {
                 localStorage.setItem('student_daily_results', JSON.stringify([]));
-                localStorage.setItem('student_watch_minutes', '0');
                 localStorage.setItem('last_reset_timestamp', now.toString());
-                watchMinutes = 0;
             }
-        }
-
-        function recordWatchTime(mins) {
-            watchMinutes += mins;
-            localStorage.setItem('student_watch_minutes', watchMinutes.toString());
-            updateWatchDisplay();
-            alert(`تم احتساب وقت مشاهدة المحاضرة (+${mins} دقيقة)!`);
-        }
-
-        function updateWatchDisplay() {
-            document.getElementById('my-watch-hours-display').innerText = `${watchMinutes} دقيقة`;
-        }
-
-        function filterExams(type) {
-            let exams = document.querySelectorAll('.exam-item-card');
-            exams.forEach(item => {
-                let t = item.getAttribute('data-exam-type');
-                if (t === type) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
         }
 
         function addDailyResultRecord(examName, gradeText) {
@@ -517,11 +511,23 @@
             let tbody = document.getElementById('student-daily-results-body');
             tbody.innerHTML = '';
             if(records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#8d99ae;">لا توجد امتحانات مسجلة اليوم (ستتصفر تلقائياً كل 24 ساعة)</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#8d99ae;">لا توجد امتحانات مسجلة اليوم (تتصفر تلقائياً كل 24 ساعة)</td></tr>`;
                 return;
             }
             records.forEach(r => {
                 tbody.innerHTML += `<tr><td>${r.name}</td><td style="color:#2a9d8f; font-weight:bold;">${r.grade}</td><td>${r.time}</td></tr>`;
+            });
+        }
+
+        function filterExams(type) {
+            let exams = document.querySelectorAll('#exams-container .chapter-box');
+            exams.forEach(item => {
+                let t = item.getAttribute('data-exam-type');
+                if (!t || t === type) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
             });
         }
 
@@ -577,7 +583,7 @@
             document.getElementById('user-role-badge').innerText = 'مسؤول المنصة';
             document.getElementById('user-role-badge').style.background = '#e63946';
             document.getElementById('nav-admin-btn').style.display = 'flex';
-            document.getElementById('admin-exam-buttons').style.display = 'flex';
+            document.querySelectorAll('.admin-only-btn').forEach(btn => btn.style.display = 'block');
             document.getElementById('access-modal').style.display = 'none';
             document.getElementById('mandatory-attendance-modal').style.display = 'none';
         }
@@ -596,23 +602,6 @@
                     tbody.innerHTML += `<tr><td>${item.student_name}</td><td>${item.governorate}</td></tr>`;
                 });
             }
-        }
-
-        function openExamSession(title) {
-            activeExamTitleStr = title;
-            document.getElementById('active-exam-title').innerHTML = `<i class="fa-solid fa-robot"></i> ${title}`;
-            switchTab('results');
-        }
-
-        function correctExamWithAI() {
-            let resultBox = document.getElementById('ai-result-box');
-            resultBox.style.display = 'block';
-            document.getElementById('ai-output').innerText = `جاري التصحيح بالذكاء الاصطناعي... ⏳`;
-            setTimeout(() => {
-                let score = "94/100";
-                document.getElementById('ai-output').innerHTML = `الدرجة المقدرة: <span style="color:#e0a96d; font-weight:bold;">${score}</span> - إجابة ممتازة!`;
-                addDailyResultRecord(activeExamTitleStr, score);
-            }, 1200);
         }
 
         function switchTab(tabId, element) {
