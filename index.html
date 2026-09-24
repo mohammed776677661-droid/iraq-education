@@ -2,640 +2,737 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>منصة العراق التعليمية</title>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
--webkit-tap-highlight-color:transparent
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    -webkit-tap-highlight-color:transparent;
 }
 
 body{
-background:#0d1b2a;
-color:#fff;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh
+    background:#0d1b2a;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
 }
 
 .app-container{
-width:100%;
-max-width:430px;
-height:100vh;
-max-height:932px;
-background:#0b132b;
-display:flex;
-flex-direction:column;
-position:relative;
-overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,.5)
+    width:100%;
+    max-width:430px;
+    height:100vh;
+    max-height:932px;
+    background:#0b132b;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
 }
 
 @media(min-width:450px){
-.app-container{
-border-radius:35px;
-height:92vh;
-border:8px solid #1c2541
-}
+    .app-container{
+        border-radius:35px;
+        height:92vh;
+        border:8px solid #1c2541;
+    }
 }
 
 .modal-overlay{
-position:absolute;
-inset:0;
-background:rgba(11,19,43,.98);
-z-index:999;
-display:flex;
-flex-direction:column;
-justify-content:center;
-padding:25px;
-backdrop-filter:blur(10px)
+    position:absolute;
+    inset:0;
+    background:rgba(11,19,43,.98);
+    z-index:999;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:20px;
+    backdrop-filter:blur(10px);
+    overflow-y:auto;
 }
 
 .modal-box{
-background:#1c2541;
-padding:22px;
-border-radius:20px;
-border:1px solid #e0a96d;
-max-height:90vh;
-overflow:auto
+    background:#1c2541;
+    padding:20px;
+    border-radius:20px;
+    border:1px solid #e0a96d;
 }
 
 .modal-box h2{
-font-size:18px;
-color:#e0a96d;
-text-align:center;
-margin-bottom:15px
+    font-size:18px;
+    color:#e0a96d;
+    text-align:center;
+    margin-bottom:15px;
 }
 
 .app-header{
-background:linear-gradient(135deg,#1c2541,#0b132b);
-padding:15px 20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-border-bottom:1px solid rgba(255,255,255,.08);
-z-index:10
+    background:linear-gradient(135deg,#1c2541,#0b132b);
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    z-index:10;
 }
 
 .header-brand{
-display:flex;
-align-items:center;
-gap:12px
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
 .brand-logo{
-width:42px;
-height:42px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid #e0a96d;
-background:#fff
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #e0a96d;
+    background:#fff;
 }
 
 .brand-title{
-font-size:16px;
-font-weight:700
+    font-size:16px;
+    font-weight:700;
 }
 
 .brand-subtitle{
-font-size:11px;
-color:#e0a96d
+    font-size:11px;
+    color:#e0a96d;
 }
 
 .role-badge{
-background:rgba(224,169,109,.2);
-color:#e0a96d;
-padding:4px 8px;
-border-radius:8px;
-font-size:10px;
-font-weight:bold
+    background:rgba(224,169,109,.2);
+    color:#e0a96d;
+    padding:4px 8px;
+    border-radius:8px;
+    font-size:10px;
+    font-weight:bold;
 }
 
 .app-content{
-flex:1;
-overflow-y:auto;
-padding:15px;
-padding-bottom:90px;
-scrollbar-width:none
+    flex:1;
+    overflow-y:auto;
+    padding:15px;
+    padding-bottom:90px;
+    scrollbar-width:none;
 }
 
 .app-content::-webkit-scrollbar{
-display:none
+    display:none;
 }
 
 .tab-panel{
-display:none;
-animation:fadeIn .3s ease-in-out
+    display:none;
+    animation:fadeIn .3s ease;
 }
 
 .tab-panel.active{
-display:block
+    display:block;
 }
 
 @keyframes fadeIn{
-from{opacity:0;transform:translateY(8px)}
-to{opacity:1;transform:translateY(0)}
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
 .hero-card{
-background:linear-gradient(135deg,#1c2541,#3a506b);
-border-radius:20px;
-padding:20px;
-text-align:center;
-margin-bottom:15px;
-border:1px solid rgba(224,169,109,.3)
+    background:linear-gradient(135deg,#1c2541,#3a506b);
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    margin-bottom:15px;
+    border:1px solid rgba(224,169,109,.3);
+}
+
+.hero-card h2{
+    margin-bottom:8px;
 }
 
 .section-title{
-font-size:15px;
-font-weight:700;
-margin:15px 0 10px;
-color:#fff;
-display:flex;
-justify-content:space-between;
-align-items:center
+    font-size:15px;
+    font-weight:700;
+    margin:15px 0 10px;
+    color:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .grid-4{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:6px;
-margin-bottom:15px
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+    margin-bottom:15px;
 }
 
 .quick-btn{
-background:#1c2541;
-padding:12px 4px;
-border-radius:14px;
-text-align:center;
-cursor:pointer;
-font-size:9px;
-color:#f1faee;
-border:1px solid rgba(255,255,255,.05)
+    background:#1c2541;
+    padding:12px 4px;
+    border-radius:14px;
+    text-align:center;
+    cursor:pointer;
+    font-size:9px;
+    color:#f1faee;
+    border:1px solid rgba(255,255,255,.05);
 }
 
 .quick-btn i{
-font-size:16px;
-margin-bottom:6px;
-display:block;
-color:#48cae4
+    font-size:16px;
+    margin-bottom:6px;
+    display:block;
+    color:#48cae4;
 }
 
 .grades-container{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-bottom:15px
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:15px;
 }
 
 .grade-card{
-background:linear-gradient(135deg,#1c2541,#162032);
-border-radius:16px;
-padding:16px;
-text-align:center;
-cursor:pointer;
-border:1px solid rgba(72,202,228,.3);
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:8px
+    background:linear-gradient(135deg,#1c2541,#162032);
+    border-radius:16px;
+    padding:16px;
+    text-align:center;
+    cursor:pointer;
+    border:1px solid rgba(72,202,228,.3);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
 }
 
 .grade-card i{
-font-size:24px;
-color:#e0a96d
+    font-size:24px;
+    color:#e0a96d;
 }
 
 .grade-card span{
-font-size:13px;
-font-weight:bold
+    font-size:13px;
+    font-weight:bold;
 }
 
-.subject-accordion,
-.teacher-accordion,
-.admin-box,
-.chapter-box,
-.announcement-card,
-.exam-card,
-.game-card,
-.schedule-card{
-background:#1c2541;
-border-radius:16px;
-margin-bottom:10px;
-overflow:hidden;
-border:1px solid rgba(255,255,255,.06)
+.feature-card{
+    background:linear-gradient(135deg,#1c2541,#162032);
+    padding:14px;
+    border-radius:16px;
+    margin-bottom:12px;
+    border:1px solid rgba(72,202,228,.2);
+    cursor:pointer;
 }
 
-.subject-header,
+.feature-card .feature-title{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.feature-card .feature-desc{
+    font-size:10px;
+    color:#a3cef1;
+    margin-top:4px;
+}
+
+.subject-accordion{
+    background:#1c2541;
+    border-radius:16px;
+    margin-bottom:10px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.subject-header{
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+}
+
+.subject-body{
+    padding:15px;
+    background:#0b132b;
+    display:none;
+    border-top:1px solid rgba(255,255,255,.05);
+}
+
+.teacher-accordion{
+    background:#162032;
+    border-radius:12px;
+    margin-bottom:10px;
+    overflow:hidden;
+    border:1px solid rgba(72,202,228,.2);
+}
+
 .teacher-header{
-padding:14px 16px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-cursor:pointer
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    color:#48cae4;
+    font-weight:600;
+    font-size:13px;
 }
 
-.subject-body,
 .teacher-body{
-padding:15px;
-background:#0b132b;
-display:none
-}
-
-.teacher-header{
-background:#162032;
-color:#48cae4;
-font-size:13px
-}
-
-.form-group{
-margin-bottom:12px
-}
-
-.form-group label{
-font-size:12px;
-color:#8d99ae;
-display:block;
-margin-bottom:5px
-}
-
-.form-control{
-width:100%;
-background:#0b132b;
-border:1px solid rgba(255,255,255,.1);
-border-radius:10px;
-padding:10px;
-color:#fff;
-font-size:13px;
-outline:none
-}
-
-textarea.form-control{
-resize:vertical;
-min-height:70px
-}
-
-.btn-submit{
-width:100%;
-background:#0077b6;
-color:#fff;
-padding:11px;
-border-radius:10px;
-border:none;
-font-size:12px;
-font-weight:700;
-cursor:pointer;
-margin-top:5px
-}
-
-.btn-danger{
-background:#e63946
-}
-
-.btn-success{
-background:#27ae60
-}
-
-.btn-gold{
-background:#e0a96d;
-color:#0b132b
-}
-
-.btn-dark{
-background:#162032
+    padding:12px;
+    background:#0d1b2a;
+    display:none;
 }
 
 .chapter-box{
-padding:11px;
-border-right:3px solid #e0a96d;
-font-size:11px;
-cursor:pointer
+    background:#1c2541;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:8px;
+    border-right:3px solid #e0a96d;
+    font-size:11px;
 }
 
-.announcement-card{
-padding:12px;
-border-right:4px solid #48cae4
+.lecture-item{
+    background:#0b132b;
+    border:1px solid rgba(72,202,228,.2);
+    padding:10px;
+    border-radius:10px;
+    margin-top:7px;
 }
 
-.announcement-card img{
-width:100%;
-max-height:180px;
-object-fit:cover;
-border-radius:10px;
-margin-bottom:8px
+.lecture-actions{
+    display:flex;
+    gap:5px;
+    margin-top:7px;
 }
 
-.announcement-title{
-font-size:13px;
-font-weight:bold;
-color:#e0a96d
+.small-btn{
+    border:none;
+    border-radius:7px;
+    padding:6px 8px;
+    color:white;
+    font-size:10px;
+    cursor:pointer;
 }
 
-.announcement-link{
-display:block;
-color:#48cae4;
-font-size:11px;
-margin-top:7px;
-text-decoration:none
+.admin-box{
+    background:#1c2541;
+    padding:16px;
+    border-radius:18px;
+    margin-bottom:15px;
+    border:1px solid rgba(255,255,255,.08);
 }
 
-.exam-card{
-padding:14px
+.admin-box h3{
+    font-size:15px;
+    color:#e0a96d;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
-.exam-question{
-background:#0b132b;
-padding:12px;
-border-radius:10px;
-margin-bottom:10px
+.form-group{
+    margin-bottom:12px;
 }
 
-.option{
-display:block;
-background:#162032;
-padding:8px;
-border-radius:8px;
-margin-top:5px;
-cursor:pointer;
-font-size:11px
+.form-group label{
+    font-size:12px;
+    color:#8d99ae;
+    display:block;
+    margin-bottom:5px;
 }
 
-.option:hover{
-background:#243452
+.form-control{
+    width:100%;
+    background:#0b132b;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    padding:10px;
+    color:#fff;
+    font-size:13px;
+    outline:none;
+}
+
+textarea.form-control{
+    resize:vertical;
+    min-height:80px;
+}
+
+select.form-control{
+    appearance:auto;
+}
+
+.btn-submit{
+    width:100%;
+    background:#0077b6;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.btn-secondary{
+    background:#162032;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.btn-danger{
+    background:#c0392b;
+}
+
+.btn-success{
+    background:#27ae60;
+}
+
+.btn-gold{
+    background:#e0a96d;
+    color:#0b132b;
 }
 
 table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-font-size:11px
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    font-size:11px;
 }
 
 th,td{
-padding:8px;
-text-align:right;
-border-bottom:1px solid rgba(255,255,255,.08)
+    padding:8px;
+    text-align:right;
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 th{
-color:#e0a96d
+    color:#e0a96d;
 }
 
-.stat-box{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-margin-bottom:10px
+.stat-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
 }
 
-.stat{
-background:#162032;
-border-radius:12px;
-padding:12px;
-text-align:center
+.stat-card{
+    background:#0b132b;
+    padding:14px;
+    border-radius:12px;
+    text-align:center;
 }
 
-.stat strong{
-display:block;
-font-size:18px;
-color:#e0a96d
+.stat-number{
+    font-size:22px;
+    color:#48cae4;
+    font-weight:bold;
 }
 
-.stat span{
-font-size:10px;
-color:#8d99ae
+.stat-label{
+    font-size:10px;
+    color:#8d99ae;
+    margin-top:5px;
 }
 
-.bottom-nav{
-position:absolute;
-bottom:0;
-left:0;
-right:0;
-height:70px;
-background:#1c2541;
-display:flex;
-justify-content:space-around;
-align-items:center;
-border-top:1px solid rgba(255,255,255,.08);
-z-index:20;
-padding-bottom:5px
+.ad-card{
+    background:linear-gradient(135deg,#1c2541,#162032);
+    border-radius:14px;
+    padding:10px;
+    margin-bottom:10px;
+    border:1px solid rgba(224,169,109,.25);
 }
 
-.nav-item{
-display:flex;
-flex-direction:column;
-align-items:center;
-color:#8d99ae;
-font-size:10px;
-cursor:pointer;
-gap:4px
+.ad-card img{
+    width:100%;
+    max-height:150px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:8px;
 }
 
-.nav-item i{
-font-size:18px
-}
-
-.nav-item.active{
-color:#e0a96d
-}
-
-.preview-image{
-width:100%;
-border-radius:12px;
-margin-top:8px;
-display:none
-}
-
-.timer{
-text-align:center;
-background:#162032;
-padding:10px;
-border-radius:10px;
-color:#ffd166;
-font-weight:bold;
-margin-bottom:10px
-}
-
-.ai-box{
-background:linear-gradient(135deg,#162032,#1c2541);
-border:1px solid #48cae4;
-padding:14px;
-border-radius:15px;
-margin-top:10px
-}
-
-.motivation{
-background:linear-gradient(135deg,#3a506b,#1c2541);
-border:1px solid #e0a96d;
-padding:18px;
-border-radius:18px;
-text-align:center;
-margin-bottom:10px
-}
-
-.motivation i{
-font-size:30px;
-color:#ffd166;
-margin-bottom:8px
+.ad-platform{
+    color:#e0a96d;
+    font-size:10px;
 }
 
 .game-card{
-padding:18px;
-text-align:center
+    background:linear-gradient(135deg,#1c2541,#3a506b);
+    padding:18px;
+    border-radius:18px;
+    text-align:center;
+    margin-bottom:12px;
 }
 
-.game-card i{
-font-size:35px;
-color:#48cae4;
-margin-bottom:10px
+.answer-btn{
+    width:100%;
+    margin-top:8px;
+    background:#162032;
+    border:1px solid rgba(72,202,228,.3);
+    color:#fff;
+    border-radius:10px;
+    padding:10px;
+    cursor:pointer;
+}
+
+.schedule-card{
+    background:linear-gradient(135deg,#1c2541,#162032);
+    border-radius:16px;
+    padding:15px;
+    margin-top:10px;
+}
+
+.schedule-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#0b132b;
+    padding:10px;
+    border-radius:9px;
+    margin-bottom:7px;
+    font-size:11px;
+}
+
+.motivation{
+    background:linear-gradient(135deg,#0077b6,#2a9d8f);
+    padding:14px;
+    border-radius:15px;
+    text-align:center;
+    margin-bottom:12px;
+    font-weight:bold;
+}
+
+.preview-image{
+    max-width:100%;
+    border-radius:12px;
+    margin-top:10px;
+}
+
+.bottom-nav{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    height:70px;
+    background:#1c2541;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    border-top:1px solid rgba(255,255,255,.08);
+    z-index:20;
+    padding-bottom:5px;
+}
+
+.nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    color:#8d99ae;
+    font-size:9px;
+    cursor:pointer;
+    gap:4px;
+}
+
+.nav-item i{
+    font-size:18px;
+}
+
+.nav-item.active{
+    color:#e0a96d;
 }
 
 .hidden{
-display:none!important
+    display:none!important;
 }
+
+input[type=file]{
+    display:none;
+}
+
+.file-label{
+    display:block;
+    background:#162032;
+    border:1px dashed #48cae4;
+    border-radius:10px;
+    padding:12px;
+    text-align:center;
+    color:#48cae4;
+    cursor:pointer;
+    margin-bottom:10px;
+}
+
+.badge{
+    display:inline-block;
+    padding:3px 7px;
+    border-radius:6px;
+    font-size:9px;
+    background:#0077b6;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- ================= تسجيل الحضور ================= -->
+<!-- ================= حضور إجباري ================= -->
 
-<div id="attendance-modal" class="modal-overlay hidden">
-<div class="modal-box">
+<div id="mandatory-attendance-modal"
+     class="modal-overlay"
+     style="display:none;">
 
-<h2>
-<i class="fa-solid fa-clipboard-user"></i>
-تسجيل الحضور الإجباري
-</h2>
+    <div class="modal-box">
 
-<div class="form-group">
-<label>الاسم الثلاثي</label>
-<input id="attendance-name" class="form-control">
-</div>
+        <h2>
+            <i class="fa-solid fa-clipboard-user"></i>
+            تسجيل الحضور
+        </h2>
 
-<div class="form-group">
-<label>المحافظة</label>
-<input id="attendance-gov" class="form-control">
-</div>
+        <div class="form-group">
+            <label>اسم الطالب الثلاثي</label>
+            <input id="m-att-name"
+                   class="form-control"
+                   placeholder="أدخل اسمك الثلاثي">
+        </div>
 
-<button class="btn-submit btn-gold" onclick="submitAttendance()">
-تسجيل الحضور والدخول
-</button>
+        <div class="form-group">
+            <label>اسم المحافظة</label>
+            <input id="m-att-gov"
+                   class="form-control"
+                   placeholder="مثال: بغداد">
+        </div>
 
-</div>
+        <button class="btn-submit btn-gold"
+                onclick="submitMandatoryAttendance()">
+            تسجيل الحضور والدخول
+        </button>
+
+    </div>
+
 </div>
 
 
 <!-- ================= تفعيل المنصة ================= -->
 
-<div id="access-modal" class="modal-overlay hidden">
-<div class="modal-box">
+<div id="access-modal"
+     class="modal-overlay"
+     style="display:none;">
 
-<h2>
-<i class="fa-solid fa-key"></i>
-تفعيل منصة العراق التعليمية
-</h2>
+    <div class="modal-box">
 
-<div class="form-group">
-<label>كود التفعيل الشهري أو السنوي</label>
-<input id="access-code-input" class="form-control">
-</div>
+        <h2>
+            <i class="fa-solid fa-key"></i>
+            تفعيل المنصة
+        </h2>
 
-<button class="btn-submit" onclick="verifyAccessCode()">
-تفعيل المنصة
-</button>
+        <p style="font-size:11px;color:#a3cef1;margin-bottom:12px;text-align:center;">
+            يمكنك استخدام كود شهري أو سنوي، أو تجربة المنصة مجاناً لمدة شهر.
+        </p>
 
-<button class="btn-submit btn-gold" onclick="activateTrial()">
-🎁 تجربة مجانية لمدة شهر
-</button>
+        <div class="form-group">
 
-<p style="font-size:10px;color:#8d99ae;margin-top:10px;text-align:center">
-التجربة المجانية لمدة 30 يوماً
-</p>
+            <label>كود التفعيل</label>
 
-</div>
-</div>
+            <input id="access-code-input"
+                   class="form-control"
+                   placeholder="أدخل كود التفعيل">
 
+        </div>
 
-<!-- ================= الامتحان ================= -->
+        <button class="btn-submit"
+                onclick="verifyAccessCode()">
 
-<div id="exam-modal" class="modal-overlay hidden">
-<div class="modal-box">
+            تحقق ودخول
 
-<h2 id="exam-modal-title">الامتحان</h2>
+        </button>
 
-<div id="exam-timer" class="timer">
-الوقت: 00:00
-</div>
+        <button class="btn-submit btn-gold"
+                style="margin-top:10px;"
+                onclick="activateFreeTrialMonth()">
 
-<div id="exam-questions"></div>
+            🎁 تجربة مجانية لمدة شهر
 
-<button class="btn-submit btn-success" onclick="submitExam()">
-<i class="fa-solid fa-check"></i>
-تسليم الامتحان
-</button>
+        </button>
 
-</div>
+    </div>
+
 </div>
 
 
 <div class="app-container">
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 
 <div class="app-header">
 
-<div class="header-brand">
+    <div class="header-brand">
 
-<img
-id="app-logo"
-class="brand-logo"
-src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%231c2541'/><path d='M30 65 Q50 45 50 75 Q50 45 70 65' fill='%23e0a96d'/><polygon points='50,25 75,38 50,50 25,38' fill='%230077b6'/></svg>"
->
+        <img
+            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%231c2541'/><path d='M30 65 Q50 45 50 75 Q50 45 70 65' fill='%23e0a96d'/><polygon points='50,25 75,38 50,50 25,38' fill='%230077b6'/></svg>"
+            class="brand-logo"
+            id="app-logo-img">
 
-<div>
-<div class="brand-title" id="platform-title">
-منصة العراق التعليمية
+        <div>
+
+            <div class="brand-title"
+                 id="app-title-text">
+
+                منصة العراق التعليمية
+
+            </div>
+
+            <div class="brand-subtitle">
+
+                معاً نحو مستقبل أفضل
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="role-badge"
+         id="user-role-badge">
+
+        طالب
+
+    </div>
+
 </div>
 
-<div class="brand-subtitle">
-معاً نحو مستقبل أفضل
-</div>
-</div>
 
-</div>
-
-<div id="role-badge" class="role-badge">
-طالب
-</div>
-
-</div>
-
-
-<!-- CONTENT -->
+<!-- ================= CONTENT ================= -->
 
 <div class="app-content">
 
 
 <!-- ================= HOME ================= -->
 
-<div id="home" class="tab-panel active">
+<div id="home"
+     class="tab-panel active">
 
 <div class="hero-card">
 
-<h2 id="hero-title">
+<h2 id="banner-title">
 منصة العراق التعليمية
 </h2>
 
-<p id="hero-description">
+<p>
 أهلاً بك في المنصة التعليمية
 </p>
 
@@ -646,46 +743,75 @@ src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 
 الأقسام الرئيسية
 </div>
 
+
 <div class="grid-4">
 
-<div class="quick-btn" onclick="switchTab('lectures')">
-<i class="fa-solid fa-video"></i>
+<div class="quick-btn"
+     onclick="switchTab('lectures')">
+
+<i class="fa-solid fa-circle-play"></i>
 المحاضرات
+
 </div>
 
-<div class="quick-btn" onclick="switchTab('exams')">
-<i class="fa-solid fa-file-pen"></i>
+<div class="quick-btn"
+     onclick="switchTab('pdf')">
+
+<i class="fa-solid fa-file-pdf"></i>
+الملازم
+
+</div>
+
+<div class="quick-btn"
+     onclick="switchTab('exams')">
+
+<i class="fa-solid fa-pen-to-square"></i>
 الامتحانات
+
 </div>
 
-<div class="quick-btn" onclick="switchTab('schedule')">
-<i class="fa-solid fa-calendar-days"></i>
-الجدول
-</div>
+<div class="quick-btn"
+     onclick="openSupport()">
 
-<div class="quick-btn" onclick="switchTab('games')">
-<i class="fa-solid fa-gamepad"></i>
-الألعاب
+<i class="fa-solid fa-headset"></i>
+الدعم
+
 </div>
 
 </div>
 
 
 <div class="section-title">
-<i class="fa-solid fa-graduation-cap" style="color:#48cae4"></i>
+<i class="fa-solid fa-graduation-cap"
+   style="color:#48cae4;"></i>
+
 المراحل الدراسية
 </div>
 
+
 <div class="grades-container">
 
-<div class="grade-card" onclick="switchTab('scientific')">
+<div class="grade-card"
+     onclick="switchTab('scientific')">
+
 <i class="fa-solid fa-flask"></i>
-<span>السادس العلمي</span>
+
+<span>
+السادس العلمي
+</span>
+
 </div>
 
-<div class="grade-card" onclick="switchTab('literary')">
-<i class="fa-solid fa-book"></i>
-<span>السادس الأدبي</span>
+
+<div class="grade-card"
+     onclick="switchTab('literary')">
+
+<i class="fa-solid fa-book-open"></i>
+
+<span>
+السادس الأدبي
+</span>
+
 </div>
 
 </div>
@@ -693,13 +819,92 @@ src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 
 
 <!-- التحفيز -->
 
-<div class="grade-card" onclick="switchTab('motivation')">
+<div class="feature-card"
+     onclick="switchTab('motivation')">
 
-<i class="fa-solid fa-fire"></i>
+<div class="feature-title">
 
-<span>
-التحفيزات الذكية
-</span>
+<i class="fa-solid fa-fire"
+   style="color:#ffd700;"></i>
+
+التحفيز الذكي
+
+</div>
+
+<div class="feature-desc">
+
+تحفيزات عراقية تساعدك تستمر بالدراسة
+
+</div>
+
+</div>
+
+
+<!-- الجدول -->
+
+<div class="feature-card"
+     onclick="switchTab('schedule')">
+
+<div class="feature-title">
+
+<i class="fa-solid fa-calendar-days"
+   style="color:#48cae4;"></i>
+
+الجدول وتنظيم الوقت
+
+</div>
+
+<div class="feature-desc">
+
+خلّي المنصة ترتبلك جدول دراسة حسب وقتك
+
+</div>
+
+</div>
+
+
+<!-- الألعاب -->
+
+<div class="feature-card"
+     onclick="switchTab('games')">
+
+<div class="feature-title">
+
+<i class="fa-solid fa-gamepad"
+   style="color:#e0a96d;"></i>
+
+الألعاب التعليمية
+
+</div>
+
+<div class="feature-desc">
+
+استراحة ممتعة مع ألعاب سؤال وجواب
+
+</div>
+
+</div>
+
+
+<!-- المسابقات -->
+
+<div class="feature-card"
+     onclick="switchTab('competition')">
+
+<div class="feature-title">
+
+<i class="fa-solid fa-trophy"
+   style="color:#ffd700;"></i>
+
+المسابقات والمتصدرين
+
+</div>
+
+<div class="feature-desc">
+
+تابع تقدمك وساعات المشاهدة
+
+</div>
 
 </div>
 
@@ -708,10 +913,10 @@ src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 
 
 <div class="section-title">
 
-<span>
-<i class="fa-solid fa-bullhorn" style="color:#e0a96d"></i>
-الإعلانات
-</span>
+<i class="fa-solid fa-bullhorn"
+   style="color:#e0a96d;"></i>
+
+إعلانات المنصة
 
 </div>
 
@@ -720,25 +925,23 @@ src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 
 
 <!-- النتائج -->
 
-<div class="chapter-box"
-onclick="switchTab('daily-results')">
+<div class="feature-card"
+     onclick="switchTab('daily-results')">
 
-<i class="fa-solid fa-chart-line"></i>
+<div class="feature-title">
 
-تقييم الطالب خلال 24 ساعة
+<i class="fa-solid fa-square-poll-vertical"
+   style="color:#ffd700;"></i>
+
+تقييمات ونتائج اليوم
 
 </div>
 
+<div class="feature-desc">
 
-<!-- الدعم -->
+النتائج تتصفر تلقائياً كل 24 ساعة
 
-<div class="chapter-box"
-onclick="openSupport()"
-style="border-color:#48cae4">
-
-<i class="fa-solid fa-headset"></i>
-
-التواصل مع الدعم
+</div>
 
 </div>
 
@@ -747,59 +950,81 @@ style="border-color:#48cae4">
 
 <!-- ================= SCIENTIFIC ================= -->
 
-<div id="scientific" class="tab-panel">
+<div id="scientific"
+     class="tab-panel">
 
 <div class="section-title">
 مواد السادس العلمي
 </div>
 
-<div id="scientific-list"></div>
+<div id="scientific-subjects"></div>
 
 </div>
 
 
 <!-- ================= LITERARY ================= -->
 
-<div id="literary" class="tab-panel">
+<div id="literary"
+     class="tab-panel">
 
 <div class="section-title">
 مواد السادس الأدبي
 </div>
 
-<div id="literary-list"></div>
+<div id="literary-subjects"></div>
 
 </div>
 
 
 <!-- ================= LECTURES ================= -->
 
-<div id="lectures" class="tab-panel">
+<div id="lectures"
+     class="tab-panel">
 
 <div class="section-title">
-
-<span>
-<i class="fa-solid fa-video"></i>
 المحاضرات
-</span>
+</div>
+
+<div id="all-lectures-container"></div>
 
 </div>
 
-<div id="lectures-container"></div>
+
+<!-- ================= PDF ================= -->
+
+<div id="pdf"
+     class="tab-panel">
+
+<div class="section-title">
+الملازم والكتب
+</div>
+
+<div class="chapter-box">
+
+<strong>
+ملزمة الفيزياء الشاملة
+</strong>
+
+<button class="btn-submit"
+        style="margin-top:8px;"
+        onclick="alert('يمكن ربط زر التحميل بملفات التخزين في Supabase')">
+
+تحميل الملزمة
+
+</button>
+
+</div>
 
 </div>
 
 
 <!-- ================= EXAMS ================= -->
 
-<div id="exams" class="tab-panel">
+<div id="exams"
+     class="tab-panel">
 
 <div class="section-title">
-
-<span>
-<i class="fa-solid fa-pen-to-square"></i>
-امتحانات المدرسين
-</span>
-
+الامتحانات
 </div>
 
 <div id="student-exams-container"></div>
@@ -807,116 +1032,85 @@ style="border-color:#48cae4">
 </div>
 
 
-<!-- ================= MOTIVATION ================= -->
+<!-- ================= RESULTS ================= -->
 
-<div id="motivation" class="tab-panel">
-
-<div class="section-title">
-<i class="fa-solid fa-fire"></i>
-التحفيزات الذكية
-</div>
-
-<div class="motivation">
-
-<i class="fa-solid fa-bolt"></i>
-
-<h3 id="motivation-text">
-شد حيلك بطل 🇮🇶
-</h3>
-
-<p style="font-size:11px;color:#a3cef1;margin-top:8px">
-راح توصلك رسالة تحفيزية كل 10 دقائق
-</p>
-
-</div>
-
-<button class="btn-submit" onclick="generateMotivation()">
-تحفيزني الآن
-</button>
-
-</div>
-
-
-<!-- ================= SCHEDULE ================= -->
-
-<div id="schedule" class="tab-panel">
+<div id="results"
+     class="tab-panel">
 
 <div class="section-title">
-
-<span>
-<i class="fa-solid fa-calendar-days"></i>
-تنظيم الوقت والجدول
-</span>
-
+التصحيح والتقييم
 </div>
 
 <div class="admin-box">
 
 <h3>
-إنشاء جدول دراسي
+<i class="fa-solid fa-robot"></i>
+الامتحان
 </h3>
 
-<div class="form-group">
-<label>عدد ساعات الدراسة</label>
-<input id="study-hours" type="number" class="form-control" value="5">
+<div id="active-exam-title">
+لا يوجد امتحان فعال
 </div>
 
-<div class="form-group">
-<label>عدد المواد</label>
-<input id="study-subjects" type="number" class="form-control" value="5">
+<div id="exam-timer-display"
+     style="color:#ffd700;margin:8px 0;">
+الوقت المتبقي: --
 </div>
 
-<button class="btn-submit" onclick="createSchedule()">
-<i class="fa-solid fa-wand-magic-sparkles"></i>
-إنشاء جدول بالذكاء الاصطناعي
+<textarea
+    id="student-answer-text"
+    class="form-control"
+    placeholder="اكتب إجابتك هنا..."></textarea>
+
+<button class="btn-submit"
+        style="margin-top:10px;"
+        onclick="submitStudentAnswer()">
+
+إرسال الإجابة للتقييم
+
 </button>
 
 </div>
 
-<div id="schedule-result"></div>
+<div id="ai-result-box"
+     class="admin-box hidden">
+
+<h3>
+<i class="fa-solid fa-square-check"></i>
+نتيجة الطالب
+</h3>
+
+<div id="ai-output"></div>
+
+</div>
 
 </div>
 
 
-<!-- ================= GAMES ================= -->
+<!-- ================= COMPETITION ================= -->
 
-<div id="games" class="tab-panel">
+<div id="competition"
+     class="tab-panel">
 
 <div class="section-title">
-<i class="fa-solid fa-gamepad"></i>
-الألعاب
+<i class="fa-solid fa-trophy"
+   style="color:#ffd700;"></i>
+
+مسابقة المشاهدة
 </div>
 
-<div class="game-card">
+<div class="admin-box">
 
-<i class="fa-solid fa-brain"></i>
-
-<h3>
-اختبار سرعة الذاكرة
-</h3>
-
-<p style="font-size:11px;color:#8d99ae;margin:8px">
-لعبة بسيطة أثناء الاستراحة
+<p style="font-size:11px;color:#a3cef1;">
+إجمالي وقت المشاهدة:
 </p>
 
-<button class="btn-submit" onclick="startMemoryGame()">
-ابدأ اللعبة
-</button>
+<div id="my-watch-display"
+     style="font-size:22px;color:#e0a96d;text-align:center;margin-top:10px;">
+
+0 دقيقة
 
 </div>
-
-
-<div class="game-card">
-
-<i class="fa-solid fa-calculator"></i>
-
-<h3>
-تحدي الحساب
-</h3>
-
-<button class="btn-submit" onclick="startMathGame()">
-ابدأ
-</button>
 
 </div>
 
@@ -925,63 +1119,355 @@ style="border-color:#48cae4">
 
 <!-- ================= DAILY RESULTS ================= -->
 
-<div id="daily-results" class="tab-panel">
+<div id="daily-results"
+     class="tab-panel">
 
 <div class="section-title">
-<i class="fa-solid fa-chart-column"></i>
-تقييم الطالب خلال 24 ساعة
+نتائج الطالب خلال 24 ساعة
 </div>
 
-<div class="stat-box">
-
-<div class="stat">
-<strong id="total-score">
-0
-</strong>
-<span>
-مجموع الدرجات
-</span>
-</div>
-
-<div class="stat">
-<strong id="exam-count">
-0
-</strong>
-<span>
-عدد الامتحانات
-</span>
-</div>
-
-</div>
+<div class="admin-box">
 
 <table>
 
 <thead>
+
 <tr>
-<th>المادة</th>
-<th>الدرجة</th>
-<th>الوقت</th>
+
+<th>
+المادة
+</th>
+
+<th>
+الدرجة
+</th>
+
+<th>
+الوقت
+</th>
+
 </tr>
+
 </thead>
 
-<tbody id="results-table"></tbody>
+<tbody id="daily-results-body"></tbody>
 
 </table>
+
+</div>
+
+</div>
+
+
+<!-- ================= MOTIVATION ================= -->
+
+<div id="motivation"
+     class="tab-panel">
+
+<div class="section-title">
+<i class="fa-solid fa-fire"
+   style="color:#ffd700;"></i>
+
+التحفيز الذكي
+</div>
+
+<div class="motivation"
+     id="motivation-text">
+
+يلا بطل، شد حيلك اليوم، كل دقيقة تقراها تقربك من هدفك 💪
+
+</div>
+
+<button class="btn-submit"
+        onclick="generateMotivation()">
+
+أرسللي تحفيز جديد
+
+</button>
+
+</div>
+
+
+<!-- ================= SCHEDULE ================= -->
+
+<div id="schedule"
+     class="tab-panel">
+
+<div class="section-title">
+
+<i class="fa-solid fa-calendar-days"
+   style="color:#48cae4;"></i>
+
+إنشاء جدول الدراسة
+
+</div>
+
+<div class="admin-box">
+
+<div class="form-group">
+
+<label>
+نوع الجدول
+</label>
+
+<select id="schedule-type"
+        class="form-control">
+
+<option>
+يومي
+</option>
+
+<option>
+أسبوعي
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+المادة
+</label>
+
+<input id="schedule-subject"
+       class="form-control"
+       placeholder="مثال: رياضيات">
+
+</div>
+
+<div class="form-group">
+
+<label>
+كم ساعة تريد تقرأ باليوم؟
+</label>
+
+<input id="schedule-hours"
+       class="form-control"
+       type="number"
+       min="1"
+       max="12"
+       value="4">
+
+</div>
+
+<div class="form-group">
+
+<label>
+كل شكد تريد استراحة؟
+</label>
+
+<select id="schedule-break"
+        class="form-control">
+
+<option value="25">
+كل 25 دقيقة
+</option>
+
+<option value="45">
+كل 45 دقيقة
+</option>
+
+<option value="60">
+كل ساعة
+</option>
+
+<option value="90">
+كل ساعة ونصف
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+وقت بداية الدراسة
+</label>
+
+<input id="schedule-start"
+       class="form-control"
+       type="time"
+       value="16:00">
+
+</div>
+
+<button class="btn-submit"
+        onclick="createSchedule()">
+
+إنشاء الجدول
+
+</button>
+
+</div>
+
+
+<div id="schedule-result"></div>
+
+</div>
+
+
+<!-- ================= GAMES ================= -->
+
+<div id="games"
+     class="tab-panel">
+
+<div class="section-title">
+
+<i class="fa-solid fa-gamepad"
+   style="color:#e0a96d;"></i>
+
+الألعاب التعليمية
+
+</div>
+
+<div class="game-card">
+
+<h3>
+سؤال وجواب 🎯
+</h3>
+
+<p id="game-question"
+   style="margin-top:10px;font-size:13px;">
+اضغط ابدأ حتى يطلعلك سؤال
+</p>
+
+<div id="game-answers"></div>
+
+<button class="btn-submit"
+        style="margin-top:12px;"
+        onclick="startGame()">
+
+ابدأ اللعبة
+
+</button>
+
+<div id="game-score"
+     style="margin-top:10px;color:#ffd700;">
+
+النقاط: 0
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= SUPPORT ================= -->
+
+<div id="support"
+     class="tab-panel">
+
+<div class="section-title">
+تواصل مع الدعم
+</div>
+
+<div class="admin-box">
+
+<p style="font-size:12px;color:#a3cef1;margin-bottom:12px;">
+
+إذا عندك مشكلة أو استفسار تواصل معنا مباشرة.
+
+</p>
+
+<button class="btn-submit"
+        onclick="openSupport()">
+
+<i class="fa-brands fa-telegram"></i>
+
+التواصل مع الدعم
+
+</button>
+
+</div>
 
 </div>
 
 
 <!-- ================= ADMIN ================= -->
 
-<div id="profile" class="tab-panel">
+<div id="profile"
+     class="tab-panel">
 
 <div class="section-title">
-<i class="fa-solid fa-gears"></i>
-لوحة تحكم الإدارة
+
+لوحة تحكم المنصة
+
 </div>
 
 
-<!-- تخصيص المنصة -->
+<!-- الإحصائيات -->
+
+<div class="admin-box">
+
+<h3>
+<i class="fa-solid fa-chart-column"></i>
+إحصائيات المنصة
+</h3>
+
+<div class="stat-grid">
+
+<div class="stat-card">
+
+<div id="stat-students"
+     class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+الطلاب المسجلون
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div id="stat-attendance"
+     class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+الحضور
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div id="stat-teachers"
+     class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+المدرسون
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div id="stat-lectures"
+     class="stat-number">
+0
+</div>
+
+<div class="stat-label">
+المحاضرات
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- اسم المنصة -->
 
 <div class="admin-box">
 
@@ -996,59 +1482,58 @@ style="border-color:#48cae4">
 اسم المنصة
 </label>
 
-<input
-id="admin-platform-name"
-class="form-control"
->
+<input id="platform-name-input"
+       class="form-control">
 
 </div>
 
-<button
-class="btn-submit"
-onclick="savePlatformName()"
->
+<button class="btn-submit"
+        onclick="updatePlatformName()">
+
 حفظ الاسم
+
 </button>
 
 
-<div class="form-group" style="margin-top:12px">
+<div class="form-group"
+     style="margin-top:12px;">
 
 <label>
-صورة المنصة من الاستديو
+صورة المنصة
 </label>
 
-<input
-id="platform-logo-file"
-type="file"
-accept="image/*"
-class="form-control"
-onchange="previewLogo(event)"
->
+<label class="file-label"
+       for="platform-logo-file">
 
-<img
-id="logo-preview"
-class="preview-image"
->
+<i class="fa-solid fa-image"></i>
+
+اختيار صورة من الاستديو
+
+</label>
+
+<input id="platform-logo-file"
+       type="file"
+       accept="image/*"
+       onchange="selectPlatformLogo(event)">
 
 </div>
 
-<button
-class="btn-submit btn-success"
-onclick="saveLogo()"
->
-حفظ صورة المنصة
-</button>
+<img id="platform-logo-preview"
+     class="preview-image hidden">
 
 </div>
 
 
-<!-- ================= إدارة المدرسين ================= -->
+<!-- إدارة المدرسين -->
 
 <div class="admin-box">
 
 <h3>
+
 <i class="fa-solid fa-chalkboard-user"></i>
+
 إدارة المدرسين
+
 </h3>
 
 <div class="form-group">
@@ -1057,11 +1542,9 @@ onclick="saveLogo()"
 اسم المدرس
 </label>
 
-<input
-id="teacher-name"
-class="form-control"
-placeholder="مثال: أ. أحمد"
->
+<input id="teacher-name-input"
+       class="form-control"
+       placeholder="مثال: أ. أحمد">
 
 </div>
 
@@ -1071,167 +1554,105 @@ placeholder="مثال: أ. أحمد"
 المادة
 </label>
 
-<input
-id="teacher-subject"
-class="form-control"
-placeholder="مثال: الفيزياء"
->
+<input id="teacher-subject-input"
+       class="form-control"
+       placeholder="مثال: الفيزياء">
 
 </div>
 
-<button
-class="btn-submit btn-success"
-onclick="addTeacher()"
->
+<button class="btn-submit btn-success"
+        onclick="addTeacher()">
+
 إضافة مدرس
+
 </button>
 
-</div>
-
-
-<div class="admin-box">
-
-<h3>
-<i class="fa-solid fa-users"></i>
-المدرسون
-</h3>
-
-<div id="admin-teachers"></div>
+<div id="teachers-admin-list"
+     style="margin-top:12px;"></div>
 
 </div>
 
 
-<!-- ================= المحاضرات ================= -->
+<!-- لوحة المحاضرات -->
 
 <div class="admin-box">
 
 <h3>
+
 <i class="fa-solid fa-video"></i>
-لوحة التحكم بالمحاضرات
+
+لوحة تحكم المحاضرات
+
 </h3>
 
-<div class="form-group">
+<p style="font-size:10px;color:#8d99ae;margin-bottom:10px;">
 
-<label>
-المدرس
-</label>
+اختر المدرس ثم أضف الفصل والمحاضرة.
 
-<select id="lecture-teacher" class="form-control"></select>
+</p>
 
-</div>
+<select id="lecture-teacher-select"
+        class="form-control"
+        onchange="renderTeacherLecturePanel()">
 
-<div class="form-group">
+<option value="">
+اختر المدرس
+</option>
 
-<label>
-الفصل
-</label>
+</select>
 
-<input
-id="lecture-chapter"
-class="form-control"
-placeholder="الفصل الأول"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-عنوان المحاضرة
-</label>
-
-<input
-id="lecture-title"
-class="form-control"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-رفع المحاضرة من الجهاز
-</label>
-
-<input
-id="lecture-file"
-type="file"
-accept="video/*,.pdf,.mp4,.webm"
-class="form-control"
->
-
-</div>
-
-<button
-class="btn-submit btn-success"
-onclick="addLecture()"
->
-رفع وإضافة المحاضرة
-</button>
+<div id="teacher-lecture-panel"
+     style="margin-top:12px;"></div>
 
 </div>
 
 
-<!-- ================= الامتحانات ================= -->
+<!-- لوحة الأسئلة -->
 
 <div class="admin-box">
 
 <h3>
-<i class="fa-solid fa-file-pen"></i>
-إنشاء امتحان للمدرس
+
+<i class="fa-solid fa-circle-question"></i>
+
+لوحة الأسئلة والأجوبة للمدرسين
+
 </h3>
 
-<div class="form-group">
+<select id="question-teacher-select"
+        class="form-control">
 
-<label>
-المدرس
-</label>
+<option value="">
+اختر المدرس
+</option>
 
-<select id="exam-teacher" class="form-control"></select>
+</select>
 
-</div>
-
-<div class="form-group">
+<div class="form-group"
+     style="margin-top:10px;">
 
 <label>
 اسم الامتحان
 </label>
 
-<input
-id="admin-exam-title"
-class="form-control"
->
+<input id="exam-title-input"
+       class="form-control"
+       placeholder="مثال: امتحان الفصل الأول">
 
 </div>
 
 <div class="form-group">
 
 <label>
-المادة
+مدة الامتحان بالدقائق
 </label>
 
-<input
-id="admin-exam-subject"
-class="form-control"
->
+<input id="exam-duration-input"
+       class="form-control"
+       type="number"
+       value="20">
 
 </div>
-
-<div class="form-group">
-
-<label>
-وقت الامتحان بالدقائق
-</label>
-
-<input
-id="admin-exam-duration"
-type="number"
-class="form-control"
-value="20"
->
-
-</div>
-
 
 <div class="form-group">
 
@@ -1239,112 +1660,73 @@ value="20"
 السؤال
 </label>
 
-<textarea
-id="question-text"
-class="form-control"
-></textarea>
+<textarea id="question-input"
+          class="form-control"
+          placeholder="اكتب السؤال هنا"></textarea>
 
 </div>
 
 <div class="form-group">
 
 <label>
-الإجابة 1
+الإجابة النموذجية
 </label>
 
-<input
-id="answer1"
-class="form-control"
->
+<textarea id="model-answer-input"
+          class="form-control"
+          placeholder="اكتب الإجابة الصحيحة هنا"></textarea>
 
 </div>
 
-<div class="form-group">
+<button class="btn-submit btn-success"
+        onclick="addTeacherQuestion()">
 
-<label>
-الإجابة 2
-</label>
-
-<input
-id="answer2"
-class="form-control"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-الإجابة 3
-</label>
-
-<input
-id="answer3"
-class="form-control"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-الإجابة 4
-</label>
-
-<input
-id="answer4"
-class="form-control"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-رقم الإجابة الصحيحة
-</label>
-
-<select
-id="correct-answer"
-class="form-control"
->
-
-<option value="0">الإجابة 1</option>
-<option value="1">الإجابة 2</option>
-<option value="2">الإجابة 3</option>
-<option value="3">الإجابة 4</option>
-
-</select>
-
-</div>
-
-<button
-class="btn-submit"
-onclick="addQuestionToDraft()"
->
 إضافة السؤال
+
 </button>
 
-<div id="draft-questions" style="margin-top:10px"></div>
-
-<button
-class="btn-submit btn-success"
-onclick="saveExam()"
->
-حفظ الامتحان
-</button>
+<div id="teacher-questions-list"
+     style="margin-top:12px;"></div>
 
 </div>
 
 
-<!-- ================= الإعلانات ================= -->
+<!-- الإعلانات -->
 
 <div class="admin-box">
 
 <h3>
+
 <i class="fa-solid fa-bullhorn"></i>
+
 لوحة الإعلانات
+
 </h3>
+
+<div class="form-group">
+
+<label>
+نوع الإعلان
+</label>
+
+<select id="ad-platform"
+        class="form-control">
+
+<option value="telegram">
+Telegram
+</option>
+
+<option value="youtube">
+YouTube
+</option>
+
+<option value="instagram">
+Instagram
+</option>
+
+</select>
+
+</div>
 
 <div class="form-group">
 
@@ -1352,57 +1734,9 @@ onclick="saveExam()"
 عنوان الإعلان
 </label>
 
-<input
-id="announcement-title"
-class="form-control"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-نص الإعلان
-</label>
-
-<textarea
-id="announcement-text"
-class="form-control"
-></textarea>
-
-</div>
-
-<div class="form-group">
-
-<label>
-صورة الإعلان من الاستديو
-</label>
-
-<input
-id="announcement-image"
-type="file"
-accept="image/*"
-class="form-control"
->
-
-</div>
-
-<div class="form-group">
-
-<label>
-نوع الرابط
-</label>
-
-<select
-id="announcement-type"
-class="form-control"
->
-
-<option value="telegram">Telegram</option>
-<option value="youtube">YouTube</option>
-<option value="instagram">Instagram</option>
-
-</select>
+<input id="ad-title"
+       class="form-control"
+       placeholder="عنوان الإعلان">
 
 </div>
 
@@ -1412,40 +1746,54 @@ class="form-control"
 الرابط
 </label>
 
-<input
-id="announcement-link"
-class="form-control"
-placeholder="https://..."
->
+<input id="ad-link"
+       class="form-control"
+       placeholder="https://...">
 
 </div>
 
-<button
-class="btn-submit btn-gold"
-onclick="addAnnouncement()"
->
+<label class="file-label"
+       for="ad-image">
+
+<i class="fa-solid fa-image"></i>
+
+اختيار صورة الإعلان
+
+</label>
+
+<input id="ad-image"
+       type="file"
+       accept="image/*"
+       onchange="previewAdImage(event)">
+
+<img id="ad-preview"
+     class="preview-image hidden">
+
+<button class="btn-submit btn-gold"
+        style="margin-top:10px;"
+        onclick="publishAd()">
+
 نشر الإعلان
+
 </button>
 
 </div>
 
 
-<!-- ================= توليد الأكواد ================= -->
+<!-- الأكواد -->
 
 <div class="admin-box">
 
 <h3>
+
 <i class="fa-solid fa-key"></i>
+
 توليد أكواد التفعيل
+
 </h3>
 
-<div class="form-group">
-
-<label>
-نوع الكود
-</label>
-
-<select id="code-type" class="form-control">
+<select id="code-type"
+        class="form-control">
 
 <option value="monthly">
 شهري
@@ -1457,54 +1805,70 @@ onclick="addAnnouncement()"
 
 </select>
 
-</div>
+<input id="generated-code"
+       class="form-control"
+       style="margin-top:10px;text-align:center;color:#ffd700;font-weight:bold;"
+       readonly>
 
-<div class="form-group">
+<button class="btn-submit btn-gold"
+        style="margin-top:10px;"
+        onclick="generateCode()">
 
-<label>
-الكود
-</label>
-
-<input
-id="generated-code"
-class="form-control"
-readonly
-style="text-align:center;color:#ffd166;font-size:18px;font-weight:bold"
->
-
-</div>
-
-<button
-class="btn-submit"
-onclick="generateCode()"
->
 توليد كود
+
 </button>
 
-<button
-class="btn-submit btn-success"
-onclick="saveGeneratedCode()"
->
+<button class="btn-submit btn-success"
+        style="margin-top:7px;"
+        onclick="saveGeneratedCode()">
+
 اعتماد الكود
-</button>
 
-<div id="codes-list" style="margin-top:10px"></div>
+</button>
 
 </div>
 
 
-<!-- ================= حضور المدرسين ================= -->
+<!-- الطلاب -->
 
 <div class="admin-box">
 
 <h3>
-<i class="fa-solid fa-user-check"></i>
-حضور المدرسين
+
+<i class="fa-solid fa-users"></i>
+
+الطلاب المسجلون والحضور
+
 </h3>
 
-<div id="teacher-attendance-list"></div>
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+الطالب
+</th>
+
+<th>
+المحافظة
+</th>
+
+<th>
+الحضور
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="students-table"></tbody>
+
+</table>
 
 </div>
+
 
 </div>
 
@@ -1515,45 +1879,51 @@ onclick="saveGeneratedCode()"
 
 <div class="bottom-nav">
 
-<div
-class="nav-item active"
-onclick="switchTab('home',this)"
->
+<div class="nav-item active"
+     onclick="switchTab('home',this)">
+
 <i class="fa-solid fa-house"></i>
+
 الرئيسية
+
 </div>
 
-<div
-class="nav-item"
-onclick="switchTab('lectures',this)"
->
-<i class="fa-solid fa-video"></i>
+<div class="nav-item"
+     onclick="switchTab('lectures',this)">
+
+<i class="fa-solid fa-circle-play"></i>
+
 المحاضرات
+
 </div>
 
-<div
-class="nav-item"
-onclick="switchTab('exams',this)"
->
+<div class="nav-item"
+     onclick="switchTab('exams',this)">
+
 <i class="fa-solid fa-pen-to-square"></i>
+
 الامتحانات
+
 </div>
 
-<div
-class="nav-item"
-onclick="switchTab('games',this)"
->
-<i class="fa-solid fa-gamepad"></i>
-الألعاب
+<div class="nav-item"
+     onclick="openSupport()">
+
+<i class="fa-solid fa-headset"></i>
+
+الدعم
+
 </div>
 
-<div
-id="admin-nav"
-class="nav-item hidden"
-onclick="switchTab('profile',this)"
->
+<div id="nav-admin-btn"
+     class="nav-item"
+     style="display:none;"
+     onclick="switchTab('profile',this)">
+
 <i class="fa-solid fa-gears"></i>
+
 الإدارة
+
 </div>
 
 </div>
@@ -1576,16 +1946,41 @@ const SUPABASE_ANON_KEY =
 const {createClient}=supabase;
 
 const db=createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
 );
 
 
 /* =========================================================
-   DATA
+   VARIABLES
 ========================================================= */
 
-const subjectsScientific=[
+let isAdmin=false;
+
+let currentAdminCode=
+localStorage.getItem('admin_code') || 'admin123';
+
+let watchMinutes=
+parseInt(
+localStorage.getItem('student_watch_minutes') || '0'
+);
+
+let activeExam=null;
+
+let examTimer=null;
+
+let selectedAdImage='';
+
+let selectedLogo='';
+
+let gameScore=0;
+
+
+/* =========================================================
+   SUBJECTS
+========================================================= */
+
+const scientificSubjects=[
 "التربية الإسلامية",
 "اللغة العربية",
 "اللغة الإنكليزية",
@@ -1595,7 +1990,7 @@ const subjectsScientific=[
 "الأحياء"
 ];
 
-const subjectsLiterary=[
+const literarySubjects=[
 "التربية الإسلامية",
 "اللغة العربية",
 "اللغة الإنكليزية",
@@ -1605,1942 +2000,200 @@ const subjectsLiterary=[
 "الفلسفة والمنطق"
 ];
 
-let teachers=
-JSON.parse(
-localStorage.getItem("teachers")||"[]"
-);
-
-let lectures=
-JSON.parse(
-localStorage.getItem("lectures")||"[]"
-);
-
-let exams=
-JSON.parse(
-localStorage.getItem("exams")||"[]"
-);
-
-let announcements=
-JSON.parse(
-localStorage.getItem("announcements")||"[]"
-);
-
-let activationCodes=
-JSON.parse(
-localStorage.getItem("activation_codes")||"[]"
-);
-
-let dailyResults=
-JSON.parse(
-localStorage.getItem("daily_results")||"[]"
-);
-
-let draftQuestions=[];
-
-let activeExam=null;
-
-let examTimer=null;
-
-let logoData="";
-
-let motivationTimer=null;
-
 
 /* =========================================================
-   START
+   INIT
 ========================================================= */
 
 window.onload=function(){
 
-resetDailyData();
+    check24HourReset();
 
-loadBranding();
+    loadBranding();
 
-renderSubjects();
+    renderSubjects();
 
-renderTeachers();
+    loadAnnouncements();
 
-renderLectures();
+    loadTeachers();
 
-renderExams();
+    loadExams();
 
-renderAnnouncements();
+    loadDailyResults();
 
-renderResults();
+    updateWatchDisplay();
 
-renderCodes();
+    loadStats();
 
-renderTeacherAttendance();
+    loadStudents();
 
-startMotivationTimer();
+    const params=
+    new URLSearchParams(
+        window.location.search
+    );
 
-checkAccess();
+    if(params.get('admin')===currentAdminCode){
+
+        enableAdminMode();
+
+    }else{
+
+        document.getElementById(
+            'nav-admin-btn'
+        ).style.display='none';
+
+        checkPlatformAccess();
+
+        checkMandatoryAttendance();
+
+    }
 
 };
 
 
 /* =========================================================
-   24 HOUR RESET
+   TABS
 ========================================================= */
 
-function resetDailyData(){
+function switchTab(id,element){
 
-const last=
-parseInt(
-localStorage.getItem("daily_reset")||"0"
-);
+    document
+    .querySelectorAll('.tab-panel')
+    .forEach(x=>
+        x.classList.remove('active')
+    );
 
-const now=Date.now();
+    const target=
+    document.getElementById(id);
 
-if(!last || now-last>=86400000){
+    if(target)
+        target.classList.add('active');
 
-dailyResults=[];
+    if(element){
 
-localStorage.setItem(
-"daily_results",
-JSON.stringify([])
-);
+        document
+        .querySelectorAll('.nav-item')
+        .forEach(x=>
+            x.classList.remove('active')
+        );
 
-localStorage.setItem(
-"daily_reset",
-now.toString()
-);
+        element.classList.add('active');
 
-}
+    }
 
 }
 
 
 /* =========================================================
-   ACCESS
+   BRANDING
 ========================================================= */
-
-function checkAccess(){
-
-const adminCode=
-localStorage.getItem("admin_code")||"admin123";
-
-const params=
-new URLSearchParams(location.search);
-
-if(params.get("admin")===adminCode){
-
-enableAdmin();
-
-return;
-
-}
-
-const authorized=
-localStorage.getItem("platform_authorized");
-
-const trial=
-parseInt(
-localStorage.getItem("trial_expiry")||"0"
-);
-
-if(
-authorized!=="true" &&
-Date.now()>trial
-){
-
-document
-.getElementById("access-modal")
-.classList.remove("hidden");
-
-}
-
-checkAttendance();
-
-}
-
-
-/* =========================================================
-   ACTIVATION
-========================================================= */
-
-function verifyAccessCode(){
-
-const input=
-document
-.getElementById("access-code-input")
-.value
-.trim()
-.toUpperCase();
-
-const found=
-activationCodes.find(
-c=>c.code===input && Date.now()<c.expiry
-);
-
-if(!found){
-
-alert("الكود غير صحيح أو منتهي الصلاحية");
-
-return;
-
-}
-
-localStorage.setItem(
-"platform_authorized",
-"true"
-);
-
-document
-.getElementById("access-modal")
-.classList.add("hidden");
-
-alert(
-found.type==="annual"
-?"تم تفعيل الاشتراك السنوي"
-:"تم تفعيل الاشتراك الشهري"
-);
-
-}
-
-
-function activateTrial(){
-
-localStorage.setItem(
-"trial_expiry",
-(Date.now()+30*86400000).toString()
-);
-
-localStorage.setItem(
-"platform_authorized",
-"false"
-);
-
-document
-.getElementById("access-modal")
-.classList.add("hidden");
-
-alert(
-"تم تفعيل التجربة المجانية لمدة شهر كامل 🎁"
-);
-
-}
-
-
-/* =========================================================
-   CODE GENERATOR
-========================================================= */
-
-function generateCode(){
-
-const chars=
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-let code="";
-
-for(let i=0;i<12;i++){
-
-code+=
-chars[
-Math.floor(
-Math.random()*chars.length
-)
-];
-
-}
-
-document
-.getElementById("generated-code")
-.value=code;
-
-}
-
-
-function saveGeneratedCode(){
-
-const code=
-document
-.getElementById("generated-code")
-.value;
-
-const type=
-document
-.getElementById("code-type")
-.value;
-
-if(!code){
-
-alert("قم بتوليد الكود أولاً");
-
-return;
-
-}
-
-const expiry=
-type==="annual"
-?Date.now()+365*86400000
-:Date.now()+30*86400000;
-
-activationCodes.push({
-
-code,
-type,
-expiry,
-createdAt:new Date().toISOString()
-
-});
-
-localStorage.setItem(
-"activation_codes",
-JSON.stringify(activationCodes)
-);
-
-renderCodes();
-
-alert(
-`تم اعتماد الكود ${code}`
-);
-
-}
-
-
-function renderCodes(){
-
-const box=
-document.getElementById("codes-list");
-
-if(!box)return;
-
-box.innerHTML="";
-
-activationCodes.forEach((c,i)=>{
-
-const type=
-c.type==="annual"
-?"سنوي"
-:"شهري";
-
-const expired=
-Date.now()>c.expiry;
-
-box.innerHTML+=`
-
-<div class="chapter-box">
-
-<strong>${c.code}</strong>
-
-<div style="font-size:10px;color:#8d99ae">
-
-النوع: ${type}
-
-<br>
-
-الحالة:
-${expired?"منتهي":"فعال"}
-
-</div>
-
-<button
-class="btn-submit btn-danger"
-onclick="deleteCode(${i})"
->
-حذف
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-function deleteCode(i){
-
-activationCodes.splice(i,1);
-
-localStorage.setItem(
-"activation_codes",
-JSON.stringify(activationCodes)
-);
-
-renderCodes();
-
-}
-
-
-/* =========================================================
-   ATTENDANCE
-========================================================= */
-
-function checkAttendance(){
-
-const last=
-parseInt(
-localStorage.getItem("attendance_time")||"0"
-);
-
-if(
-!last ||
-Date.now()-last>=86400000
-){
-
-document
-.getElementById("attendance-modal")
-.classList.remove("hidden");
-
-}
-
-}
-
-
-async function submitAttendance(){
-
-const name=
-document
-.getElementById("attendance-name")
-.value
-.trim();
-
-const gov=
-document
-.getElementById("attendance-gov")
-.value
-.trim();
-
-if(!name||!gov){
-
-alert("أدخل الاسم والمحافظة");
-
-return;
-
-}
-
-try{
-
-await db
-.from("attendance")
-.insert([
-{
-student_name:name,
-governorate:gov,
-created_at:new Date().toISOString()
-}
-]);
-
-}catch(e){
-
-console.log(e);
-
-}
-
-localStorage.setItem(
-"attendance_time",
-Date.now().toString()
-);
-
-document
-.getElementById("attendance-modal")
-.classList.add("hidden");
-
-alert("تم تسجيل حضورك بنجاح");
-
-}
-
-
-/* =========================================================
-   TEACHERS
-========================================================= */
-
-function addTeacher(){
-
-const name=
-document.getElementById("teacher-name").value.trim();
-
-const subject=
-document.getElementById("teacher-subject").value.trim();
-
-if(!name||!subject){
-
-alert("أدخل اسم المدرس والمادة");
-
-return;
-
-}
-
-teachers.push({
-
-id:Date.now().toString(),
-
-name,
-
-subject,
-
-attendance:[]
-
-});
-
-localStorage.setItem(
-"teachers",
-JSON.stringify(teachers)
-);
-
-document.getElementById("teacher-name").value="";
-document.getElementById("teacher-subject").value="";
-
-renderTeachers();
-
-alert("تمت إضافة المدرس");
-
-}
-
-
-function renderTeachers(){
-
-const adminBox=
-document.getElementById("admin-teachers");
-
-const lectureSelect=
-document.getElementById("lecture-teacher");
-
-const examSelect=
-document.getElementById("exam-teacher");
-
-if(!adminBox)return;
-
-adminBox.innerHTML="";
-
-lectureSelect.innerHTML=
-'<option value="">اختر المدرس</option>';
-
-examSelect.innerHTML=
-'<option value="">اختر المدرس</option>';
-
-teachers.forEach(t=>{
-
-adminBox.innerHTML+=`
-
-<div class="chapter-box">
-
-<strong>
-${escapeHTML(t.name)}
-</strong>
-
-<div style="color:#8d99ae">
-${escapeHTML(t.subject)}
-</div>
-
-<button
-class="btn-submit btn-success"
-onclick="teacherAttendance('${t.id}')"
->
-تسجيل حضور المدرس
-</button>
-
-<button
-class="btn-submit btn-danger"
-onclick="deleteTeacher('${t.id}')"
->
-حذف المدرس
-</button>
-
-</div>
-`;
-
-lectureSelect.innerHTML+=`
-<option value="${t.id}">
-${escapeHTML(t.name)} - ${escapeHTML(t.subject)}
-</option>
-`;
-
-examSelect.innerHTML+=`
-<option value="${t.id}">
-${escapeHTML(t.name)} - ${escapeHTML(t.subject)}
-</option>
-`;
-
-});
-
-}
-
-
-function deleteTeacher(id){
-
-teachers=
-teachers.filter(t=>t.id!==id);
-
-localStorage.setItem(
-"teachers",
-JSON.stringify(teachers)
-);
-
-renderTeachers();
-
-renderTeacherAttendance();
-
-}
-
-
-function teacherAttendance(id){
-
-const teacher=
-teachers.find(t=>t.id===id);
-
-if(!teacher)return;
-
-teacher.attendance.push({
-time:new Date().toISOString()
-});
-
-localStorage.setItem(
-"teachers",
-JSON.stringify(teachers)
-);
-
-renderTeacherAttendance();
-
-alert(
-`تم تسجيل حضور ${teacher.name}`
-);
-
-}
-
-
-function renderTeacherAttendance(){
-
-const box=
-document.getElementById(
-"teacher-attendance-list"
-);
-
-if(!box)return;
-
-box.innerHTML="";
-
-teachers.forEach(t=>{
-
-const today=
-new Date().toDateString();
-
-const attended=
-t.attendance.some(
-a=>new Date(a.time).toDateString()===today
-);
-
-box.innerHTML+=`
-
-<div class="chapter-box">
-
-${escapeHTML(t.name)}
-
-<br>
-
-<span style="color:${attended?"#2a9d8f":"#e63946"}">
-
-${attended?"حاضر اليوم":"لم يسجل الحضور"}
-
-</span>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-/* =========================================================
-   LECTURES
-========================================================= */
-
-function addLecture(){
-
-const teacherId=
-document
-.getElementById("lecture-teacher")
-.value;
-
-const chapter=
-document
-.getElementById("lecture-chapter")
-.value.trim();
-
-const title=
-document
-.getElementById("lecture-title")
-.value.trim();
-
-const file=
-document
-.getElementById("lecture-file")
-.files[0];
-
-if(!teacherId||!chapter||!title||!file){
-
-alert("أكمل جميع بيانات المحاضرة");
-
-return;
-
-}
-
-const teacher=
-teachers.find(t=>t.id===teacherId);
-
-const url=
-URL.createObjectURL(file);
-
-lectures.push({
-
-id:Date.now().toString(),
-
-teacherId,
-
-teacher:teacher.name,
-
-subject:teacher.subject,
-
-chapter,
-
-title,
-
-fileName:file.name,
-
-fileType:file.type,
-
-url
-
-});
-
-localStorage.setItem(
-"lectures",
-JSON.stringify(lectures)
-);
-
-renderLectures();
-
-alert(
-"تمت إضافة المحاضرة من الجهاز بنجاح"
-);
-
-}
-
-
-function renderLectures(){
-
-const box=
-document.getElementById(
-"lectures-container"
-);
-
-if(!box)return;
-
-box.innerHTML="";
-
-if(!lectures.length){
-
-box.innerHTML=`
-<div class="chapter-box">
-لا توجد محاضرات حالياً
-</div>
-`;
-
-return;
-
-}
-
-lectures.forEach(l=>{
-
-box.innerHTML+=`
-
-<div class="chapter-box">
-
-<div style="color:#48cae4;font-weight:bold">
-
-<i class="fa-solid fa-video"></i>
-
-${escapeHTML(l.title)}
-
-</div>
-
-<div style="color:#8d99ae;margin-top:5px">
-
-المدرس:
-${escapeHTML(l.teacher)}
-
-<br>
-
-الفصل:
-${escapeHTML(l.chapter)}
-
-</div>
-
-<button
-class="btn-submit"
-onclick="openLecture('${l.id}')"
->
-مشاهدة المحاضرة
-</button>
-
-<button
-class="btn-submit btn-danger"
-onclick="deleteLecture('${l.id}')"
->
-حذف
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-function openLecture(id){
-
-const lecture=
-lectures.find(l=>l.id===id);
-
-if(!lecture)return;
-
-const w=
-window.open("","_blank");
-
-if(!w){
-
-alert("اسمح بفتح النوافذ المنبثقة");
-
-return;
-
-}
-
-if(
-lecture.fileType.includes("video")
-){
-
-w.document.write(`
-
-<html dir="rtl">
-
-<body style="background:#0b132b;color:white;text-align:center">
-
-<h3>${escapeHTML(lecture.title)}</h3>
-
-<video
-src="${lecture.url}"
-controls
-autoplay
-style="width:90%;max-width:800px"
-></video>
-
-</body>
-</html>
-
-`);
-
-}else{
-
-w.location.href=lecture.url;
-
-}
-
-}
-
-
-function deleteLecture(id){
-
-lectures=
-lectures.filter(l=>l.id!==id);
-
-localStorage.setItem(
-"lectures",
-JSON.stringify(lectures)
-);
-
-renderLectures();
-
-}
-
-
-/* =========================================================
-   EXAMS
-========================================================= */
-
-function addQuestionToDraft(){
-
-const question=
-document
-.getElementById("question-text")
-.value.trim();
-
-const answers=[
-document.getElementById("answer1").value,
-document.getElementById("answer2").value,
-document.getElementById("answer3").value,
-document.getElementById("answer4").value
-];
-
-const correct=
-parseInt(
-document.getElementById("correct-answer").value
-);
-
-if(!question||answers.some(a=>!a)){
-
-alert("أكمل السؤال وجميع الإجابات");
-
-return;
-
-}
-
-draftQuestions.push({
-
-question,
-answers,
-correct
-
-});
-
-document.getElementById("question-text").value="";
-document.getElementById("answer1").value="";
-document.getElementById("answer2").value="";
-document.getElementById("answer3").value="";
-document.getElementById("answer4").value="";
-
-renderDraftQuestions();
-
-}
-
-
-function renderDraftQuestions(){
-
-const box=
-document.getElementById("draft-questions");
-
-box.innerHTML="";
-
-draftQuestions.forEach((q,i)=>{
-
-box.innerHTML+=`
-
-<div class="chapter-box">
-
-السؤال ${i+1}:
-${escapeHTML(q.question)}
-
-<button
-class="btn-submit btn-danger"
-onclick="removeDraftQuestion(${i})"
->
-حذف السؤال
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-function removeDraftQuestion(i){
-
-draftQuestions.splice(i,1);
-
-renderDraftQuestions();
-
-}
-
-
-function saveExam(){
-
-const teacherId=
-document
-.getElementById("exam-teacher")
-.value;
-
-const title=
-document
-.getElementById("admin-exam-title")
-.value.trim();
-
-const subject=
-document
-.getElementById("admin-exam-subject")
-.value.trim();
-
-const duration=
-parseInt(
-document
-.getElementById("admin-exam-duration")
-.value
-);
-
-if(
-!teacherId||
-!title||
-!subject||
-!duration||
-!draftQuestions.length
-){
-
-alert("أكمل بيانات الامتحان وأضف سؤالاً واحداً على الأقل");
-
-return;
-
-}
-
-const teacher=
-teachers.find(t=>t.id===teacherId);
-
-exams.push({
-
-id:Date.now().toString(),
-
-teacherId,
-
-teacher:teacher.name,
-
-subject,
-
-title,
-
-duration,
-
-questions:[...draftQuestions],
-
-createdAt:new Date().toISOString()
-
-});
-
-localStorage.setItem(
-"exams",
-JSON.stringify(exams)
-);
-
-draftQuestions=[];
-
-renderDraftQuestions();
-
-renderExams();
-
-alert("تم إنشاء الامتحان بنجاح");
-
-}
-
-
-function renderExams(){
-
-const box=
-document.getElementById(
-"student-exams-container"
-);
-
-if(!box)return;
-
-box.innerHTML="";
-
-if(!exams.length){
-
-box.innerHTML=`
-<div class="chapter-box">
-لا توجد امتحانات متاحة حالياً
-</div>
-`;
-
-return;
-
-}
-
-exams.forEach(e=>{
-
-box.innerHTML+=`
-
-<div class="exam-card">
-
-<h3 style="color:#e0a96d">
-${escapeHTML(e.title)}
-</h3>
-
-<p style="font-size:11px;color:#8d99ae;margin-top:5px">
-
-المدرس:
-${escapeHTML(e.teacher)}
-
-<br>
-
-المادة:
-${escapeHTML(e.subject)}
-
-<br>
-
-المدة:
-${e.duration} دقيقة
-
-<br>
-
-عدد الأسئلة:
-${e.questions.length}
-
-</p>
-
-<button
-class="btn-submit btn-success"
-onclick="startExam('${e.id}')"
->
-بدء الامتحان
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-function startExam(id){
-
-const exam=
-exams.find(e=>e.id===id);
-
-if(!exam)return;
-
-activeExam=exam;
-
-document
-.getElementById("exam-modal-title")
-.innerText=exam.title;
-
-const box=
-document.getElementById("exam-questions");
-
-box.innerHTML="";
-
-exam.questions.forEach((q,i)=>{
-
-let html=`
-
-<div class="exam-question">
-
-<strong>
-${i+1}. ${escapeHTML(q.question)}
-</strong>
-
-`;
-
-q.answers.forEach((a,j)=>{
-
-html+=`
-
-<label class="option">
-
-<input
-type="radio"
-name="question_${i}"
-value="${j}"
->
-
-${escapeHTML(a)}
-
-</label>
-
-`;
-
-});
-
-html+="</div>";
-
-box.innerHTML+=html;
-
-});
-
-document
-.getElementById("exam-modal")
-.classList.remove("hidden");
-
-startExamTimer(exam.duration*60);
-
-}
-
-
-function startExamTimer(seconds){
-
-if(examTimer)
-clearInterval(examTimer);
-
-let remaining=seconds;
-
-updateExamTimer(remaining);
-
-examTimer=setInterval(()=>{
-
-remaining--;
-
-updateExamTimer(remaining);
-
-if(remaining<=0){
-
-clearInterval(examTimer);
-
-submitExam();
-
-}
-
-},1000);
-
-}
-
-
-function updateExamTimer(seconds){
-
-const m=
-Math.floor(seconds/60);
-
-const s=
-seconds%60;
-
-document
-.getElementById("exam-timer")
-.innerText=
-`الوقت: ${m}:${s<10?"0":""}${s}`;
-
-}
-
-
-/* =========================================================
-   AI STYLE CORRECTION
-========================================================= */
-
-function submitExam(){
-
-if(!activeExam)return;
-
-if(examTimer)
-clearInterval(examTimer);
-
-let correct=0;
-
-activeExam.questions.forEach((q,i)=>{
-
-const selected=
-document.querySelector(
-`input[name="question_${i}"]:checked`
-);
-
-if(
-selected &&
-parseInt(selected.value)===q.correct
-){
-
-correct++;
-
-}
-
-});
-
-const total=
-activeExam.questions.length;
-
-const score=
-Math.round((correct/total)*100);
-
-dailyResults.push({
-
-subject:activeExam.subject,
-
-exam:activeExam.title,
-
-score,
-
-time:new Date().toLocaleTimeString("ar-IQ",{
-hour:"2-digit",
-minute:"2-digit"
-})
-
-});
-
-localStorage.setItem(
-"daily_results",
-JSON.stringify(dailyResults)
-);
-
-document
-.getElementById("exam-modal")
-.classList.add("hidden");
-
-renderResults();
-
-alert(
-`تم التصحيح بالذكاء الاصطناعي\n\nالدرجة: ${score}/100`
-);
-
-activeExam=null;
-
-}
-
-
-/* =========================================================
-   RESULTS
-========================================================= */
-
-function renderResults(){
-
-const table=
-document.getElementById("results-table");
-
-if(!table)return;
-
-table.innerHTML="";
-
-let total=0;
-
-dailyResults.forEach(r=>{
-
-total+=r.score;
-
-table.innerHTML+=`
-
-<tr>
-
-<td>
-${escapeHTML(r.subject)}
-</td>
-
-<td style="color:#2a9d8f;font-weight:bold">
-${r.score}/100
-</td>
-
-<td>
-${r.time}
-</td>
-
-</tr>
-
-`;
-
-});
-
-document
-.getElementById("total-score")
-.innerText=
-dailyResults.length
-?Math.round(total/dailyResults.length)
-:0;
-
-document
-.getElementById("exam-count")
-.innerText=
-dailyResults.length;
-
-}
-
-
-/* =========================================================
-   ANNOUNCEMENTS
-========================================================= */
-
-function addAnnouncement(){
-
-const title=
-document
-.getElementById("announcement-title")
-.value.trim();
-
-const text=
-document
-.getElementById("announcement-text")
-.value.trim();
-
-const link=
-document
-.getElementById("announcement-link")
-.value.trim();
-
-const type=
-document
-.getElementById("announcement-type")
-.value;
-
-const file=
-document
-.getElementById("announcement-image")
-.files[0];
-
-if(!title||!link){
-
-alert("أدخل عنوان الإعلان والرابط");
-
-return;
-
-}
-
-if(file){
-
-const reader=new FileReader();
-
-reader.onload=function(){
-
-saveAnnouncement(
-title,
-text,
-link,
-type,
-reader.result
-);
-
-};
-
-reader.readAsDataURL(file);
-
-}else{
-
-saveAnnouncement(
-title,
-text,
-link,
-type,
-""
-);
-
-}
-
-}
-
-
-function saveAnnouncement(
-title,
-text,
-link,
-type,
-image
-){
-
-announcements.push({
-
-id:Date.now().toString(),
-
-title,
-
-text,
-
-link,
-
-type,
-
-image
-
-});
-
-localStorage.setItem(
-"announcements",
-JSON.stringify(announcements)
-);
-
-renderAnnouncements();
-
-alert("تم نشر الإعلان");
-
-}
-
-
-function renderAnnouncements(){
-
-const box=
-document.getElementById(
-"announcements-container"
-);
-
-if(!box)return;
-
-box.innerHTML="";
-
-if(!announcements.length){
-
-box.innerHTML=`
-<div class="chapter-box">
-لا توجد إعلانات حالياً
-</div>
-`;
-
-return;
-
-}
-
-announcements.forEach((a,i)=>{
-
-const icon=
-a.type==="telegram"
-?"fa-telegram"
-:a.type==="youtube"
-?"fa-youtube"
-:"fa-instagram";
-
-box.innerHTML+=`
-
-<div class="announcement-card">
-
-${
-a.image
-?`<img src="${a.image}">`
-:""
-}
-
-<div class="announcement-title">
-
-<i class="fa-brands ${icon}"></i>
-
-${escapeHTML(a.title)}
-
-</div>
-
-<p style="font-size:11px;color:#a3cef1;margin-top:5px">
-
-${escapeHTML(a.text||"")}
-
-</p>
-
-<a
-href="${escapeHTML(a.link)}"
-target="_blank"
-class="announcement-link"
->
-فتح الرابط
-</a>
-
-${
-isAdminMode()
-?`
-<button
-class="btn-submit btn-danger"
-onclick="deleteAnnouncement(${i})"
->
-حذف الإعلان
-</button>
-`
-:""
-}
-
-</div>
-
-`;
-
-});
-
-}
-
-
-function deleteAnnouncement(i){
-
-announcements.splice(i,1);
-
-localStorage.setItem(
-"announcements",
-JSON.stringify(announcements)
-);
-
-renderAnnouncements();
-
-}
-
-
-/* =========================================================
-   LOGO
-========================================================= */
-
-function previewLogo(event){
-
-const file=
-event.target.files[0];
-
-if(!file)return;
-
-const reader=new FileReader();
-
-reader.onload=function(){
-
-logoData=reader.result;
-
-const img=
-document.getElementById("logo-preview");
-
-img.src=logoData;
-
-img.style.display="block";
-
-};
-
-reader.readAsDataURL(file);
-
-}
-
-
-function saveLogo(){
-
-if(!logoData){
-
-alert("اختر صورة أولاً");
-
-return;
-
-}
-
-localStorage.setItem(
-"platform_logo",
-logoData
-);
-
-document
-.getElementById("app-logo")
-.src=logoData;
-
-alert("تم حفظ صورة المنصة");
-
-}
-
-
-function savePlatformName(){
-
-const name=
-document
-.getElementById("admin-platform-name")
-.value.trim();
-
-if(!name)return;
-
-localStorage.setItem(
-"platform_name",
-name
-);
-
-document
-.getElementById("platform-title")
-.innerText=name;
-
-document
-.getElementById("hero-title")
-.innerText=name;
-
-alert("تم حفظ اسم المنصة");
-
-}
-
 
 function loadBranding(){
 
-const name=
-localStorage.getItem("platform_name");
+    const name=
+    localStorage.getItem(
+        'platform_name'
+    );
 
-const logo=
-localStorage.getItem("platform_logo");
+    const logo=
+    localStorage.getItem(
+        'platform_logo'
+    );
 
-if(name){
+    if(name){
 
-document
-.getElementById("platform-title")
-.innerText=name;
+        document.getElementById(
+            'app-title-text'
+        ).innerText=name;
 
-document
-.getElementById("hero-title")
-.innerText=name;
+        document.getElementById(
+            'banner-title'
+        ).innerText=name;
 
-document
-.getElementById("admin-platform-name")
-.value=name;
+    }
 
-}
+    if(logo){
 
-if(logo){
+        document.getElementById(
+            'app-logo-img'
+        ).src=logo;
 
-document
-.getElementById("app-logo")
-.src=logo;
+        document.getElementById(
+            'platform-logo-preview'
+        ).src=logo;
 
-logoData=logo;
+        document.getElementById(
+            'platform-logo-preview'
+        ).classList.remove('hidden');
 
-}
-
-}
-
-
-/* =========================================================
-   MOTIVATION
-========================================================= */
-
-const motivations=[
-
-"شد حيلك بطل، التعب اليوم راح يصير فخر باچر 🇮🇶🔥",
-
-"لا تستسلم، كل صفحة تقراها تقربك من حلمك 💪",
-
-"ركز ويا دراستك، أنت تكدر وتسويها 👊",
-
-"بعدك مستمر؟ عاشت إيدك، كمل ولا توقف 🔥",
-
-"ساعة دراسة اليوم أحسن من ندم باچر 📚",
-
-"شد الهمة يا بطل، مستقبلك يستاهل التعب ❤️",
-
-"لا تقارن نفسك بغيرك، قارن نفسك بنفسك أمس 💯",
-
-"باقي شوية وتوصل، لا تخلي التعب يوقفك 🇮🇶"
-
-];
-
-function generateMotivation(){
-
-const msg=
-motivations[
-Math.floor(
-Math.random()*motivations.length
-)
-];
-
-document
-.getElementById("motivation-text")
-.innerText=msg;
-
-}
-
-
-function startMotivationTimer(){
-
-generateMotivation();
-
-if(motivationTimer)
-clearInterval(motivationTimer);
-
-motivationTimer=
-setInterval(
-generateMotivation,
-10*60*1000
-);
+    }
 
 }
 
 
 /* =========================================================
-   SCHEDULE
+   PLATFORM NAME
 ========================================================= */
 
-function createSchedule(){
+function updatePlatformName(){
 
-const hours=
-parseInt(
-document.getElementById("study-hours").value
-)||5;
+    const value=
+    document.getElementById(
+        'platform-name-input'
+    ).value.trim();
 
-const subjects=
-parseInt(
-document.getElementById("study-subjects").value
-)||5;
+    if(!value){
 
-const names=[
-"الرياضيات",
-"الفيزياء",
-"الكيمياء",
-"اللغة الإنكليزية",
-"اللغة العربية",
-"الأحياء",
-"التاريخ",
-"الجغرافية",
-"التربية الإسلامية",
-"مراجعة عامة"
-];
+        alert('اكتب اسم المنصة أولاً');
 
-let html="";
+        return;
 
-for(let i=0;i<subjects;i++){
+    }
 
-const hour=
-Math.floor(i%hours)+1;
+    localStorage.setItem(
+        'platform_name',
+        value
+    );
 
-html+=`
+    loadBranding();
 
-<div class="schedule-card" style="padding:12px">
-
-<strong style="color:#e0a96d">
-
-الساعة ${hour}
-
-</strong>
-
-<div style="margin-top:5px">
-
-${names[i%names.length]}
-
-</div>
-
-<div style="font-size:10px;color:#8d99ae">
-
-دراسة + مراجعة + استراحة
-
-</div>
-
-</div>
-
-`;
-
-}
-
-html+=`
-
-<button
-class="btn-submit btn-success"
-onclick="shareScheduleAsImage()"
->
-<i class="fa-solid fa-image"></i>
-إرسال الجدول كصورة للطالب
-</button>
-
-`;
-
-document
-.getElementById("schedule-result")
-.innerHTML=html;
-
-}
-
-
-function shareScheduleAsImage(){
-
-const text=
-"📚 جدول دراسي\n\n"+
-"08:00 الرياضيات\n"+
-"09:00 الفيزياء\n"+
-"10:00 الكيمياء\n"+
-"11:00 اللغة الإنكليزية\n"+
-"12:00 مراجعة عامة\n\n"+
-"🇮🇶 بالتوفيق يا بطل";
-
-const canvas=
-document.createElement("canvas");
-
-canvas.width=900;
-
-canvas.height=1100;
-
-const ctx=canvas.getContext("2d");
-
-ctx.fillStyle="#0b132b";
-
-ctx.fillRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-ctx.fillStyle="#ffffff";
-
-ctx.font="bold 42px Arial";
-
-ctx.textAlign="center";
-
-ctx.fillText(
-"جدول الطالب الدراسي",
-450,
-100
-);
-
-ctx.font="30px Arial";
-
-const lines=text.split("\n");
-
-lines.forEach((line,i)=>{
-
-ctx.fillText(
-line,
-450,
-180+i*65
-);
-
-});
-
-canvas.toBlob(blob=>{
-
-const url=
-URL.createObjectURL(blob);
-
-const a=
-document.createElement("a");
-
-a.href=url;
-
-a.download="جدول-دراسي.png";
-
-a.click();
-
-URL.revokeObjectURL(url);
-
-alert(
-"تم إنشاء صورة الجدول. يمكنك إرسالها للطالب."
-);
-
-});
+    alert('تم حفظ اسم المنصة');
 
 }
 
 
 /* =========================================================
-   GAMES
+   LOGO FROM DEVICE
 ========================================================= */
 
-function startMemoryGame(){
+function selectPlatformLogo(event){
 
-const number=
-Math.floor(
-1000+Math.random()*9000
-);
+    const file=
+    event.target.files[0];
 
-alert(
-`احفظ الرقم التالي:\n\n${number}\n\nسيظهر لك بعد ثوانٍ للاختبار`
-);
+    if(!file)return;
 
-setTimeout(()=>{
+    const reader=
+    new FileReader();
 
-const answer=
-prompt("اكتب الرقم الذي حفظته:");
+    reader.onload=function(e){
 
-if(answer==number){
+        selectedLogo=e.target.result;
 
-alert("ممتاز! ذاكرتك قوية 🔥");
+        localStorage.setItem(
+            'platform_logo',
+            selectedLogo
+        );
 
-}else{
+        loadBranding();
 
-alert(
-`مو مشكلة، حاول مرة ثانية 💪\nالرقم كان ${number}`
-);
+        alert(
+            'تم اختيار صورة المنصة من الجهاز'
+        );
 
-}
+    };
 
-},4000);
-
-}
-
-
-function startMathGame(){
-
-const a=
-Math.floor(Math.random()*20)+1;
-
-const b=
-Math.floor(Math.random()*20)+1;
-
-const answer=
-prompt(`احسب:\n\n${a} + ${b} = ؟`);
-
-if(parseInt(answer)==a+b){
-
-alert("صح عليك! 🔥");
-
-}else{
-
-alert(
-`حاول مرة ثانية 💪\nالإجابة الصحيحة: ${a+b}`
-);
-
-}
+    reader.readAsDataURL(file);
 
 }
 
@@ -3551,132 +2204,87 @@ alert(
 
 function renderSubjects(){
 
-renderSubjectList(
-"scientific-list",
-subjectsScientific
-);
+    renderSubjectList(
+        'scientific-subjects',
+        scientificSubjects,
+        '#48cae4'
+    );
 
-renderSubjectList(
-"literary-list",
-subjectsLiterary
-);
-
-}
-
-
-function renderSubjectList(id,list){
-
-const box=
-document.getElementById(id);
-
-box.innerHTML="";
-
-list.forEach(subject=>{
-
-box.innerHTML+=`
-
-<div class="subject-accordion">
-
-<div
-class="subject-header"
-onclick="toggleAccordion(this)"
->
-
-<strong>
-
-<i class="fa-solid fa-book"></i>
-
-${subject}
-
-</strong>
-
-<i class="fa-solid fa-chevron-down"></i>
-
-</div>
-
-<div class="subject-body">
-
-<div style="font-size:11px;color:#8d99ae">
-
-المحاضرات والامتحانات الخاصة بالمادة تظهر حسب المدرس.
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-});
+    renderSubjectList(
+        'literary-subjects',
+        literarySubjects,
+        '#e0a96d'
+    );
 
 }
 
 
-/* =========================================================
-   ADMIN
-========================================================= */
+function renderSubjectList(
+    containerId,
+    subjects,
+    iconColor
+){
 
-function enableAdmin(){
+    const container=
+    document.getElementById(
+        containerId
+    );
 
-document
-.getElementById("admin-nav")
-.classList.remove("hidden");
+    container.innerHTML='';
 
-document
-.getElementById("role-badge")
-.innerText="مسؤول المنصة";
+    subjects.forEach(subject=>{
 
-}
+        const box=
+        document.createElement('div');
 
-function isAdminMode(){
+        box.className=
+        'subject-accordion';
 
-return !document
-.getElementById("admin-nav")
-.classList.contains("hidden");
+        box.innerHTML=`
 
-}
+        <div class="subject-header"
+             onclick="toggleAccordion(this)">
 
+            <div>
 
-/* =========================================================
-   SUPPORT
-========================================================= */
+                <i class="fa-solid fa-book"
+                   style="color:${iconColor};"></i>
 
-function openSupport(){
+                <strong>
+                    ${escapeHTML(subject)}
+                </strong>
 
-window.open(
-"https://t.me/muhammed9996",
-"_blank"
-);
+            </div>
 
-}
+            <i class="fa-solid fa-chevron-down"></i>
 
+        </div>
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+        <div class="subject-body">
 
-function switchTab(id,element){
+            <div class="teachers-container"
+                 data-subject="${escapeAttr(subject)}">
+            </div>
 
-document
-.querySelectorAll(".tab-panel")
-.forEach(p=>p.classList.remove("active"));
+            <button
+                class="btn-submit btn-success"
+                onclick="quickAddTeacher('${escapeJS(subject)}')">
 
-const target=
-document.getElementById(id);
+                <i class="fa-solid fa-user-plus"></i>
 
-if(target)
-target.classList.add("active");
+                إضافة مدرس للمادة
 
-if(element){
+            </button>
 
-document
-.querySelectorAll(".nav-item")
-.forEach(n=>n.classList.remove("active"));
+        </div>
 
-element.classList.add("active");
+        `;
 
-}
+        container.appendChild(box);
+
+    });
+
+    renderTeachersIntoSubjects();
 
 }
 
@@ -3687,38 +2295,2942 @@ element.classList.add("active");
 
 function toggleAccordion(el){
 
-const body=
-el.nextElementSibling;
+    const body=
+    el.nextElementSibling;
 
-if(body.style.display==="block"){
+    if(!body)return;
 
-body.style.display="none";
-
-}else{
-
-body.style.display="block";
-
-}
+    body.style.display=
+    body.style.display==='block'
+    ?'none'
+    :'block';
 
 }
 
 
 /* =========================================================
-   ESCAPE HTML
+   TEACHERS STORAGE
+========================================================= */
+
+function getTeachers(){
+
+    return JSON.parse(
+        localStorage.getItem(
+            'platform_teachers'
+        ) || '[]'
+    );
+
+}
+
+
+function saveTeachers(data){
+
+    localStorage.setItem(
+        'platform_teachers',
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =========================================================
+   ADD TEACHER
+========================================================= */
+
+function addTeacher(){
+
+    const name=
+    document.getElementById(
+        'teacher-name-input'
+    ).value.trim();
+
+    const subject=
+    document.getElementById(
+        'teacher-subject-input'
+    ).value.trim();
+
+    if(!name || !subject){
+
+        alert(
+            'أدخل اسم المدرس والمادة'
+        );
+
+        return;
+
+    }
+
+    const teachers=getTeachers();
+
+    teachers.push({
+
+        id:'teacher_'+Date.now(),
+
+        name:name,
+
+        subject:subject,
+
+        chapters:[],
+
+        questions:[]
+
+    });
+
+    saveTeachers(teachers);
+
+    document.getElementById(
+        'teacher-name-input'
+    ).value='';
+
+    document.getElementById(
+        'teacher-subject-input'
+    ).value='';
+
+    loadTeachers();
+
+    renderSubjects();
+
+    alert(
+        'تمت إضافة المدرس'
+    );
+
+}
+
+
+/* =========================================================
+   QUICK ADD TEACHER
+========================================================= */
+
+function quickAddTeacher(subject){
+
+    if(!isAdmin){
+
+        alert(
+            'هذه الخاصية للمسؤول فقط'
+        );
+
+        return;
+
+    }
+
+    const name=
+    prompt(
+        'أدخل اسم مدرس مادة '+subject
+    );
+
+    if(!name)return;
+
+    const teachers=getTeachers();
+
+    teachers.push({
+
+        id:'teacher_'+Date.now(),
+
+        name:name,
+
+        subject:subject,
+
+        chapters:[],
+
+        questions:[]
+
+    });
+
+    saveTeachers(teachers);
+
+    loadTeachers();
+
+    renderSubjects();
+
+}
+
+
+/* =========================================================
+   LOAD TEACHERS
+========================================================= */
+
+function loadTeachers(){
+
+    const teachers=getTeachers();
+
+    const list=
+    document.getElementById(
+        'teachers-admin-list'
+    );
+
+    if(list){
+
+        list.innerHTML='';
+
+        teachers.forEach(t=>{
+
+            list.innerHTML+=`
+
+            <div class="chapter-box">
+
+                <strong>
+                    ${escapeHTML(t.name)}
+                </strong>
+
+                <div style="font-size:10px;color:#8d99ae;margin-top:3px;">
+
+                    ${escapeHTML(t.subject)}
+
+                </div>
+
+                <button
+                    class="small-btn btn-danger"
+                    style="margin-top:6px;"
+                    onclick="deleteTeacher('${t.id}')">
+
+                    حذف المدرس
+
+                </button>
+
+            </div>
+
+            `;
+
+        });
+
+    }
+
+    populateTeacherSelects();
+
+    renderTeachersIntoSubjects();
+
+    loadStats();
+
+}
+
+
+/* =========================================================
+   RENDER TEACHERS IN SUBJECTS
+========================================================= */
+
+function renderTeachersIntoSubjects(){
+
+    const teachers=getTeachers();
+
+    document
+    .querySelectorAll(
+        '.teachers-container'
+    )
+    .forEach(container=>{
+
+        const subject=
+        container.dataset.subject;
+
+        const filtered=
+        teachers.filter(
+            t=>t.subject===subject
+        );
+
+        container.innerHTML='';
+
+        filtered.forEach(teacher=>{
+
+            const box=
+            document.createElement('div');
+
+            box.className=
+            'teacher-accordion';
+
+            box.innerHTML=`
+
+            <div class="teacher-header"
+                 onclick="toggleAccordion(this)">
+
+                <span>
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                    ${escapeHTML(teacher.name)}
+
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+            <div class="teacher-body">
+
+                <div style="font-size:10px;color:#8d99ae;margin-bottom:8px;">
+
+                    ${escapeHTML(teacher.subject)}
+
+                </div>
+
+                <div>
+
+                    ${renderTeacherChapters(
+                        teacher
+                    )}
+
+                </div>
+
+                <button
+                    class="btn-submit"
+                    style="margin-top:8px;"
+                    onclick="openTeacherExams('${teacher.id}')">
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                    امتحانات المدرس
+
+                </button>
+
+            </div>
+
+            `;
+
+            container.appendChild(box);
+
+        });
+
+    });
+
+}
+
+
+/* =========================================================
+   CHAPTERS
+========================================================= */
+
+function renderTeacherChapters(teacher){
+
+    if(!teacher.chapters ||
+       teacher.chapters.length===0){
+
+        return `
+        <div style="font-size:10px;color:#8d99ae;">
+        لا توجد فصول مضافة حالياً
+        </div>
+        `;
+
+    }
+
+    let html='';
+
+    teacher.chapters.forEach(chapter=>{
+
+        html+=`
+
+        <div class="chapter-box">
+
+            <strong>
+                <i class="fa-solid fa-bookmark"></i>
+                ${escapeHTML(chapter.name)}
+            </strong>
+
+            <div>
+
+            ${(chapter.lectures||[]).map(
+                lecture=>`
+
+                <div class="lecture-item">
+
+                    <div>
+
+                        <i class="fa-solid fa-video"
+                           style="color:#48cae4;"></i>
+
+                        ${escapeHTML(lecture.title)}
+
+                    </div>
+
+                    <div style="font-size:9px;color:#8d99ae;margin-top:3px;">
+
+                        ${escapeHTML(
+                            lecture.fileName || ''
+                        )}
+
+                    </div>
+
+                </div>
+
+            `).join('')}
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    return html;
+
+}
+
+
+/* =========================================================
+   DELETE TEACHER
+========================================================= */
+
+function deleteTeacher(id){
+
+    if(!confirm(
+        'هل تريد حذف المدرس؟'
+    ))return;
+
+    let teachers=getTeachers();
+
+    teachers=
+    teachers.filter(
+        t=>t.id!==id
+    );
+
+    saveTeachers(teachers);
+
+    loadTeachers();
+
+    renderSubjects();
+
+}
+
+
+/* =========================================================
+   TEACHER LECTURE PANEL
+========================================================= */
+
+function populateTeacherSelects(){
+
+    const teachers=getTeachers();
+
+    const lectureSelect=
+    document.getElementById(
+        'lecture-teacher-select'
+    );
+
+    const questionSelect=
+    document.getElementById(
+        'question-teacher-select'
+    );
+
+    if(lectureSelect){
+
+        lectureSelect.innerHTML=
+        '<option value="">اختر المدرس</option>';
+
+        teachers.forEach(t=>{
+
+            lectureSelect.innerHTML+=`
+
+            <option value="${t.id}">
+
+                ${escapeHTML(t.name)}
+                - 
+                ${escapeHTML(t.subject)}
+
+            </option>
+
+            `;
+
+        });
+
+    }
+
+    if(questionSelect){
+
+        questionSelect.innerHTML=
+        '<option value="">اختر المدرس</option>';
+
+        teachers.forEach(t=>{
+
+            questionSelect.innerHTML+=`
+
+            <option value="${t.id}">
+
+                ${escapeHTML(t.name)}
+                -
+                ${escapeHTML(t.subject)}
+
+            </option>
+
+            `;
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER LECTURE CONTROL
+========================================================= */
+
+function renderTeacherLecturePanel(){
+
+    const id=
+    document.getElementById(
+        'lecture-teacher-select'
+    ).value;
+
+    const panel=
+    document.getElementById(
+        'teacher-lecture-panel'
+    );
+
+    if(!id){
+
+        panel.innerHTML='';
+
+        return;
+
+    }
+
+    const teacher=
+    getTeachers().find(
+        t=>t.id===id
+    );
+
+    if(!teacher)return;
+
+    panel.innerHTML=`
+
+    <div class="form-group">
+
+        <label>
+            إضافة فصل جديد
+        </label>
+
+        <input
+            id="new-chapter-name"
+            class="form-control"
+            placeholder="مثال: الفصل الأول">
+
+    </div>
+
+    <button
+        class="btn-submit btn-success"
+        onclick="addChapter('${teacher.id}')">
+
+        <i class="fa-solid fa-plus"></i>
+
+        إضافة فصل
+
+    </button>
+
+    <hr style="border-color:rgba(255,255,255,.08);margin:12px 0;">
+
+    <div id="teacher-chapters-admin">
+
+        ${renderAdminChapters(teacher)}
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   ADD CHAPTER
+========================================================= */
+
+function addChapter(teacherId){
+
+    const input=
+    document.getElementById(
+        'new-chapter-name'
+    );
+
+    const name=
+    input.value.trim();
+
+    if(!name){
+
+        alert(
+            'اكتب اسم الفصل'
+        );
+
+        return;
+
+    }
+
+    const teachers=getTeachers();
+
+    const teacher=
+    teachers.find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    if(!teacher.chapters)
+        teacher.chapters=[];
+
+    teacher.chapters.push({
+
+        id:'chapter_'+Date.now(),
+
+        name:name,
+
+        lectures:[]
+
+    });
+
+    saveTeachers(teachers);
+
+    renderTeacherLecturePanel();
+
+    renderSubjects();
+
+}
+
+
+/* =========================================================
+   ADMIN CHAPTERS
+========================================================= */
+
+function renderAdminChapters(teacher){
+
+    if(!teacher.chapters ||
+       teacher.chapters.length===0){
+
+        return `
+        <p style="font-size:10px;color:#8d99ae;">
+        لا توجد فصول
+        </p>
+        `;
+
+    }
+
+    let html='';
+
+    teacher.chapters.forEach(chapter=>{
+
+        html+=`
+
+        <div class="chapter-box">
+
+        <strong>
+            ${escapeHTML(chapter.name)}
+        </strong>
+
+        <button
+            class="small-btn btn-danger"
+            onclick="deleteChapter('${teacher.id}','${chapter.id}')">
+
+            حذف الفصل
+
+        </button>
+
+        <label
+            class="file-label"
+            style="margin-top:8px;"
+            for="file_${chapter.id}">
+
+            <i class="fa-solid fa-upload"></i>
+
+            رفع محاضرة من الجهاز
+
+        </label>
+
+        <input
+            id="file_${chapter.id}"
+            type="file"
+            accept="video/*,.pdf,.mp4,.mov,.webm"
+            onchange="uploadLecture('${teacher.id}','${chapter.id}',event)">
+
+        <div>
+
+        ${(chapter.lectures||[]).map(
+            lecture=>`
+
+            <div class="lecture-item">
+
+                <div>
+                    ${escapeHTML(lecture.title)}
+                </div>
+
+                <div class="lecture-actions">
+
+                    <button
+                        class="small-btn"
+                        style="background:#0077b6;"
+                        onclick="editLecture('${teacher.id}','${chapter.id}','${lecture.id}')">
+
+                        تعديل
+
+                    </button>
+
+                    <button
+                        class="small-btn btn-danger"
+                        onclick="deleteLecture('${teacher.id}','${chapter.id}','${lecture.id}')">
+
+                        حذف
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join('')}
+
+        </div>
+
+        </div>
+
+        `;
+
+    });
+
+    return html;
+
+}
+
+
+/* =========================================================
+   DELETE CHAPTER
+========================================================= */
+
+function deleteChapter(
+    teacherId,
+    chapterId
+){
+
+    if(!confirm(
+        'حذف الفصل وكل المحاضرات بداخله؟'
+    ))return;
+
+    const teachers=getTeachers();
+
+    const teacher=
+    teachers.find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    teacher.chapters=
+    teacher.chapters.filter(
+        c=>c.id!==chapterId
+    );
+
+    saveTeachers(teachers);
+
+    renderTeacherLecturePanel();
+
+    renderSubjects();
+
+}
+
+
+/* =========================================================
+   UPLOAD LECTURE
+========================================================= */
+
+function uploadLecture(
+    teacherId,
+    chapterId,
+    event
+){
+
+    const file=
+    event.target.files[0];
+
+    if(!file)return;
+
+    const title=
+    prompt(
+        'اكتب عنوان المحاضرة',
+        file.name
+    );
+
+    if(!title)return;
+
+    const teachers=getTeachers();
+
+    const teacher=
+    teachers.find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    const chapter=
+    teacher.chapters.find(
+        c=>c.id===chapterId
+    );
+
+    if(!chapter)return;
+
+    if(!chapter.lectures)
+        chapter.lectures=[];
+
+    /*
+       يتم حفظ معلومات الملف محلياً.
+       للرفع الحقيقي إلى الإنترنت استخدم
+       Supabase Storage.
+    */
+
+    chapter.lectures.push({
+
+        id:'lecture_'+Date.now(),
+
+        title:title,
+
+        fileName:file.name,
+
+        fileType:file.type,
+
+        size:file.size,
+
+        addedAt:new Date().toISOString()
+
+    });
+
+    saveTeachers(teachers);
+
+    renderTeacherLecturePanel();
+
+    renderSubjects();
+
+    loadStats();
+
+    alert(
+        'تمت إضافة المحاضرة. لرفع الفيديو فعلياً للطلاب يجب ربط هذا القسم بـ Supabase Storage.'
+    );
+
+}
+
+
+/* =========================================================
+   EDIT LECTURE
+========================================================= */
+
+function editLecture(
+    teacherId,
+    chapterId,
+    lectureId
+){
+
+    const teachers=getTeachers();
+
+    const teacher=
+    teachers.find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    const chapter=
+    teacher.chapters.find(
+        c=>c.id===chapterId
+    );
+
+    if(!chapter)return;
+
+    const lecture=
+    chapter.lectures.find(
+        l=>l.id===lectureId
+    );
+
+    if(!lecture)return;
+
+    const newTitle=
+    prompt(
+        'تعديل عنوان المحاضرة',
+        lecture.title
+    );
+
+    if(!newTitle)return;
+
+    lecture.title=newTitle;
+
+    saveTeachers(teachers);
+
+    renderTeacherLecturePanel();
+
+    renderSubjects();
+
+}
+
+
+/* =========================================================
+   DELETE LECTURE
+========================================================= */
+
+function deleteLecture(
+    teacherId,
+    chapterId,
+    lectureId
+){
+
+    if(!confirm(
+        'هل تريد حذف المحاضرة؟'
+    ))return;
+
+    const teachers=getTeachers();
+
+    const teacher=
+    teachers.find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    const chapter=
+    teacher.chapters.find(
+        c=>c.id===chapterId
+    );
+
+    if(!chapter)return;
+
+    chapter.lectures=
+    chapter.lectures.filter(
+        l=>l.id!==lectureId
+    );
+
+    saveTeachers(teachers);
+
+    renderTeacherLecturePanel();
+
+    renderSubjects();
+
+    loadStats();
+
+}
+
+
+/* =========================================================
+   ALL LECTURES
+========================================================= */
+
+function loadAllLectures(){
+
+    const container=
+    document.getElementById(
+        'all-lectures-container'
+    );
+
+    const teachers=getTeachers();
+
+    let html='';
+
+    teachers.forEach(t=>{
+
+        (t.chapters||[]).forEach(c=>{
+
+            (c.lectures||[]).forEach(l=>{
+
+                html+=`
+
+                <div class="chapter-box">
+
+                    <div style="color:#48cae4;font-weight:bold;">
+
+                        <i class="fa-solid fa-video"></i>
+
+                        ${escapeHTML(l.title)}
+
+                    </div>
+
+                    <div style="font-size:10px;color:#8d99ae;margin-top:4px;">
+
+                        الأستاذ:
+                        ${escapeHTML(t.name)}
+
+                        -
+                        ${escapeHTML(c.name)}
+
+                    </div>
+
+                    <button
+                        class="btn-submit"
+                        style="margin-top:7px;padding:7px;"
+                        onclick="recordWatchTime(10)">
+
+                        ▶ مشاهدة المحاضرة
+
+                    </button>
+
+                </div>
+
+                `;
+
+            });
+
+        });
+
+    });
+
+    if(!html){
+
+        html=`
+        <div class="admin-box">
+        <p style="font-size:11px;color:#8d99ae;text-align:center;">
+        لا توجد محاضرات مضافة حالياً.
+        </p>
+        </div>
+        `;
+
+    }
+
+    container.innerHTML=html;
+
+}
+
+
+/* =========================================================
+   QUESTIONS / EXAMS
+========================================================= */
+
+function addTeacherQuestion(){
+
+    const teacherId=
+    document.getElementById(
+        'question-teacher-select'
+    ).value;
+
+    const examTitle=
+    document.getElementById(
+        'exam-title-input'
+    ).value.trim();
+
+    const duration=
+    parseInt(
+        document.getElementById(
+            'exam-duration-input'
+        ).value
+    );
+
+    const question=
+    document.getElementById(
+        'question-input'
+    ).value.trim();
+
+    const answer=
+    document.getElementById(
+        'model-answer-input'
+    ).value.trim();
+
+    if(
+        !teacherId ||
+        !examTitle ||
+        !question ||
+        !answer
+    ){
+
+        alert(
+            'أكمل جميع المعلومات'
+        );
+
+        return;
+
+    }
+
+    const teachers=getTeachers();
+
+    const teacher=
+    teachers.find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    if(!teacher.questions)
+        teacher.questions=[];
+
+    teacher.questions.push({
+
+        id:'exam_'+Date.now(),
+
+        title:examTitle,
+
+        duration:
+        isNaN(duration)?20:duration,
+
+        question:question,
+
+        answer:answer,
+
+        createdAt:
+        new Date().toISOString()
+
+    });
+
+    saveTeachers(teachers);
+
+    document.getElementById(
+        'question-input'
+    ).value='';
+
+    document.getElementById(
+        'model-answer-input'
+    ).value='';
+
+    loadQuestionsAdmin();
+
+    loadExams();
+
+    alert(
+        'تمت إضافة السؤال والامتحان'
+    );
+
+}
+
+
+/* =========================================================
+   ADMIN QUESTIONS
+========================================================= */
+
+document.addEventListener(
+'change',
+function(e){
+
+    if(e.target.id===
+       'question-teacher-select'){
+
+        loadQuestionsAdmin();
+
+    }
+
+});
+
+
+function loadQuestionsAdmin(){
+
+    const teacherId=
+    document.getElementById(
+        'question-teacher-select'
+    )?.value;
+
+    const container=
+    document.getElementById(
+        'teacher-questions-list'
+    );
+
+    if(!container)return;
+
+    if(!teacherId){
+
+        container.innerHTML='';
+
+        return;
+
+    }
+
+    const teacher=
+    getTeachers().find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher){
+
+        container.innerHTML='';
+
+        return;
+
+    }
+
+    const questions=
+    teacher.questions||[];
+
+    container.innerHTML=
+    questions.map(q=>`
+
+    <div class="chapter-box">
+
+        <strong>
+            ${escapeHTML(q.title)}
+        </strong>
+
+        <div style="font-size:10px;color:#8d99ae;margin-top:5px;">
+
+            الوقت:
+            ${q.duration}
+            دقيقة
+
+        </div>
+
+        <div style="margin-top:6px;">
+
+            السؤال:
+            ${escapeHTML(q.question)}
+
+        </div>
+
+        <div style="margin-top:5px;color:#2a9d8f;">
+
+            الإجابة النموذجية:
+            ${escapeHTML(q.answer)}
+
+        </div>
+
+        <button
+            class="small-btn btn-danger"
+            style="margin-top:7px;"
+            onclick="deleteQuestion('${teacher.id}','${q.id}')">
+
+            حذف
+
+        </button>
+
+    </div>
+
+    `).join('');
+
+}
+
+
+/* =========================================================
+   DELETE QUESTION
+========================================================= */
+
+function deleteQuestion(
+    teacherId,
+    questionId
+){
+
+    if(!confirm(
+        'حذف السؤال؟'
+    ))return;
+
+    const teachers=getTeachers();
+
+    const teacher=
+    teachers.find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    teacher.questions=
+    (teacher.questions||[])
+    .filter(
+        q=>q.id!==questionId
+    );
+
+    saveTeachers(teachers);
+
+    loadQuestionsAdmin();
+
+    loadExams();
+
+}
+
+
+/* =========================================================
+   OPEN TEACHER EXAMS
+========================================================= */
+
+function openTeacherExams(teacherId){
+
+    const teacher=
+    getTeachers().find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    switchTab('exams');
+
+    const container=
+    document.getElementById(
+        'student-exams-container'
+    );
+
+    const exams=
+    teacher.questions||[];
+
+    if(!exams.length){
+
+        container.innerHTML=`
+
+        <div class="admin-box">
+
+        لا توجد امتحانات لهذا المدرس.
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML=
+    exams.map(q=>examCard(
+        teacher,
+        q
+    )).join('');
+
+}
+
+
+/* =========================================================
+   LOAD ALL EXAMS
+========================================================= */
+
+function loadExams(){
+
+    const container=
+    document.getElementById(
+        'student-exams-container'
+    );
+
+    if(!container)return;
+
+    const teachers=getTeachers();
+
+    let html='';
+
+    teachers.forEach(t=>{
+
+        (t.questions||[])
+        .forEach(q=>{
+
+            html+=examCard(t,q);
+
+        });
+
+    });
+
+    if(!html){
+
+        html=`
+
+        <div class="admin-box">
+
+        <p style="font-size:11px;color:#8d99ae;text-align:center;">
+
+        لا توجد امتحانات متاحة حالياً.
+
+        </p>
+
+        </div>
+
+        `;
+
+    }
+
+    container.innerHTML=html;
+
+}
+
+
+function examCard(teacher,q){
+
+    return `
+
+    <div class="chapter-box">
+
+        <h4 style="color:#e0a96d;">
+
+            ${escapeHTML(q.title)}
+
+        </h4>
+
+        <div style="font-size:10px;color:#8d99ae;margin:5px 0;">
+
+            المدرس:
+            ${escapeHTML(teacher.name)}
+
+            <br>
+
+            المادة:
+            ${escapeHTML(teacher.subject)}
+
+            <br>
+
+            الوقت:
+            ${q.duration}
+            دقيقة
+
+        </div>
+
+        <button
+            class="btn-submit"
+            style="background:#2a9d8f;"
+            onclick="startExam('${teacher.id}','${q.id}')">
+
+            بدء الامتحان
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   START EXAM
+========================================================= */
+
+function startExam(
+    teacherId,
+    questionId
+){
+
+    const teacher=
+    getTeachers().find(
+        t=>t.id===teacherId
+    );
+
+    if(!teacher)return;
+
+    const exam=
+    (teacher.questions||[])
+    .find(
+        q=>q.id===questionId
+    );
+
+    if(!exam)return;
+
+    activeExam={
+        teacherId,
+        questionId,
+        teacher,
+        exam
+    };
+
+    document.getElementById(
+        'active-exam-title'
+    ).innerHTML=`
+
+    <strong>
+    ${escapeHTML(exam.title)}
+    </strong>
+
+    <div style="margin-top:8px;">
+    ${escapeHTML(exam.question)}
+    </div>
+
+    `;
+
+    document.getElementById(
+        'student-answer-text'
+    ).value='';
+
+    document.getElementById(
+        'ai-result-box'
+    ).classList.add('hidden');
+
+    let seconds=
+    exam.duration*60;
+
+    clearInterval(examTimer);
+
+    examTimer=
+    setInterval(()=>{
+
+        const minutes=
+        Math.floor(seconds/60);
+
+        const secs=
+        seconds%60;
+
+        document.getElementById(
+            'exam-timer-display'
+        ).innerText=
+        `الوقت المتبقي: ${minutes}:${secs<10?'0':''}${secs}`;
+
+        if(seconds<=0){
+
+            clearInterval(examTimer);
+
+            submitStudentAnswer(true);
+
+        }
+
+        seconds--;
+
+    },1000);
+
+    switchTab('results');
+
+}
+
+
+/* =========================================================
+   AI-LIKE LOCAL CORRECTION
+========================================================= */
+
+function submitStudentAnswer(autoSubmit=false){
+
+    if(!activeExam){
+
+        alert(
+            'لا يوجد امتحان فعال'
+        );
+
+        return;
+
+    }
+
+    const answer=
+    document.getElementById(
+        'student-answer-text'
+    ).value.trim();
+
+    if(!answer && !autoSubmit){
+
+        alert(
+            'اكتب إجابتك أولاً'
+        );
+
+        return;
+
+    }
+
+    clearInterval(examTimer);
+
+    const correct=
+    activeExam.exam.answer
+    .trim()
+    .toLowerCase();
+
+    const student=
+    answer
+    .trim()
+    .toLowerCase();
+
+    let score=0;
+
+    if(student===correct){
+
+        score=100;
+
+    }else{
+
+        const correctWords=
+        correct
+        .split(/\s+/)
+        .filter(Boolean);
+
+        const studentWords=
+        student
+        .split(/\s+/)
+        .filter(Boolean);
+
+        let matches=0;
+
+        correctWords.forEach(word=>{
+
+            if(studentWords.includes(word))
+                matches++;
+
+        });
+
+        if(correctWords.length){
+
+            score=Math.round(
+                (matches/
+                correctWords.length)*100
+            );
+
+        }
+
+    }
+
+    document.getElementById(
+        'ai-result-box'
+    ).classList.remove('hidden');
+
+    document.getElementById(
+        'ai-output'
+    ).innerHTML=`
+
+    <div style="font-size:12px;line-height:2;">
+
+    <strong>
+    الامتحان:
+    </strong>
+
+    ${escapeHTML(
+        activeExam.exam.title
+    )}
+
+    <br>
+
+    <strong>
+    الدرجة:
+    </strong>
+
+    <span style="font-size:20px;color:#e0a96d;font-weight:bold;">
+
+    ${score}/100
+
+    </span>
+
+    <br>
+
+    <strong>
+    تقييم أولي:
+    </strong>
+
+    ${getScoreText(score)}
+
+    </div>
+
+    `;
+
+    addDailyResult(
+        activeExam.teacher.subject,
+        score
+    );
+
+}
+
+
+/* =========================================================
+   SCORE TEXT
+========================================================= */
+
+function getScoreText(score){
+
+    if(score>=90)
+        return 'ممتاز، استمر بهذا المستوى 👏';
+
+    if(score>=75)
+        return 'جيد جداً، باقي شوية وتوصل للممتاز 💪';
+
+    if(score>=50)
+        return 'جيد، راجع النقاط اللي أخطأت بيها.';
+
+    return 'لا تيأس، راجع المادة وحاول مرة ثانية ❤️';
+
+}
+
+
+/* =========================================================
+   DAILY RESULTS
+========================================================= */
+
+function check24HourReset(){
+
+    const now=
+    Date.now();
+
+    const last=
+    parseInt(
+        localStorage.getItem(
+            'daily_reset_time'
+        ) || '0'
+    );
+
+    if(
+        !last ||
+        now-last>=86400000
+    ){
+
+        localStorage.setItem(
+            'daily_results',
+            JSON.stringify([])
+        );
+
+        localStorage.setItem(
+            'student_watch_minutes',
+            '0'
+        );
+
+        localStorage.setItem(
+            'daily_reset_time',
+            now.toString()
+        );
+
+        watchMinutes=0;
+
+    }
+
+}
+
+
+function addDailyResult(
+    subject,
+    score
+){
+
+    const results=
+    JSON.parse(
+        localStorage.getItem(
+            'daily_results'
+        ) || '[]'
+    );
+
+    results.push({
+
+        subject:subject,
+
+        score:score,
+
+        time:
+        new Date()
+        .toLocaleTimeString(
+            'ar-IQ',
+            {
+                hour:'2-digit',
+                minute:'2-digit'
+            }
+        )
+
+    });
+
+    localStorage.setItem(
+        'daily_results',
+        JSON.stringify(results)
+    );
+
+    loadDailyResults();
+
+}
+
+
+function loadDailyResults(){
+
+    const body=
+    document.getElementById(
+        'daily-results-body'
+    );
+
+    if(!body)return;
+
+    const results=
+    JSON.parse(
+        localStorage.getItem(
+            'daily_results'
+        ) || '[]'
+    );
+
+    if(!results.length){
+
+        body.innerHTML=`
+
+        <tr>
+
+        <td colspan="3"
+            style="text-align:center;color:#8d99ae;">
+
+        لا توجد درجات اليوم
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+    body.innerHTML=
+    results.map(r=>`
+
+    <tr>
+
+        <td>
+            ${escapeHTML(r.subject)}
+        </td>
+
+        <td style="color:#2a9d8f;font-weight:bold;">
+            ${r.score}/100
+        </td>
+
+        <td>
+            ${r.time}
+        </td>
+
+    </tr>
+
+    `).join('');
+
+}
+
+
+/* =========================================================
+   WATCH TIME
+========================================================= */
+
+function recordWatchTime(minutes){
+
+    watchMinutes+=minutes;
+
+    localStorage.setItem(
+        'student_watch_minutes',
+        watchMinutes
+    );
+
+    updateWatchDisplay();
+
+}
+
+
+function updateWatchDisplay(){
+
+    const el=
+    document.getElementById(
+        'my-watch-display'
+    );
+
+    if(el){
+
+        el.innerText=
+        watchMinutes+' دقيقة';
+
+    }
+
+}
+
+
+/* =========================================================
+   MOTIVATION
+========================================================= */
+
+const motivations=[
+
+'يلا بطل، لا تخلي التعب يضيع تعبك، كمّل 💪',
+
+'شد حيلك، كل صفحة تقراها اليوم راح تفيدك باچر 🔥',
+
+'تره النجاح مو حظ، النجاح شغل واستمرار، وانت كدها 💙',
+
+'خلي هدفك ببالك وكمل، لا تستسلم من أول تعب.',
+
+'بعدك تكدر، افتح الكتاب وخليها بداية جديدة 🚀',
+
+'عاشت إيدك إذا قريت اليوم، وإذا ما قريت بعدك تكدر تبدأ هسه.',
+
+'لا تقارن نفسك بغيرك، قارن نفسك بنفسك البارحة.',
+
+'يلا ننجز جلسة دراسة جديدة؟ شد حيلك يا بطل 📚'
+
+];
+
+
+function generateMotivation(){
+
+    const text=
+    motivations[
+        Math.floor(
+            Math.random()*
+            motivations.length
+        )
+    ];
+
+    document.getElementById(
+        'motivation-text'
+    ).innerText=text;
+
+}
+
+
+/* =========================================================
+   MOTIVATION EVERY 10 MINUTES
+========================================================= */
+
+setInterval(
+    generateMotivation,
+    10*60*1000
+);
+
+
+/* =========================================================
+   SCHEDULE
+========================================================= */
+
+function createSchedule(){
+
+    const subject=
+    document.getElementById(
+        'schedule-subject'
+    ).value.trim();
+
+    const hours=
+    parseFloat(
+        document.getElementById(
+            'schedule-hours'
+        ).value
+    );
+
+    const breakEvery=
+    parseInt(
+        document.getElementById(
+            'schedule-break'
+        ).value
+    );
+
+    const start=
+    document.getElementById(
+        'schedule-start'
+    ).value;
+
+    if(!subject || !hours || !start){
+
+        alert(
+            'أكمل معلومات الجدول'
+        );
+
+        return;
+
+    }
+
+    let totalMinutes=
+    Math.round(hours*60);
+
+    let current=
+    timeToMinutes(start);
+
+    const rows=[];
+
+    let studied=0;
+
+    while(studied<totalMinutes){
+
+        const session=
+        Math.min(
+            breakEvery,
+            totalMinutes-studied
+        );
+
+        const startText=
+        minutesToTime(current);
+
+        current+=session;
+
+        const endText=
+        minutesToTime(current);
+
+        rows.push({
+
+            start:startText,
+
+            end:endText,
+
+            subject:subject,
+
+            type:'دراسة'
+
+        });
+
+        studied+=session;
+
+        if(studied<totalMinutes){
+
+            const breakStart=
+            minutesToTime(current);
+
+            current+=10;
+
+            const breakEnd=
+            minutesToTime(current);
+
+            rows.push({
+
+                start:breakStart,
+
+                end:breakEnd,
+
+                subject:'استراحة ☕',
+
+                type:'استراحة'
+
+            });
+
+        }
+
+    }
+
+    renderSchedule(rows);
+
+}
+
+
+function renderSchedule(rows){
+
+    const container=
+    document.getElementById(
+        'schedule-result'
+    );
+
+    let html=`
+
+    <div class="schedule-card"
+         id="schedule-image-area">
+
+        <h3 style="color:#e0a96d;text-align:center;margin-bottom:10px;">
+
+        📚 جدولك الدراسي
+
+        </h3>
+
+        <p style="font-size:10px;color:#a3cef1;text-align:center;margin-bottom:10px;">
+
+        رتبتلك وقتك، لا تضيع الفرصة 💪
+
+        </p>
+
+    `;
+
+    rows.forEach(row=>{
+
+        html+=`
+
+        <div class="schedule-row">
+
+            <span>
+                ${row.start}
+                -
+                ${row.end}
+            </span>
+
+            <strong>
+                ${escapeHTML(row.subject)}
+            </strong>
+
+        </div>
+
+        `;
+
+    });
+
+    html+=`
+
+        <div class="motivation"
+             style="margin-top:10px;">
+
+            يلا بطل، التزم بالجدول وإن شاء الله تشوف نتيجة تعبك ❤️
+
+        </div>
+
+    </div>
+
+    <button
+        class="btn-submit"
+        style="margin-top:8px;"
+        onclick="saveScheduleAsImage()">
+
+        <i class="fa-solid fa-image"></i>
+
+        حفظ الجدول كصورة
+
+    </button>
+
+    `;
+
+    container.innerHTML=html;
+
+}
+
+
+/* =========================================================
+   SCHEDULE IMAGE
+========================================================= */
+
+async function saveScheduleAsImage(){
+
+    const element=
+    document.getElementById(
+        'schedule-image-area'
+    );
+
+    if(!element)return;
+
+    /*
+      إذا أردت إخراج PNG فعلي من HTML
+      يمكن إضافة html2canvas.
+    */
+
+    const script=
+    document.createElement('script');
+
+    script.src=
+    'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+
+    script.onload=async function(){
+
+        const canvas=
+        await html2canvas(element);
+
+        const link=
+        document.createElement('a');
+
+        link.download=
+        'جدولي-الدراسي.png';
+
+        link.href=
+        canvas.toDataURL('image/png');
+
+        link.click();
+
+    };
+
+    document.body.appendChild(script);
+
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+function timeToMinutes(time){
+
+    const parts=
+    time.split(':');
+
+    return(
+        parseInt(parts[0])*60+
+        parseInt(parts[1])
+    );
+
+}
+
+
+function minutesToTime(minutes){
+
+    minutes=
+    minutes%(24*60);
+
+    const h=
+    Math.floor(minutes/60);
+
+    const m=
+    minutes%60;
+
+    return(
+        String(h).padStart(2,'0')+
+        ':'+
+        String(m).padStart(2,'0')
+    );
+
+}
+
+
+/* =========================================================
+   GAMES
+========================================================= */
+
+const gameQuestions=[
+
+{
+
+q:'ما هو ناتج 5 × 6؟',
+
+answers:[
+'20',
+'30',
+'35',
+'40'
+],
+
+correct:1
+
+},
+
+{
+
+q:'ما هو الكوكب المعروف بالكوكب الأحمر؟',
+
+answers:[
+'الأرض',
+'المريخ',
+'المشتري',
+'الزهرة'
+],
+
+correct:1
+
+},
+
+{
+
+q:'كم عدد أيام الأسبوع؟',
+
+answers:[
+'5',
+'6',
+'7',
+'8'
+],
+
+correct:2
+
+},
+
+{
+
+q:'ما هو رمز الماء الكيميائي؟',
+
+answers:[
+'CO2',
+'O2',
+'H2O',
+'NaCl'
+],
+
+correct:2
+
+}
+
+];
+
+
+let currentGameQuestion=null;
+
+
+function startGame(){
+
+    currentGameQuestion=
+    gameQuestions[
+        Math.floor(
+            Math.random()*
+            gameQuestions.length
+        )
+    ];
+
+    document.getElementById(
+        'game-question'
+    ).innerText=
+    currentGameQuestion.q;
+
+    const answers=
+    document.getElementById(
+        'game-answers'
+    );
+
+    answers.innerHTML='';
+
+    currentGameQuestion.answers
+    .forEach((answer,index)=>{
+
+        const btn=
+        document.createElement('button');
+
+        btn.className='answer-btn';
+
+        btn.innerText=answer;
+
+        btn.onclick=()=>{
+
+            if(
+                index===
+                currentGameQuestion.correct
+            ){
+
+                gameScore+=10;
+
+                alert(
+                    'إجابة صحيحة! 🔥'
+                );
+
+            }else{
+
+                alert(
+                    'مو صحيح، حاول بالسؤال الجاي 💪'
+                );
+
+            }
+
+            document.getElementById(
+                'game-score'
+            ).innerText=
+            'النقاط: '+gameScore;
+
+            startGame();
+
+        };
+
+        answers.appendChild(btn);
+
+    });
+
+}
+
+
+/* =========================================================
+   ANNOUNCEMENTS
+========================================================= */
+
+function previewAdImage(event){
+
+    const file=
+    event.target.files[0];
+
+    if(!file)return;
+
+    const reader=
+    new FileReader();
+
+    reader.onload=function(e){
+
+        selectedAdImage=e.target.result;
+
+        const preview=
+        document.getElementById(
+            'ad-preview'
+        );
+
+        preview.src=
+        selectedAdImage;
+
+        preview.classList.remove(
+            'hidden'
+        );
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function publishAd(){
+
+    const title=
+    document.getElementById(
+        'ad-title'
+    ).value.trim();
+
+    const link=
+    document.getElementById(
+        'ad-link'
+    ).value.trim();
+
+    const platform=
+    document.getElementById(
+        'ad-platform'
+    ).value;
+
+    if(!title || !link){
+
+        alert(
+            'أدخل العنوان والرابط'
+        );
+
+        return;
+
+    }
+
+    const ads=
+    JSON.parse(
+        localStorage.getItem(
+            'platform_ads'
+        ) || '[]'
+    );
+
+    ads.push({
+
+        id:Date.now(),
+
+        title:title,
+
+        link:link,
+
+        platform:platform,
+
+        image:selectedAdImage
+
+    });
+
+    localStorage.setItem(
+        'platform_ads',
+        JSON.stringify(ads)
+    );
+
+    loadAnnouncements();
+
+    alert(
+        'تم نشر الإعلان'
+    );
+
+}
+
+
+function loadAnnouncements(){
+
+    const container=
+    document.getElementById(
+        'announcements-container'
+    );
+
+    if(!container)return;
+
+    const ads=
+    JSON.parse(
+        localStorage.getItem(
+            'platform_ads'
+        ) || '[]'
+    );
+
+    let html='';
+
+    ads.forEach(ad=>{
+
+        html+=`
+
+        <div class="ad-card">
+
+            ${
+                ad.image
+                ?
+                `<img src="${ad.image}">`
+                :
+                ''
+            }
+
+            <div class="ad-platform">
+
+                ${escapeHTML(
+                    ad.platform
+                ).toUpperCase()}
+
+            </div>
+
+            <div style="font-weight:bold;margin-top:4px;">
+
+                ${escapeHTML(ad.title)}
+
+            </div>
+
+            <a href="${escapeAttr(ad.link)}"
+               target="_blank"
+               style="display:block;color:#48cae4;font-size:11px;margin-top:7px;">
+
+                🔗 فتح الإعلان
+
+            </a>
+
+        </div>
+
+        `;
+
+    });
+
+    if(!html){
+
+        html=`
+
+        <div class="ad-card">
+
+            <div style="color:#0088cc;font-weight:bold;">
+
+                <i class="fa-brands fa-telegram"></i>
+
+                قناة التليجرام الرسمية
+
+            </div>
+
+            <a href="https://t.me/muhammed9996"
+               target="_blank"
+               style="display:block;color:#ffd700;margin-top:7px;">
+
+                فتح القناة
+
+            </a>
+
+        </div>
+
+        `;
+
+    }
+
+    container.innerHTML=html;
+
+}
+
+
+/* =========================================================
+   ACTIVATION CODES
+========================================================= */
+
+function generateCode(){
+
+    const chars=
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+    let code='';
+
+    for(
+        let i=0;
+        i<12;
+        i++
+    ){
+
+        code+=
+        chars[
+            Math.floor(
+                Math.random()*
+                chars.length
+            )
+        ];
+
+    }
+
+    document.getElementById(
+        'generated-code'
+    ).value=code;
+
+}
+
+
+function saveGeneratedCode(){
+
+    const code=
+    document.getElementById(
+        'generated-code'
+    ).value;
+
+    const type=
+    document.getElementById(
+        'code-type'
+    ).value;
+
+    if(!code){
+
+        alert(
+            'ولد الكود أولاً'
+        );
+
+        return;
+
+    }
+
+    localStorage.setItem(
+        'active_system_code',
+        code
+    );
+
+    localStorage.setItem(
+        'active_code_type',
+        type
+    );
+
+    alert(
+        'تم اعتماد الكود: '+code
+    );
+
+}
+
+
+/* =========================================================
+   PLATFORM ACCESS
+========================================================= */
+
+function checkPlatformAccess(){
+
+    const authorized=
+    localStorage.getItem(
+        'platform_authorized'
+    );
+
+    if(authorized==='true')
+        return;
+
+    const trial=
+    parseInt(
+        localStorage.getItem(
+            'free_trial_expiry_month'
+        ) || '0'
+    );
+
+    if(
+        !trial ||
+        Date.now()>trial
+    ){
+
+        document.getElementById(
+            'access-modal'
+        ).style.display='flex';
+
+    }
+
+}
+
+
+function verifyAccessCode(){
+
+    const input=
+    document.getElementById(
+        'access-code-input'
+    ).value.trim();
+
+    const code=
+    localStorage.getItem(
+        'active_system_code'
+    ) ||
+    'IRAQ2026CODE';
+
+    if(input===code){
+
+        localStorage.setItem(
+            'platform_authorized',
+            'true'
+        );
+
+        document.getElementById(
+            'access-modal'
+        ).style.display='none';
+
+        alert(
+            'تم التفعيل بنجاح'
+        );
+
+    }else{
+
+        alert(
+            'الكود غير صحيح'
+        );
+
+    }
+
+}
+
+
+function activateFreeTrialMonth(){
+
+    const expiry=
+    Date.now()+
+    30*24*60*60*1000;
+
+    localStorage.setItem(
+        'free_trial_expiry_month',
+        expiry
+    );
+
+    document.getElementById(
+        'access-modal'
+    ).style.display='none';
+
+    alert(
+        'تم تفعيل التجربة المجانية لمدة شهر 🎁'
+    );
+
+}
+
+
+/* =========================================================
+   ATTENDANCE
+========================================================= */
+
+function checkMandatoryAttendance(){
+
+    const last=
+    parseInt(
+        localStorage.getItem(
+            'mandatory_attendance_time'
+        ) || '0'
+    );
+
+    if(
+        !last ||
+        Date.now()-last>=86400000
+    ){
+
+        document.getElementById(
+            'mandatory-attendance-modal'
+        ).style.display='flex';
+
+    }
+
+}
+
+
+async function submitMandatoryAttendance(){
+
+    const name=
+    document.getElementById(
+        'm-att-name'
+    ).value.trim();
+
+    const gov=
+    document.getElementById(
+        'm-att-gov'
+    ).value.trim();
+
+    if(!name || !gov){
+
+        alert(
+            'أدخل الاسم والمحافظة'
+        );
+
+        return;
+
+    }
+
+    try{
+
+        await db
+        .from('attendance')
+        .insert([
+            {
+                student_name:name,
+                governorate:gov
+            }
+        ]);
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+    localStorage.setItem(
+        'mandatory_attendance_time',
+        Date.now()
+    );
+
+    document.getElementById(
+        'mandatory-attendance-modal'
+    ).style.display='none';
+
+    loadStudents();
+
+    alert(
+        'تم تسجيل حضورك بنجاح'
+    );
+
+}
+
+
+/* =========================================================
+   STUDENTS
+========================================================= */
+
+async function loadStudents(){
+
+    const body=
+    document.getElementById(
+        'students-table'
+    );
+
+    if(!body)return;
+
+    try{
+
+        const result=
+        await db
+        .from('attendance')
+        .select('*');
+
+        const data=
+        result.data||[];
+
+        body.innerHTML='';
+
+        data.forEach(student=>{
+
+            body.innerHTML+=`
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(
+                        student.student_name
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        student.governorate
+                    )}
+                </td>
+
+                <td>
+
+                    <button
+                        class="small-btn btn-success"
+                        onclick="markStudentAttendance('${escapeJS(student.student_name)}')">
+
+                        <i class="fa-solid fa-check"></i>
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+        document.getElementById(
+            'stat-students'
+        ).innerText=data.length;
+
+        document.getElementById(
+            'stat-attendance'
+        ).innerText=data.length;
+
+    }catch(error){
+
+        body.innerHTML=`
+
+        <tr>
+
+        <td colspan="3"
+            style="text-align:center;color:#8d99ae;">
+
+        تعذر تحميل سجل الطلاب
+
+        </td>
+
+        </tr>
+
+        `;
+
+    }
+
+}
+
+
+function markStudentAttendance(name){
+
+    alert(
+        'تم تأكيد حضور الطالب: '+name
+    );
+
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+function loadStats(){
+
+    const teachers=
+    getTeachers();
+
+    let lectures=0;
+
+    teachers.forEach(t=>{
+
+        (t.chapters||[])
+        .forEach(c=>{
+
+            lectures+=
+            (c.lectures||[]).length;
+
+        });
+
+    });
+
+    const teacherStat=
+    document.getElementById(
+        'stat-teachers'
+    );
+
+    const lectureStat=
+    document.getElementById(
+        'stat-lectures'
+    );
+
+    if(teacherStat)
+        teacherStat.innerText=
+        teachers.length;
+
+    if(lectureStat)
+        lectureStat.innerText=
+        lectures;
+
+}
+
+
+/* =========================================================
+   SUPPORT
+========================================================= */
+
+function openSupport(){
+
+    window.open(
+        'https://t.me/muhammed9996',
+        '_blank'
+    );
+
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+function enableAdminMode(){
+
+    isAdmin=true;
+
+    document.getElementById(
+        'user-role-badge'
+    ).innerText=
+    'مسؤول المنصة';
+
+    document.getElementById(
+        'user-role-badge'
+    ).style.background=
+    '#e63946';
+
+    document.getElementById(
+        'nav-admin-btn'
+    ).style.display='flex';
+
+    document.getElementById(
+        'access-modal'
+    ).style.display='none';
+
+    document.getElementById(
+        'mandatory-attendance-modal'
+    ).style.display='none';
+
+}
+
+
+/* =========================================================
+   SECURITY HELPERS
 ========================================================= */
 
 function escapeHTML(value){
 
-return String(value||"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+    return String(value)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
 
 }
+
+
+function escapeAttr(value){
+
+    return String(value)
+    .replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+
+}
+
+
+function escapeJS(value){
+
+    return String(value)
+    .replace(/\\/g,'\\\\')
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\n/g,'\\n');
+
+}
+
+
+/* =========================================================
+   AUTO LOAD
+========================================================= */
+
+setTimeout(
+    loadAllLectures,
+    500
+);
+
+setInterval(
+    loadAllLectures,
+    5000
+);
 
 </script>
 
 </body>
-    </html>
+   </html>
