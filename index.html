@@ -57,16 +57,15 @@
         .teacher-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #48cae4; font-weight: 600; font-size: 13px; }
         .teacher-body { padding: 12px; background: #0d1b2a; display: none; }
 
-        /* Chapter Styles */
-        .chapter-accordion { background: #1c2541; border-radius: 10px; margin-bottom: 8px; overflow: hidden; border: 1px solid rgba(224, 169, 109, 0.2); }
-        .chapter-header { padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #e0a96d; font-weight: bold; font-size: 12px; }
-        .chapter-body { padding: 10px; background: #0b132b; display: none; }
+        .section-box { background: #1c2541; border-radius: 10px; padding: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.08); }
+        .section-box-header { font-size: 13px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 8px; border-radius: 8px; background: #162032; }
+        .section-box-body { padding: 10px 5px; display: none; }
 
-        .lecture-item { display: flex; flex-direction: column; gap: 8px; background: #162032; padding: 10px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; border-right: 3px solid #0077b6; }
-        .lecture-header-row { display: flex; align-items: center; justify-content: space-between; font-weight: bold; }
-        .teacher-exam-item { display: flex; align-items: center; justify-content: space-between; background: #1c2541; padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; border-right: 3px solid #e0a96d; }
-
-        .video-player-elem { width: 100%; max-height: 200px; background: #000; border-radius: 8px; margin-top: 5px; }
+        .lecture-item { display: flex; flex-direction: column; gap: 6px; background: #0b132b; padding: 10px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; border-right: 3px solid #0077b6; }
+        .exam-item-card { display: flex; flex-direction: column; gap: 6px; background: #0b132b; padding: 10px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; border-right: 3px solid #e0a96d; }
+        
+        .video-player-elem { width: 100%; max-height: 180px; background: #000; border-radius: 8px; margin-top: 5px; }
+        .exam-img-elem { width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px; margin-top: 5px; }
 
         .pdf-item { background: #1c2541; padding: 14px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .download-btn { background: #0077b6; color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; border: none; }
@@ -180,7 +179,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 2. اللغة العربية -->
@@ -190,44 +189,8 @@
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                         <div class="subject-body">
-                            <div class="teachers-list">
-                                <div class="teacher-accordion">
-                                    <div class="teacher-header" onclick="toggleAccordion(this)">
-                                        <span><i class="fa-solid fa-user-tie"></i> أ. عقيل الزبيدي</span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </div>
-                                    <div class="teacher-body">
-                                        <!-- فصول الأستاذ الافتراضية -->
-                                        <div class="chapter-accordion">
-                                            <div class="chapter-header" onclick="toggleAccordion(this)">
-                                                <span><i class="fa-solid fa-bookmark"></i> الفصل الأول</span>
-                                                <i class="fa-solid fa-chevron-down"></i>
-                                            </div>
-                                            <div class="chapter-body">
-                                                <div class="lectures-list"></div>
-                                                <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> إضافة محاضرة للفصل</button>
-                                            </div>
-                                        </div>
-                                        <div class="chapter-accordion">
-                                            <div class="chapter-header" onclick="toggleAccordion(this)">
-                                                <span><i class="fa-solid fa-bookmark"></i> الفصل الثاني</span>
-                                                <i class="fa-solid fa-chevron-down"></i>
-                                            </div>
-                                            <div class="chapter-body">
-                                                <div class="lectures-list"></div>
-                                                <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> إضافة محاضرة للفصل</button>
-                                            </div>
-                                        </div>
-                                        <!-- امتحانات الأستاذ -->
-                                        <div class="chapter-box" style="margin-top:10px;">
-                                            <div class="chapter-title"><span style="color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i> امتحانات واختبارات الأستاذ</span></div>
-                                            <div class="teacher-exams-list"></div>
-                                            <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:5px;" onclick="addTeacherExam(this)"><i class="fa-solid fa-plus"></i> إضافة امتحان خاص للأستاذ</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <div class="teachers-list"></div>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 3. اللغة الإنكليزية -->
@@ -238,7 +201,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 4. الرياضيات -->
@@ -249,7 +212,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 5. الفيزياء -->
@@ -260,7 +223,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 6. الكيمياء -->
@@ -271,7 +234,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 7. الأحياء -->
@@ -282,7 +245,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                 </div>
@@ -300,7 +263,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 2. اللغة العربية -->
@@ -311,7 +274,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 3. اللغة الإنكليزية -->
@@ -322,7 +285,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 4. التاريخ -->
@@ -333,7 +296,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 5. الجغرافية -->
@@ -344,7 +307,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 6. الاقتصاد -->
@@ -355,7 +318,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                     <!-- 7. الفلسفة والمنطق -->
@@ -366,7 +329,7 @@
                         </div>
                         <div class="subject-body">
                             <div class="teachers-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacherWithChapters(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
+                            <button class="btn-submit admin-only-btn" style="background:#27ae60; margin-top:8px;" onclick="promptAddTeacher(this)"><i class="fa-solid fa-user-plus"></i> إضافة مدرس جديد للمادة</button>
                         </div>
                     </div>
                 </div>
@@ -520,13 +483,15 @@
         </div>
     </div>
 
-    <!-- مدخل ملف الفيديو الخفي -->
+    <!-- ملفات مخفية للرفع -->
     <input type="file" id="teacher-video-file-input" accept="video/*" style="display:none;">
+    <input type="file" id="teacher-exam-img-input" accept="image/*" style="display:none;">
 
     <script>
         let isAdmin = false;
         let currentAdminCode = localStorage.getItem('admin_code') || 'admin123';
         let currentActiveLectureContainer = null;
+        let currentActiveExamContainer = null;
 
         window.onload = function() {
             let lastAttendance = localStorage.getItem('attendance_time');
@@ -576,8 +541,8 @@
             body.style.display = (body.style.display === 'block') ? 'none' : 'block';
         }
 
-        // إضافة أستاذ جديد مع قوائم الفصول الافتراضية وقسم الامتحانات
-        function promptAddTeacherWithChapters(buttonElement) {
+        // إضافة مدرس جديد لكل مادة وتوفير الأزرار الأساسية (المحاضرات + الامتحانات)
+        function promptAddTeacher(buttonElement) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             let teacherName = prompt("أدخل اسم المدرس الجديد:");
             if (teacherName) {
@@ -589,30 +554,28 @@
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                         <div class="teacher-body">
-                            <div class="chapter-accordion">
-                                <div class="chapter-header" onclick="toggleAccordion(this)">
-                                    <span><i class="fa-solid fa-bookmark"></i> الفصل الأول</span>
+                            <!-- زر المحاضرات -->
+                            <div class="section-box">
+                                <div class="section-box-header" onclick="toggleAccordion(this)">
+                                    <span><i class="fa-solid fa-circle-play" style="color:#48cae4;"></i> محاضرات الأستاذ</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
-                                <div class="chapter-body">
+                                <div class="section-box-body">
                                     <div class="lectures-list"></div>
-                                    <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> إضافة محاضرة للفصل</button>
+                                    <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:8px; font-size:11px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> + إضافة ورفع فيديو محاضرة</button>
                                 </div>
                             </div>
-                            <div class="chapter-accordion">
-                                <div class="chapter-header" onclick="toggleAccordion(this)">
-                                    <span><i class="fa-solid fa-bookmark"></i> الفصل الثاني</span>
+
+                            <!-- زر الامتحانات -->
+                            <div class="section-box">
+                                <div class="section-box-header" onclick="toggleAccordion(this)">
+                                    <span><i class="fa-solid fa-pen-to-square" style="color:#e0a96d;"></i> امتحانات واختبارات الأستاذ</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
-                                <div class="chapter-body">
-                                    <div class="lectures-list"></div>
-                                    <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> إضافة محاضرة للفصل</button>
+                                <div class="section-box-body">
+                                    <div class="teacher-exams-list"></div>
+                                    <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:8px; font-size:11px; margin-top:5px;" onclick="uploadTeacherExamWithImage(this)"><i class="fa-solid fa-image"></i> + إضافة امتحان مع رفع صورة</button>
                                 </div>
-                            </div>
-                            <div class="chapter-box" style="margin-top:10px;">
-                                <div class="chapter-title"><span style="color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i> امتحانات واختبارات الأستاذ</span></div>
-                                <div class="teacher-exams-list"></div>
-                                <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:5px;" onclick="addTeacherExam(this)"><i class="fa-solid fa-plus"></i> إضافة امتحان خاص للأستاذ</button>
                             </div>
                         </div>
                     </div>`;
@@ -620,7 +583,7 @@
             }
         }
 
-        // رفع فيديو محاضرة داخل الفصل المحدد
+        // رفع فيديو المحاضرة
         function uploadTeacherVideo(buttonElement) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             currentActiveLectureContainer = buttonElement.previousElementSibling;
@@ -636,32 +599,41 @@
                 let videoUrl = URL.createObjectURL(file);
                 let html = `
                     <div class="lecture-item">
-                        <div class="lecture-header-row">
-                            <span>${lectureTitle}</span>
-                            <i class="fa-solid fa-video" style="color:#48cae4;"></i>
-                        </div>
+                        <div style="font-weight:bold; color:#48cae4;"><i class="fa-solid fa-video"></i> ${lectureTitle}</div>
                         <video controls class="video-player-elem" src="${videoUrl}"></video>
                     </div>`;
                 currentActiveLectureContainer.innerHTML += html;
-                alert('تم رفع المحاضرة وحفظ الفيديو داخل الفصل بنجاح!');
+                alert('تم رفع المحاضرة وحفظها بنجاح!');
                 e.target.value = '';
             }
         };
 
-        // إضافة امتحان خاص بالأستاذ
-        function addTeacherExam(buttonElement) {
+        // رفع امتحان مع صورة
+        function uploadTeacherExamWithImage(buttonElement) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
-            let examName = prompt("أدخل عنوان الامتحان الخاص بالأستاذ:");
-            let duration = prompt("أدخل الوقت المحدد للاختبار بالدقائق (مثال: 15):", "15");
-            if (examName && duration) {
-                let list = buttonElement.previousElementSibling;
-                list.innerHTML += `
-                    <div class="teacher-exam-item">
-                        <span>${examName} (${duration} دقيقة)</span>
-                        <button class="download-btn" style="padding:4px 8px; font-size:10px;" onclick="startExam('${examName}', ${duration})">بدء الاختبار</button>
-                    </div>`;
-            }
+            currentActiveExamContainer = buttonElement.previousElementSibling;
+            document.getElementById('teacher-exam-img-input').click();
         }
+
+        document.getElementById('teacher-exam-img-input').onchange = function(e) {
+            let file = e.target.files[0];
+            if (file && currentActiveExamContainer) {
+                let examName = prompt("أدخل عنوان الامتحان:", "اختبار قصير");
+                let duration = prompt("الوقت المحدد (بالدقائق):", "15");
+                if(!examName) examName = "اختبار الأستاذ";
+
+                let imgUrl = URL.createObjectURL(file);
+                let html = `
+                    <div class="exam-item-card">
+                        <div style="font-weight:bold; color:#e0a96d;"><i class="fa-solid fa-pen-to-square"></i> ${examName} (${duration || 15} دقيقة)</div>
+                        <img src="${imgUrl}" class="exam-img-elem" alt="صورة الامتحان">
+                        <button class="download-btn" style="padding:6px; font-size:11px; margin-top:5px;" onclick="startExam('${examName}', ${duration || 15})">بدء الاختبار الآن</button>
+                    </div>`;
+                currentActiveExamContainer.innerHTML += html;
+                alert('تم رفع الامتحان مع الصورة بنجاح!');
+                e.target.value = '';
+            }
+        };
 
         function submitAttendance() {
             let name = document.getElementById('student-name').value;
