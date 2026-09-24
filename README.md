@@ -1,5 +1,3 @@
-# iraq-education
-منصة العراق التعليمية 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
