@@ -171,12 +171,11 @@
                 </div>
             </div>
 
-            <!-- 2. TAB: SCIENTIFIC (السادس العلمي - كامل المواد بالفصول المطلوبة) -->
+            <!-- 2. TAB: SCIENTIFIC (السادس العلمي - كامل المواد) -->
             <div id="scientific" class="tab-panel">
                 <div class="section-title">مواد السادس العلمي</div>
                 <div id="scientific-subjects-list">
                     <script>
-                        // تعريف فصول ومواضيع كل مادة بدقة حسب الطلب
                         const sciData = [
                             { name: "التربية الإسلامية", icon: "fa-kaaba", chapters: ["الفصل الأول", "الفصل الثاني", "الفصل الثالث", "الفصل الرابع", "الفصل الخامس"] },
                             { name: "اللغة العربية", icon: "fa-book", chapters: ["موضوع الاستفهام", "موضوع النفي", "موضوع التوكيد", "موضوع النداء", "موضوع التعجب", "موضوع المدح والذم", "موضوع الاغراء"] },
@@ -188,21 +187,6 @@
                         ];
 
                         sciData.forEach(item => {
-                            let chaptersHtml = '';
-                            item.chapters.forEach(ch => {
-                                chaptersHtml += `
-                                    <div class="sub-chapter-box">
-                                        <div class="sub-chapter-header" onclick="toggleAccordion(this)">
-                                            <span><i class="fa-solid fa-bookmark"></i> ${ch}</span>
-                                            <i class="fa-solid fa-chevron-down"></i>
-                                        </div>
-                                        <div class="sub-chapter-body">
-                                            <div class="lectures-list"></div>
-                                            <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة لـ ${ch}</button>
-                                        </div>
-                                    </div>`;
-                            });
-
                             document.write(`
                                 <div class="subject-accordion">
                                     <div class="subject-header" onclick="toggleAccordion(this)">
@@ -452,7 +436,7 @@
             body.style.display = (body.style.display === 'block') ? 'none' : 'block';
         }
 
-        // إضافة مدرس جديد مع الفصول المطابقة تماماً للمادة
+        // إضافة مدرس جديد مع الفصول المطابقة تماماً للمحاضرات والامتحانات
         function promptAddTeacherCustom(buttonElement, subjectName) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             let teacherName = prompt(`أدخل اسم المدرس الجديد لمادة ${subjectName}:`);
@@ -461,9 +445,11 @@
                 let chaptersAttr = teachersDiv.getAttribute('data-chapters');
                 let chapters = chaptersAttr ? JSON.parse(chaptersAttr) : ["الفصل الأول", "الفصل الثاني", "الفصل الثالث"];
 
-                let chaptersHtml = '';
+                let chaptersLecturesHtml = '';
+                let chaptersExamsHtml = '';
+
                 chapters.forEach(ch => {
-                    chaptersHtml += `
+                    chaptersLecturesHtml += `
                         <div class="sub-chapter-box">
                             <div class="sub-chapter-header" onclick="toggleAccordion(this)">
                                 <span><i class="fa-solid fa-bookmark"></i> ${ch}</span>
@@ -472,6 +458,18 @@
                             <div class="sub-chapter-body">
                                 <div class="lectures-list"></div>
                                 <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة لـ ${ch}</button>
+                            </div>
+                        </div>`;
+
+                    chaptersExamsHtml += `
+                        <div class="sub-chapter-box">
+                            <div class="sub-chapter-header" onclick="toggleAccordion(this)">
+                                <span><i class="fa-solid fa-pen-to-square"></i> ${ch}</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="sub-chapter-body">
+                                <div class="teacher-exams-list"></div>
+                                <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherExamWithImage(this)"><i class="fa-solid fa-image"></i> رفع صورة امتحان لـ ${ch}</button>
                             </div>
                         </div>`;
                 });
@@ -484,7 +482,7 @@
                         </div>
                         <div class="teacher-body">
                             
-                            <!-- 1. محاضرات الأستاذ والفصول الخاصة بالمادة -->
+                            <!-- 1. محاضرات الأستاذ والفصول الخاصة -->
                             <div class="main-category-box">
                                 <div class="main-category-header" onclick="toggleAccordion(this)">
                                     <span><i class="fa-solid fa-circle-play" style="color:#48cae4;"></i> محاضرات الأستاذ</span>
@@ -492,21 +490,23 @@
                                 </div>
                                 <div class="main-category-body">
                                     <div class="sub-chapters-container">
-                                        ${chaptersHtml}
+                                        ${chaptersLecturesHtml}
                                     </div>
-                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px;" onclick="addNewSubChapter(this)"><i class="fa-solid fa-plus"></i> + إضافة فصل جديد إضافي</button>
+                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px;" onclick="addNewSubChapter(this, 'lecture')"><i class="fa-solid fa-plus"></i> + إضافة فصل محاضرة إضافي</button>
                                 </div>
                             </div>
 
-                            <!-- 2. امتحانات الأستاذ -->
+                            <!-- 2. امتحانات الأستاذ والفصول الخاصة -->
                             <div class="main-category-box">
                                 <div class="main-category-header" onclick="toggleAccordion(this)">
                                     <span><i class="fa-solid fa-pen-to-square" style="color:#e0a96d;"></i> امتحانات واختبارات الأستاذ</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
                                 <div class="main-category-body">
-                                    <div class="teacher-exams-list"></div>
-                                    <button class="btn-submit admin-only-btn" style="background:#e0a96d; color:#0b132b; padding:8px; font-size:11px; margin-top:5px;" onclick="uploadTeacherExamWithImage(this)"><i class="fa-solid fa-image"></i> + إضافة امتحان مع رفع صورة الامتحان</button>
+                                    <div class="sub-exams-container">
+                                        ${chaptersExamsHtml}
+                                    </div>
+                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px;" onclick="addNewSubChapter(this, 'exam')"><i class="fa-solid fa-plus"></i> + إضافة فصل امتحان إضافي</button>
                                 </div>
                             </div>
 
@@ -516,25 +516,31 @@
             }
         }
 
-        // إضافة فصل إضافي جديد
-        function addNewSubChapter(buttonElement) {
+        // إضافة فصل إضافي جديد (سواء للمحاضرات أو الامتحانات)
+        function addNewSubChapter(buttonElement, type) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
-            let chapterName = prompt("أدخل عنوان الفصل أو الموضوع الجديد:");
-            if (chapterName) {
+            let titleName = prompt("أدخل عنوان الفصل أو الموضوع الجديد:");
+            if (titleName) {
                 let container = buttonElement.previousElementSibling;
+                let btnColor = type === 'lecture' ? '#0077b6' : '#e0a96d';
+                let textColor = type === 'lecture' ? '#fff' : '#0b132b';
+                let btnText = type === 'lecture' ? `رفع فيديو محاضرة لـ ${titleName}` : `رفع صورة امتحان لـ ${titleName}`;
+                let actionFunc = type === 'lecture' ? 'uploadTeacherVideo(this)' : 'uploadTeacherExamWithImage(this)';
+                let iconClass = type === 'lecture' ? 'fa-bookmark' : 'fa-pen-to-square';
+
                 let html = `
                     <div class="sub-chapter-box">
                         <div class="sub-chapter-header" onclick="toggleAccordion(this)">
-                            <span><i class="fa-solid fa-bookmark"></i> ${chapterName}</span>
+                            <span><i class="fa-solid ${iconClass}"></i> ${titleName}</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                         <div class="sub-chapter-body">
-                            <div class="lectures-list"></div>
-                            <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة لـ ${chapterName}</button>
+                            <div class="${type === 'lecture' ? 'lectures-list' : 'teacher-exams-list'}"></div>
+                            <button class="btn-submit admin-only-btn" style="background:${btnColor}; color:${textColor}; padding:6px; font-size:10px; margin-top:5px;" onclick="${actionFunc}"><i class="fa-solid fa-upload"></i> ${btnText}</button>
                         </div>
                     </div>`;
                 container.innerHTML += html;
-                alert('تم إضافة الفصل الجديد بنجاح!');
+                alert('تم إضافة القسم الجديد بنجاح!');
             }
         }
 
@@ -563,7 +569,7 @@
             }
         };
 
-        // رفع امتحان مع صورة للأستاذ
+        // رفع امتحان مع صورة للأستاذ داخل الفصل المحدد
         function uploadTeacherExamWithImage(buttonElement) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             currentActiveExamContainer = buttonElement.previousElementSibling;
@@ -573,7 +579,7 @@
         document.getElementById('teacher-exam-img-input').onchange = function(e) {
             let file = e.target.files[0];
             if (file && currentActiveExamContainer) {
-                let examName = prompt("أدخل عنوان الامتحان:", "اختبار الأستاذ");
+                let examName = prompt("أدخل عنوان الاختبار:", "اختبار الفصل");
                 let duration = prompt("الوقت المحدد (بالدقائق):", "15");
                 if(!examName) examName = "اختبار قصير";
 
@@ -585,7 +591,7 @@
                         <button class="download-btn" style="padding:6px; font-size:10px; margin-top:4px;" onclick="startExam('${examName}', ${duration || 15})">بدء الاختبار الآن</button>
                     </div>`;
                 currentActiveExamContainer.innerHTML += html;
-                alert('تم رفع الامتحان مع صورة الاختبار بنجاح!');
+                alert('تم رفع الامتحان مع صورة الاختبار بنجاح داخل الفصل!');
                 e.target.value = '';
             }
         };
