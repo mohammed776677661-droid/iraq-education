@@ -2,214 +2,336 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة العراق التعليمية - لوحة التحكم</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منصة العراق التعليمية</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0d1b2a; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        /* الهيدر وشعار الموقع */
-        header { background-color: #1a252f; color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #3498db; }
-        .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #f1c40f; background: #fff; }
-        header h1 { font-size: 20px; font-weight: bold; }
-        .user-info { font-size: 14px; background: #2c3e50; padding: 6px 14px; border-radius: 20px; border: 1px solid #34495e; }
+        .app-container { width: 100%; max-width: 430px; height: 100vh; max-height: 932px; background-color: #0b132b; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        @media (min-width: 450px) { .app-container { border-radius: 35px; height: 92vh; border: 8px solid #1c2541; } }
 
-        /* الحاوية الرئيسية */
-        .main-container { display: flex; flex: 1; }
+        /* App Header */
+        .app-header { background: linear-gradient(135deg, #1c2541, #0b132b); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 10; }
+        .header-brand { display: flex; align-items: center; gap: 12px; }
+        .brand-logo { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #e0a96d; background: #fff; }
+        .brand-title { font-size: 16px; font-weight: 700; color: #ffffff; }
+        .brand-subtitle { font-size: 11px; color: #e0a96d; font-weight: 500; }
+        .header-actions { display: flex; gap: 12px; }
+        .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+        .badge-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background-color: #e63946; border-radius: 50%; }
 
-        /* القائمة الجانبية */
-        .sidebar { width: 230px; background-color: #2c3e50; color: white; padding: 20px 0; }
-        .sidebar ul { list-style: none; }
-        .sidebar li a { display: block; padding: 12px 20px; color: #ecf0f1; text-decoration: none; font-size: 15px; transition: 0.3s; cursor: pointer; }
-        .sidebar li a:hover, .sidebar li a.active { background-color: #34495e; border-right: 4px solid #f1c40f; color: #f1c40f; }
+        /* Main Screen Views */
+        .app-content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 90px; scrollbar-width: none; }
+        .app-content::-webkit-scrollbar { display: none; }
+        .tab-panel { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-panel.active { display: block; }
 
-        /* محتوى اللوحة */
-        .content { flex: 1; padding: 25px; }
-        .section-panel { display: none; }
-        .section-panel.active-panel { display: block; }
-        
-        /* البطاقات الإحصائية */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; border-top: 3px solid #3498db; }
-        .card h3 { color: #7f8c8d; font-size: 14px; margin-bottom: 10px; }
-        .card p { font-size: 26px; font-weight: bold; color: #2c3e50; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* الجداول والنماذج */
-        .box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .box h3 { margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 8px; }
-        table { width: 100%; border-collapse: collapse; text-align: right; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
-        th { background-color: #f8f9fa; color: #333; }
-        
-        .btn { padding: 8px 16px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
-        .btn:hover { background-color: #2980b9; }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .bg-green { background: #e8f8f5; color: #27ae60; }
-        .bg-yellow { background: #fef9e7; color: #f39c12; }
+        /* Hero Banner */
+        .hero-card { background: linear-gradient(135deg, #1c2541 0%, #3a506b 100%); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; border: 1px solid rgba(224, 169, 109, 0.3); position: relative; overflow: hidden; }
+        .hero-card h2 { font-size: 20px; color: #ffffff; margin-bottom: 5px; }
+        .hero-card p { font-size: 12px; color: #e0a96d; }
 
-        @media (max-width: 768px) {
-            .main-container { flex-direction: column; }
-            .sidebar { width: 100%; }
-        }
+        /* Category Grid */
+        .section-title { font-size: 16px; font-weight: 700; margin: 15px 0 10px 0; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
+        .section-title span { font-size: 12px; color: #48cae4; font-weight: 500; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .category-card { background: #1c2541; padding: 18px 15px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); }
+        .category-card:active { transform: scale(0.97); }
+        .category-icon { width: 50px; height: 50px; border-radius: 15px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .bg-gold { background: #e0a96d; color: #0b132b; }
+        .bg-blue { background: #0077b6; color: #ffffff; }
+        .category-card h3 { font-size: 15px; margin-bottom: 4px; }
+        .category-card p { font-size: 11px; color: #a8dadc; }
+
+        /* Quick Action Grid */
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .quick-btn { background: #1c2541; padding: 12px 8px; border-radius: 14px; text-align: center; cursor: pointer; font-size: 11px; color: #f1faee; }
+        .quick-btn i { font-size: 18px; margin-bottom: 6px; display: block; color: #48cae4; }
+
+        /* Subject Item List */
+        .list-container { display: flex; flex-direction: column; gap: 10px; }
+        .subject-item { background: #1c2541; padding: 14px 16px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .subject-left { display: flex; align-items: center; gap: 14px; }
+        .subject-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(72, 202, 228, 0.15); color: #48cae4; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .subject-info h4 { font-size: 14px; color: #ffffff; margin-bottom: 2px; }
+        .subject-info p { font-size: 11px; color: #8d99ae; }
+
+        /* Video Player Card */
+        .video-card { background: #1c2541; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
+        .video-preview { width: 100%; height: 200px; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
+        .play-btn { width: 55px; height: 55px; background: rgba(0,119,182,0.85); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; cursor: pointer; }
+        .video-details { padding: 15px; }
+        .video-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .video-author { font-size: 12px; color: #8d99ae; margin-bottom: 12px; }
+
+        /* PDF Item */
+        .pdf-item { background: #1c2541; padding: 14px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .pdf-info { display: flex; align-items: center; gap: 12px; }
+        .pdf-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(230, 57, 70, 0.15); color: #e63946; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+
+        /* Results & Stats */
+        .result-bar-card { background: #1c2541; padding: 15px; border-radius: 16px; margin-bottom: 10px; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+        .bar-container { height: 8px; background: #0b132b; border-radius: 10px; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #0077b6, #48cae4); border-radius: 10px; }
+
+        /* Settings Form Input */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { font-size: 12px; color: #8d99ae; display: block; margin-bottom: 6px; }
+        .form-control { width: 100%; background: #0b132b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: #fff; font-size: 14px; }
+        .btn-submit { width: 100%; background: #0077b6; color: white; padding: 14px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; }
+
+        /* Bottom Nav Bar */
+        .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: #1c2541; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); z-index: 20; padding-bottom: 5px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #8d99ae; font-size: 10px; text-decoration: none; cursor: pointer; gap: 4px; }
+        .nav-item i { font-size: 18px; }
+        .nav-item.active { color: #e0a96d; }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر مع الشعار المطور المباشر -->
-    <header>
-        <div class="logo-container">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle cx='100' cy='100' r='90' fill='%231a252f' stroke='%233498db' stroke-width='8'/><circle cx='100' cy='100' r='80' fill='none' stroke='%23f1c40f' stroke-width='2' stroke-dasharray='4,4'/><polygon points='100,45 150,65 100,85 50,65' fill='%23f1c40f'/><polygon points='75,75 75,95 100,105 125,95 125,75' fill='%23ecf0f1'/><path d='M 60 115 Q 100 95 100 135 Q 100 95 140 115 L 135 145 Q 100 125 100 160 Q 100 125 65 145 Z' fill='%233498db'/><text x='100' y='180' font-family='Arial' font-size='12' font-weight='bold' fill='%23ffffff' text-anchor='middle'>IRAQ EDU</text></svg>" alt="شعار المنصة" class="logo-img" id="site-logo">
-            <h1>منصة العراق التعليمية 🇮🇶</h1>
-        </div>
-        <div class="user-info">المدير: محمد</div>
-    </header>
-
-    <div class="main-container">
-        <!-- القائمة الجانبية -->
-        <div class="sidebar">
-            <ul>
-                <li><a class="nav-btn active" onclick="showSection('home', this)">الرئيسية</a></li>
-                <li><a class="nav-btn" onclick="showSection('lectures', this)">قسم المحاضرات</a></li>
-                <li><a class="nav-btn" onclick="showSection('attendance', this)">تسجيل الحضور</a></li>
-                <li><a class="nav-btn" onclick="showSection('exams', this)">قسم الامتحانات</a></li>
-                <li><a class="nav-btn" onclick="showSection('books', this)">قسم الملازم والكتب</a></li>
-                <li><a class="nav-btn" onclick="showSection('settings', this)">إعدادات الشعار</a></li>
-            </ul>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="header-brand">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%231c2541'/><path d='M30 65 Q50 45 50 75 Q50 45 70 65' fill='%23e0a96d'/><polygon points='50,25 75,38 50,50 25,38' fill='%230077b6'/></svg>" class="brand-logo" id="app-logo-img">
+                <div>
+                    <div class="brand-title" id="app-title-text">منصة العراق التعليمية</div>
+                    <div class="brand-subtitle" id="app-subtitle-text">معاً نحو مستقبل أفضل</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="switchTab('notifications')">
+                    <i class="fa-regular fa-bell"></i>
+                    <div class="badge-dot"></div>
+                </button>
+            </div>
         </div>
 
-        <!-- المحتوى الرئيسي -->
-        <div class="content">
+        <!-- Content Area -->
+        <div class="app-content">
 
-            <!-- 1. القسم الرئيسي -->
-            <div id="home" class="section-panel active-panel">
-                <h2>لوحة التحكم الإدارية</h2>
-                <p style="margin-bottom: 20px; color: #666;">أهلاً بك في منصة العراق التعليمية.</p>
-                <div class="stats-grid">
-                    <div class="card"><h3>إجمالي المحاضرات</h3><p>24</p></div>
-                    <div class="card"><h3>الحضور اليوم</h3><p>95%</p></div>
-                    <div class="card"><h3>الامتحانات القادمة</h3><p>3</p></div>
-                    <div class="card"><h3>الملازم المتاحة</h3><p>18</p></div>
+            <!-- 1. TAB: HOME -->
+            <div id="home" class="tab-panel active">
+                <div class="hero-card">
+                    <h2 id="banner-title">منصة العراق التعليمية</h2>
+                    <p id="banner-desc">السادس العلمي | السادس الأدبي - طريقك نحو النجاح</p>
+                </div>
+
+                <div class="section-title">المراحل الدراسية</div>
+                <div class="grid-2">
+                    <div class="category-card" onclick="switchTab('scientific')">
+                        <div class="category-icon bg-blue"><i class="fa-solid fa-flask"></i></div>
+                        <h3>السادس العلمي</h3>
+                        <p>جميع المواد والدروس</p>
+                    </div>
+                    <div class="category-card" onclick="switchTab('literary')">
+                        <div class="category-icon bg-gold"><i class="fa-solid fa-book-open"></i></div>
+                        <h3>السادس الأدبي</h3>
+                        <p>جميع المواد والدروس</p>
+                    </div>
+                </div>
+
+                <div class="section-title">وصول سريع</div>
+                <div class="grid-4">
+                    <div class="quick-btn" onclick="switchTab('lectures')"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
+                    <div class="quick-btn" onclick="switchTab('pdf')"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
+                    <div class="quick-btn" onclick="switchTab('exams')"><i class="fa-solid fa-pen-to-square"></i>الاختبارات</div>
+                    <div class="quick-btn" onclick="switchTab('results')"><i class="fa-solid fa-chart-line"></i>النتائج</div>
+                </div>
+
+                <div class="section-title">أحدث المحاضرات <span>عرض الكل</span></div>
+                <div class="video-card" onclick="switchTab('lectures')">
+                    <div class="video-preview">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    <div class="video-details">
+                        <div class="video-title">الفيزياء - الفصل الأول</div>
+                        <div class="video-author">الأستاذ أحمد عبد الكريم • 45 دقيقة</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 2. قسم المحاضرات -->
-            <div id="lectures" class="section-panel">
-                <div class="box">
-                    <h3>جدول المحاضرات الدراسية</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>اسم المادة</th>
-                                <th>الأستاذ</th>
-                                <th>التوقيت</th>
-                                <th>رابط البث / الفيديو</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>الرياضيات - السادس العلمي</td><td>أ. أحمد جاسم</td><td>10:00 صباحاً</td><td><button class="btn">مشاهدة</button></td></tr>
-                            <tr><td>اللغة العربية - الثالث المتوسط</td><td>أ. علي حسين</td><td>12:00 ظهراً</td><td><button class="btn">مشاهدة</button></td></tr>
-                        </tbody>
-                    </table>
+            <!-- 2. TAB: SCIENTIFIC (السادس العلمي) -->
+            <div id="scientific" class="tab-panel">
+                <div class="section-title">مواد السادس العلمي</div>
+                <div class="list-container">
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-book"></i></div><div class="subject-info"><h4>اللغة العربية</h4><p>قواعد، أدب، ونقد</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-language"></i></div><div class="subject-info"><h4>اللغة الإنكليزية</h4><p>المحاور والقطع الوظيفية</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-calculator"></i></div><div class="subject-info"><h4>الرياضيات</h4><p>التفاضل والتكامل والأعداد المركبة</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-dna"></i></div><div class="subject-info"><h4>الأحياء</h4><p>الخلية والوراثة والتقنيات</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-flask"></i></div><div class="subject-info"><h4>الكيمياء</h4><p>الكيمياء الحرارية والعضوية</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-atom"></i></div><div class="subject-info"><h4>الفيزياء</h4><p>المتسعات والفيزياء الحديثة</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
                 </div>
             </div>
 
-            <!-- 3. قسم تسجيل الحضور -->
-            <div id="attendance" class="section-panel">
-                <div class="box">
-                    <h3>تسجيل حضور الطلاب</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>اسم الطالب</th>
-                                <th>الصف</th>
-                                <th>حالة الحضور</th>
-                                <th>تاريخ اليوم</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>محمد جاسم</td><td>السادس الإعدادي</td><td><span class="badge bg-green">حاضر</span></td><td>2026-09-24</td></tr>
-                            <tr><td>حسين علي</td><td>الثالث المتوسط</td><td><span class="badge bg-yellow">غائب</span></td><td>2026-09-24</td></tr>
-                        </tbody>
-                    </table>
+            <!-- 3. TAB: LITERARY (السادس الأدبي) -->
+            <div id="literary" class="tab-panel">
+                <div class="section-title">مواد السادس الأدبي</div>
+                <div class="list-container">
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-book"></i></div><div class="subject-info"><h4>اللغة العربية</h4><p>قواعد وأدب</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-landmark"></i></div><div class="subject-info"><h4>التاريخ</h4><p>تاريخ الحديث والمعاصر</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-earth-americas"></i></div><div class="subject-info"><h4>الجغرافية</h4><p>الجغرافيا البشرية والاقليمية</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
+                    <div class="subject-item"><div class="subject-left"><div class="subject-icon"><i class="fa-solid fa-brain"></i></div><div class="subject-info"><h4>الفلسفة والمنطق</h4><p>المبادئ والنظريات</p></div></div><i class="fa-solid fa-chevron-left"></i></div>
                 </div>
             </div>
 
-            <!-- 4. قسم الامتحانات -->
-            <div id="exams" class="section-panel">
-                <div class="box">
-                    <h3>جدول الاختبارات والامتحانات الالكترونية</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>اسم الامتحان</th>
-                                <th>المادة</th>
-                                <th>المدة</th>
-                                <th>الإجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>امتحان الفصل الأول</td><td>الفيزياء</td><td>60 دقيقة</td><td><button class="btn">بدء الامتحان</button></td></tr>
-                            <tr><td>اختبار شامل</td><td>الكيمياء</td><td>45 دقيقة</td><td><button class="btn">بدء الامتحان</button></td></tr>
-                        </tbody>
-                    </table>
+            <!-- 4. TAB: LECTURES -->
+            <div id="lectures" class="tab-panel">
+                <div class="section-title">المحاضرات المرئية</div>
+                <div class="video-card">
+                    <div class="video-preview">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    <div class="video-details">
+                        <div class="video-title">الفيزياء - الفصل الأول (المتسعات)</div>
+                        <div class="video-author">الأستاذ أحمد عبد الكريم</div>
+                        <p style="font-size: 12px; color: #8d99ae; margin-top: 8px;">في هذه المحاضرة ستتناول مفاهيم الفصل الأول من مادة الفيزياء مع حل أمثلة وزارية.</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- 5. قسم الملازم والكتب -->
-            <div id="books" class="section-panel">
-                <div class="box">
-                    <h3>الملازم والملفات التعليمية (PDF)</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>عنوان الملزمة</th>
-                                <th>الصف الدراسي</th>
-                                <th>حجم الملف</th>
-                                <th>تحميل</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>ملزمة قواعد اللغة العربية</td><td>السادس العلمي</td><td>15 MB</td><td><button class="btn">تحميل PDF</button></td></tr>
-                            <tr><td>ملزمة الأحياء الشاملة</td><td>الثالث المتوسط</td><td>8 MB</td><td><button class="btn">تحميل PDF</button></td></tr>
-                        </tbody>
-                    </table>
+            <!-- 5. TAB: PDF (الملازم) -->
+            <div id="pdf" class="tab-panel">
+                <div class="section-title">الملازم وملفات الـ PDF</div>
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div><div style="font-size:13px; font-weight:700;">ملزمة الرياضيات - السادس العلمي</div><div style="font-size:11px; color:#8d99ae;">PDF • 12.4 MB</div></div>
+                    </div>
+                    <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
+                </div>
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div><div style="font-size:13px; font-weight:700;">ملزمة الفيزياء - الفصل الأول</div><div style="font-size:11px; color:#8d99ae;">PDF • 8.7 MB</div></div>
+                    </div>
+                    <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
+                </div>
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div><div style="font-size:13px; font-weight:700;">ملزمة قواعد اللغة العربية</div><div style="font-size:11px; color:#8d99ae;">PDF • 10.1 MB</div></div>
+                    </div>
+                    <i class="fa-solid fa-download" style="color:#48cae4; cursor:pointer;"></i>
                 </div>
             </div>
 
-            <!-- 6. قسم إعدادات صورة الموقع -->
-            <div id="settings" class="section-panel">
-                <div class="box">
-                    <h3>تغيير شعار المنصة</h3>
-                    <p style="margin-bottom: 15px;">يمكنك وضع رابط صورة خارجية في حال رغبت بتغيير الشعار الحالي:</p>
-                    <input type="text" id="logo-url" placeholder="ضع رابط الصورة هنا (URL)" style="width: 70%; padding: 8px; margin-left: 10px;">
-                    <button class="btn" onclick="updateLogo()">تحديث الشعار</button>
+            <!-- 6. TAB: RESULTS (النتائج) -->
+            <div id="results" class="tab-panel">
+                <div class="section-title">نتائج الطالب التفصيلية</div>
+                <div class="hero-card" style="margin-bottom:15px;">
+                    <div style="font-size:12px; color:#e0a96d;">المعدل العام الحالي</div>
+                    <div style="font-size:32px; font-weight:800; color:#fff; margin:5px 0;">88.5%</div>
+                </div>
+                <div class="result-bar-card">
+                    <div class="bar-label"><span>اللغة العربية</span><span>92%</span></div>
+                    <div class="bar-container"><div class="bar-fill" style="width: 92%;"></div></div>
+                </div>
+                <div class="result-bar-card">
+                    <div class="bar-label"><span>الرياضيات</span><span>85%</span></div>
+                    <div class="bar-container"><div class="bar-fill" style="width: 85%;"></div></div>
+                </div>
+                <div class="result-bar-card">
+                    <div class="bar-label"><span>الفيزياء</span><span>88%</span></div>
+                    <div class="bar-container"><div class="bar-fill" style="width: 88%;"></div></div>
                 </div>
             </div>
 
+            <!-- 7. TAB: NOTIFICATIONS -->
+            <div id="notifications" class="tab-panel">
+                <div class="section-title">الإشعارات والتنبيهات</div>
+                <div class="subject-item" style="margin-bottom:10px;">
+                    <div class="subject-left">
+                        <div class="subject-icon" style="color:#e0a96d;"><i class="fa-solid fa-bell"></i></div>
+                        <div class="subject-info"><h4>تم إضافة محاضرة جديدة</h4><p>كيمياء - الفصل الثالث | اليوم 10:00 ص</p></div>
+                    </div>
+                </div>
+                <div class="subject-item">
+                    <div class="subject-left">
+                        <div class="subject-icon" style="color:#e63946;"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="subject-info"><h4>ملزمة جديدة متاحة</h4><p>ملزمة الفيزياء الشاملة جاهزة للتحميل</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. TAB: SETTINGS & PROFILE (الإعدادات وتغيير الشعار والاسم) -->
+            <div id="profile" class="tab-panel">
+                <div class="section-title">إعدادات المنصة وتخصيص التطبيق</div>
+                <div class="video-card" style="padding:15px;">
+                    <div class="form-group">
+                        <label>تغيير شعار المنصة (من الاستوديو/الملفات):</label>
+                        <input type="file" id="logo-file-input" accept="image/*" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>اسم المنصة الرئيسي:</label>
+                        <input type="text" id="input-app-title" class="form-control" value="منصة العراق التعليمية">
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف / الشعار اللفظي:</label>
+                        <input type="text" id="input-app-subtitle" class="form-control" value="معاً نحو مستقبل أفضل">
+                    </div>
+                    <button class="btn-submit" onclick="saveSettings()">حفظ التغيرات</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
+            <div class="nav-item" onclick="switchTab('scientific', this)"><i class="fa-solid fa-book-bookmark"></i>المواد</div>
+            <div class="nav-item" onclick="switchTab('lectures', this)"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>
+            <div class="nav-item" onclick="switchTab('pdf', this)"><i class="fa-solid fa-file-pdf"></i>الملازم</div>
+            <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-solid fa-gear"></i>الإعدادات</div>
         </div>
     </div>
 
     <script>
-        // التنقل بين الأقسام
-        function showSection(sectionId, element) {
-            let panels = document.querySelectorAll('.section-panel');
-            panels.forEach(panel => panel.classList.remove('active-panel'));
-            
-            let navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(btn => btn.classList.remove('active'));
+        // Switch Active Tabs
+        function switchTab(tabId, element) {
+            let panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(p => p.classList.remove('active'));
 
-            document.getElementById(sectionId).classList.add('active-panel');
-            element.classList.add('active');
+            let activePanel = document.getElementById(tabId);
+            if(activePanel) activePanel.classList.add('active');
+
+            if(element) {
+                let navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(n => n.classList.remove('active'));
+                element.classList.add('active');
+            }
         }
 
-        // تغيير الشعار برابط خارجي
-        function updateLogo() {
-            let url = document.getElementById('logo-url').value;
-            if(url) {
-                document.getElementById('site-logo').src = url;
-                alert('تم تحديث الشعار بنجاح!');
+        // Save Settings (Title & Logo from Gallery)
+        function saveSettings() {
+            let titleInput = document.getElementById('input-app-title').value;
+            let subtitleInput = document.getElementById('input-app-subtitle').value;
+            let fileInput = document.getElementById('logo-file-input');
+
+            if(titleInput) {
+                document.getElementById('app-title-text').innerText = titleInput;
+                document.getElementById('banner-title').innerText = titleInput;
             }
+            if(subtitleInput) {
+                document.getElementById('app-subtitle-text').innerText = subtitleInput;
+            }
+
+            // Image from File System / Studio
+            if (fileInput.files && fileInput.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('app-logo-img').src = e.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+
+            alert('تم حفظ الإعدادات والتحديث بنجاح!');
+            switchTab('home');
         }
     </script>
 </body>
