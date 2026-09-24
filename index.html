@@ -12,7 +12,7 @@
         .app-container { width: 100%; max-width: 430px; height: 100vh; max-height: 932px; background-color: #0b132b; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         @media (min-width: 450px) { .app-container { border-radius: 35px; height: 92vh; border: 8px solid #1c2541; } }
 
-        /* Modal / Attendance Overlay */
+        /* Modal / Attendance & Access Overlay */
         .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11, 19, 43, 0.98); z-index: 999; display: flex; flex-direction: column; justify-content: center; padding: 25px; backdrop-filter: blur(10px); }
         .modal-box { background: #1c2541; padding: 22px; border-radius: 20px; border: 1px solid #e0a96d; }
         .modal-box h2 { font-size: 18px; color: #e0a96d; text-align: center; margin-bottom: 15px; }
@@ -96,8 +96,22 @@
 </head>
 <body>
 
+    <!-- نافذة إدخال كود الدخول والتجربة المجانية (أسبوع) -->
+    <div id="access-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h2><i class="fa-solid fa-key"></i> تفعيل دخول المنصة</h2>
+            <p style="font-size:12px; color:#8d99ae; text-align:center; margin-bottom:15px;">يرجى إدخال كود التفعيل الخاص بالمنصة، أو الاستفادة من التجربة المجانية.</p>
+            <div class="form-group">
+                <label>كود التفعيل:</label>
+                <input type="text" id="access-code-input" class="form-control" placeholder="أدخل كود الدخول هنا">
+            </div>
+            <button class="btn-submit" style="background:#0077b6; margin-bottom:10px;" onclick="verifyAccessCode()">تحقق ودخول</button>
+            <button class="btn-submit" style="background:transparent; border:1px solid #e0a96d; color:#e0a96d;" onclick="activateFreeTrial()">🎁 تجربة مجانية لمدة أسبوع</button>
+        </div>
+    </div>
+
     <!-- نافذة تسجيل الحضور اليومي الإجباري -->
-    <div id="attendance-modal" class="modal-overlay">
+    <div id="attendance-modal" class="modal-overlay" style="display:none;">
         <div class="modal-box">
             <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور اليومي</h2>
             <p style="font-size:12px; color:#8d99ae; text-align:center; margin-bottom:15px;">يرجى تسجيل بياناتك لتتمكن من تصفح المنصة اليوم.</p>
@@ -271,15 +285,14 @@
                 </div>
             </div>
 
-            <!-- 7. TAB: AI CORRECTION (قسم التصحيح المرتبط بالامتحان) -->
+            <!-- 7. TAB: AI CORRECTION -->
             <div id="results" class="tab-panel">
                 <div class="section-title">قسم التصحيح الذكي والآلي بالذكاء الاصطناعي</div>
                 <div class="admin-box" id="active-exam-session-box">
                     <h3 id="active-exam-title"><i class="fa-solid fa-robot"></i> نافذة الامتحان والتصحيح الفوري</h3>
                     
-                    <!-- عرض صورة الأسئلة الخاصة بالامتحان للطالب -->
                     <div id="exam-question-preview-box" style="margin-bottom:15px; text-align:center; display:none;">
-                        <label style="font-size:12px; color:#e0a96d; margin-bottom:5px; display:block;">سئلة الامتحان المطلوب حلها:</label>
+                        <label style="font-size:12px; color:#e0a96d; margin-bottom:5px; display:block;">أسئلة الامتحان المطلوب حلها:</label>
                         <img id="active-exam-question-img" src="" style="width:100%; max-height:180px; object-fit:cover; border-radius:8px; border:1px solid #e0a96d;" alt="صورة الأسئلة">
                     </div>
 
@@ -321,6 +334,16 @@
                             <input type="text" id="admin-code-input" class="form-control" value="admin123">
                         </div>
                         <button class="btn-submit" style="background:#27ae60;" onclick="updateAdminCode()"><i class="fa-solid fa-link"></i> تحديث رابط المسؤولين</button>
+                    </div>
+
+                    <!-- إدارة كود تفعيل الطلاب -->
+                    <div class="admin-box">
+                        <h3><i class="fa-solid fa-key"></i> إدارة كود التفعيل للطلاب</h3>
+                        <div class="form-group">
+                            <label>كود التفعيل الحالي:</label>
+                            <input type="text" id="platform-access-code" class="form-control" value="iraq2026">
+                        </div>
+                        <button class="btn-submit" style="background:#0077b6;" onclick="updatePlatformCode()"><i class="fa-solid fa-save"></i> حفظ كود التفعيل الجديد</button>
                     </div>
 
                     <!-- إضافة إعلان جديد -->
@@ -395,12 +418,81 @@
     <script>
         let isAdmin = false;
         let currentAdminCode = localStorage.getItem('admin_code') || 'admin123';
+        let currentPlatformCode = localStorage.getItem('platform_code') || 'iraq2026';
         let currentActiveLectureContainer = null;
         let currentActiveExamContainer = null;
         let activeExamModelAnswer = "الإجابة النموذجية غير محددة";
         let activeExamTitleStr = "اختبار عام";
 
         window.onload = function() {
+            // فحص صلاحية الدخول أو التجربة المجانية
+            checkPlatformAccess();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === currentAdminCode || localStorage.getItem('is_admin') === 'true') {
+                enableAdminMode();
+            }
+
+            document.getElementById('platform-access-code').value = currentPlatformCode;
+            updateAdminLinkDisplay();
+            loadAttendanceList();
+        };
+
+        function checkPlatformAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === currentAdminCode) {
+                // المسؤول يتخطى كود الدخول تلقائياً
+                document.getElementById('access-modal').style.display = 'none';
+                checkAttendanceRequirement();
+                return;
+            }
+
+            let isAuthorized = localStorage.getItem('platform_authorized');
+            if (isAuthorized === 'true') {
+                document.getElementById('access-modal').style.display = 'none';
+                checkAttendanceRequirement();
+            } else {
+                let trialExpiry = localStorage.getItem('free_trial_expiry');
+                if (trialExpiry && new Date().getTime() < parseInt(trialExpiry)) {
+                    // التجربة المجانية سارية
+                    document.getElementById('access-modal').style.display = 'none';
+                    checkAttendanceRequirement();
+                } else {
+                    document.getElementById('access-modal').style.display = 'flex';
+                }
+            }
+        }
+
+        function verifyAccessCode() {
+            let inputCode = document.getElementById('access-code-input').value;
+            if (inputCode === currentPlatformCode) {
+                localStorage.setItem('platform_authorized', 'true');
+                document.getElementById('access-modal').style.display = 'none';
+                checkAttendanceRequirement();
+            } else {
+                alert('كود الدخول غير صحيح! يرجى التأكد من الكود أو تفعيل التجربة المجانية.');
+            }
+        }
+
+        function activateFreeTrial() {
+            let oneWeekMillis = 7 * 24 * 60 * 60 * 1000;
+            let expiryTime = new Date().getTime() + oneWeekMillis;
+            localStorage.setItem('free_trial_expiry', expiryTime);
+            document.getElementById('access-modal').style.display = 'none';
+            checkAttendanceRequirement();
+            alert('تم تفعيل التجربة المجانية لمدة أسبوع بنجاح!');
+        }
+
+        function updatePlatformCode() {
+            let newCode = document.getElementById('platform-access-code').value;
+            if (newCode) {
+                currentPlatformCode = newCode;
+                localStorage.setItem('platform_code', newCode);
+                alert('تم تحديث كود تفعيل المنصة بنجاح!');
+            }
+        }
+
+        function checkAttendanceRequirement() {
             let lastAttendance = localStorage.getItem('attendance_time');
             let now = new Date().getTime();
             if (!lastAttendance || (now - lastAttendance > 86400000)) {
@@ -408,15 +500,7 @@
             } else {
                 document.getElementById('attendance-modal').style.display = 'none';
             }
-
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin') === currentAdminCode || localStorage.getItem('is_admin') === 'true') {
-                enableAdminMode();
-            }
-
-            updateAdminLinkDisplay();
-            loadAttendanceList();
-        };
+        }
 
         function enableAdminMode() {
             isAdmin = true;
