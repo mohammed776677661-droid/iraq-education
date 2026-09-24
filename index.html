@@ -175,7 +175,6 @@
             <div id="scientific" class="tab-panel">
                 <div class="section-title">مواد السادس العلمي</div>
                 <div id="scientific-subjects-list">
-                    <!-- مواد السادس العلمي السبعة -->
                     <script>
                         const sciSubjects = ["التربية الإسلامية", "اللغة العربية", "اللغة الإنكليزية", "الرياضيات", "الفيزياء", "الكيمياء", "الأحياء"];
                         sciSubjects.forEach((sub, i) => {
@@ -201,7 +200,6 @@
             <div id="literary" class="tab-panel">
                 <div class="section-title">مواد السادس الأدبي</div>
                 <div id="literary-subjects-list">
-                    <!-- مواد السادس الأدبي السبعة -->
                     <script>
                         const litSubjects = ["التربية الإسلامية", "اللغة العربية", "اللغة الإنكليزية", "التاريخ", "الجغرافية", "الاقتصاد", "الفلسفة والمنطق"];
                         litSubjects.forEach((sub, i) => {
@@ -429,7 +427,7 @@
             body.style.display = (body.style.display === 'block') ? 'none' : 'block';
         }
 
-        // إضافة مدرس جديد مع أزرار الفصول الفرعية للمحاضرات وقسم الامتحانات
+        // إضافة مدرس جديد مع الفصول القابلة للإضافة والتحدث ورفع المحاضرات والامتحانات
         function promptAddTeacher(buttonElement) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             let teacherName = prompt("أدخل اسم المدرس الجديد:");
@@ -443,48 +441,32 @@
                         </div>
                         <div class="teacher-body">
                             
-                            <!-- 1. زر وبطاقة محاضرات الأستاذ (مع فصول فرعية) -->
+                            <!-- 1. محاضرات الأستاذ والفصول الفرعية القابلة للإضافة -->
                             <div class="main-category-box">
                                 <div class="main-category-header" onclick="toggleAccordion(this)">
                                     <span><i class="fa-solid fa-circle-play" style="color:#48cae4;"></i> محاضرات الأستاذ</span>
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
                                 <div class="main-category-body">
-                                    <!-- الفصول الفرعية -->
-                                    <div class="sub-chapter-box">
-                                        <div class="sub-chapter-header" onclick="toggleAccordion(this)">
-                                            <span><i class="fa-solid fa-bookmark"></i> الفصل الأول</span>
-                                            <i class="fa-solid fa-chevron-down"></i>
-                                        </div>
-                                        <div class="sub-chapter-body">
-                                            <div class="lectures-list"></div>
-                                            <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة للفصل الأول</button>
-                                        </div>
-                                    </div>
-                                    <div class="sub-chapter-box">
-                                        <div class="sub-chapter-header" onclick="toggleAccordion(this)">
-                                            <span><i class="fa-solid fa-bookmark"></i> الفصل الثاني</span>
-                                            <i class="fa-solid fa-chevron-down"></i>
-                                        </div>
-                                        <div class="sub-chapter-body">
-                                            <div class="lectures-list"></div>
-                                            <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة للفصل الثاني</button>
+                                    <div class="sub-chapters-container">
+                                        <!-- الفصل الأول افتراضي -->
+                                        <div class="sub-chapter-box">
+                                            <div class="sub-chapter-header" onclick="toggleAccordion(this)">
+                                                <span><i class="fa-solid fa-bookmark"></i> الفصل الأول</span>
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                            <div class="sub-chapter-body">
+                                                <div class="lectures-list"></div>
+                                                <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة للفصل الأول</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="sub-chapter-box">
-                                        <div class="sub-chapter-header" onclick="toggleAccordion(this)">
-                                            <span><i class="fa-solid fa-bookmark"></i> الفصل الثالث</span>
-                                            <i class="fa-solid fa-chevron-down"></i>
-                                        </div>
-                                        <div class="sub-chapter-body">
-                                            <div class="lectures-list"></div>
-                                            <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة للفصل الثالث</button>
-                                        </div>
-                                    </div>
+                                    <!-- زر إضافة فصل جديد متفرع -->
+                                    <button class="btn-submit admin-only-btn" style="background:#27ae60; padding:8px; font-size:11px; margin-top:8px;" onclick="addNewSubChapter(this)"><i class="fa-solid fa-plus"></i> + إضافة فصل جديد للمحاضرات</button>
                                 </div>
                             </div>
 
-                            <!-- 2. زر وبطاقة امتحانات الأستاذ (مع رفع صورة) -->
+                            <!-- 2. امتحانات الأستاذ -->
                             <div class="main-category-box">
                                 <div class="main-category-header" onclick="toggleAccordion(this)">
                                     <span><i class="fa-solid fa-pen-to-square" style="color:#e0a96d;"></i> امتحانات واختبارات الأستاذ</span>
@@ -502,7 +484,29 @@
             }
         }
 
-        // رفع فيديو المحاضرة داخل الفصل الفرعي
+        // إضافة فصل جديد متفرع وقابل للتعديل من داخل المنصة
+        function addNewSubChapter(buttonElement) {
+            if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
+            let chapterName = prompt("أدخل عنوان الفصل الجديد (مثال: الفصل الثاني، أو الوحدة الأولى):");
+            if (chapterName) {
+                let container = buttonElement.previousElementSibling;
+                let html = `
+                    <div class="sub-chapter-box">
+                        <div class="sub-chapter-header" onclick="toggleAccordion(this)">
+                            <span><i class="fa-solid fa-bookmark"></i> ${chapterName}</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="sub-chapter-body">
+                            <div class="lectures-list"></div>
+                            <button class="btn-submit admin-only-btn" style="background:#0077b6; padding:6px; font-size:10px; margin-top:5px;" onclick="uploadTeacherVideo(this)"><i class="fa-solid fa-upload"></i> رفع فيديو محاضرة لـ ${chapterName}</button>
+                        </div>
+                    </div>`;
+                container.innerHTML += html;
+                alert('تم إضافة الفصل الجديد بنجاح!');
+            }
+        }
+
+        // رفع فيديو المحاضرة داخل الفصل المحدد
         function uploadTeacherVideo(buttonElement) {
             if(!isAdmin) { alert('عذراً، هذه الخاصية مخصصة للمسؤولين فقط'); return; }
             currentActiveLectureContainer = buttonElement.previousElementSibling;
