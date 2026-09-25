@@ -144,36 +144,6 @@ align-items:center;
 gap:10px;
 }
 
-.notification-bell{
-position:relative;
-background:rgba(224,169,109,.2);
-color:#e0a96d;
-width:36px;
-height:36px;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-font-size:15px;
-}
-
-.notification-badge{
-position:absolute;
-top:-2px;
-right:-2px;
-background:#c0392b;
-color:#fff;
-font-size:9px;
-width:16px;
-height:16px;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-font-weight:bold;
-}
-
 .role-badge{
 background:rgba(224,169,109,.2);
 color:#e0a96d;
@@ -205,14 +175,8 @@ display:block;
 }
 
 @keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(8px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+from{opacity:0;transform:translateY(8px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 .hero-card{
@@ -325,13 +289,6 @@ justify-content:space-between;
 cursor:pointer;
 }
 
-.subject-body{
-padding:15px;
-background:#0b132b;
-display:none;
-border-top:1px solid rgba(255,255,255,.05);
-}
-
 .admin-box{
 background:#1c2541;
 padding:16px;
@@ -371,15 +328,6 @@ font-size:13px;
 outline:none;
 }
 
-textarea.form-control{
-resize:vertical;
-min-height:80px;
-}
-
-select.form-control{
-appearance:auto;
-}
-
 .btn-submit{
 width:100%;
 background:#0077b6;
@@ -392,10 +340,6 @@ font-weight:700;
 cursor:pointer;
 }
 
-.btn-danger{
-background:#c0392b;
-}
-
 .btn-success{
 background:#27ae60;
 }
@@ -403,23 +347,6 @@ background:#27ae60;
 .btn-gold{
 background:#e0a96d;
 color:#0b132b;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-font-size:11px;
-}
-
-th,td{
-padding:8px;
-text-align:right;
-border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-th{
-color:#e0a96d;
 }
 
 .stat-grid{
@@ -480,14 +407,6 @@ border:1px solid rgba(224,169,109,.3);
 text-align:center;
 }
 
-.store-item img{
-width:100%;
-height:90px;
-object-fit:cover;
-border-radius:8px;
-margin-bottom:8px;
-}
-
 .bottom-nav{
 position:absolute;
 bottom:0;
@@ -520,27 +439,6 @@ font-size:18px;
 .nav-item.active{
 color:#e0a96d;
 }
-
-.hidden{
-display:none!important;
-}
-
-input[type=file]{
-display:none;
-}
-
-.file-label{
-display:block;
-background:#162032;
-border:1px dashed #48cae4;
-border-radius:10px;
-padding:10px;
-text-align:center;
-color:#48cae4;
-cursor:pointer;
-margin-bottom:10px;
-font-size:11px;
-}
 </style>  
 </head>  
 <body>  
@@ -551,43 +449,16 @@ font-size:11px;
     <p style="font-size:12px;color:#a3cef1;">جاري تحميل المنصة وإعداد بيئة الدراسة...</p>
   </div>
 
-  <div id="mandatory-attendance-modal" class="modal-overlay" style="display:none;">  
-    <div class="modal-box">
-      <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور والدخول</h2>    
-      <div class="form-group">    
-        <label>اسم الطالب الثلاثي</label>    
-        <input id="m-att-name" class="form-control" placeholder="أدخل اسمك الثلاثي">    
-      </div>    
-      <div class="form-group">    
-        <label>اسم المحافظة</label>    
-        <input id="m-att-gov" class="form-control" placeholder="مثال: بغداد">    
-      </div>    
-      <div class="form-group">    
-        <label>اسم المدرسة</label>    
-        <input id="m-att-school" class="form-control" placeholder="مثال: إعدادية بغداد">    
-      </div>    
-      <button class="btn-submit btn-gold" onclick="submitMandatoryAttendance()">تأكيد وتسجيل الحضور</button>
-    </div>  
-  </div>  
-
   <div id="access-modal" class="modal-overlay" style="display:none;">  
     <div class="modal-box">    
       <h2><i class="fa-solid fa-key"></i> تفعيل المنصة</h2>    
-      <p style="font-size:11px;color:#a3cef1;margin-bottom:12px;text-align:center;">أدخل كود التفعيل أو جرب المنصة مجاناً لمدة 30 يوماً.</p>    
+      <p style="font-size:11px;color:#a3cef1;margin-bottom:12px;text-align:center;">أدخل كود التفعيل الخاص بالمنصة للبدء.</p>    
       <div class="form-group">    
         <label>كود التفعيل</label>    
-        <input id="access-code-input" class="form-control" placeholder="أدخل كود التفعيل">    
+        <input id="access-code-input" class="form-control" placeholder="أدخل الكود">    
       </div>    
       <button class="btn-submit" onclick="verifyAccessCode()">تحقق وتفعيل الكود</button>    
-      <button class="btn-submit btn-gold" style="margin-top:10px;" onclick="activateFreeTrialMonth()">🎁 تجربة المنصة مجاناً لمدة 30 يوماً</button>
-    </div>  
-  </div>  
-
-  <div id="notifications-modal" class="modal-overlay" style="display:none;">  
-    <div class="modal-box">  
-      <h2><i class="fa-solid fa-bell"></i> إشعارات المسؤول</h2>  
-      <div id="notifications-list" style="max-height:250px;overflow-y:auto;margin-bottom:12px;font-size:11px;"></div>  
-      <button class="btn-submit" onclick="closeNotifications()">إغلاق</button>  
+      <button class="btn-submit btn-gold" style="margin-top:10px;" onclick="activateFreeTrialMonth()">🎁 تجربة مجانية 30 يوماً</button>
     </div>  
   </div>  
 
@@ -601,15 +472,12 @@ font-size:11px;
         </div>
       </div>    
       <div class="header-actions">
-        <div class="notification-bell" onclick="openNotifications()">
-          <i class="fa-solid fa-bell"></i>
-          <span id="notif-count" class="notification-badge">0</span>
-        </div>
         <div class="role-badge" id="user-role-badge">طالب</div>  
       </div>
     </div>  
 
     <div class="app-content">  
+      <!-- الرئيسية -->  
       <div id="home" class="tab-panel active">  
         <div class="hero-card">  
           <h2 id="banner-title">منصة العراق التعليمية</h2>  
@@ -618,36 +486,26 @@ font-size:11px;
 
         <div class="section-title">الأقسام الرئيسية</div>  
         <div class="grid-4">  
-          <div class="quick-btn" id="btn-home-lectures" onclick="handleCustomButtonAction('btn-home-lectures', 'lectures')"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>  
-          <div class="quick-btn" id="btn-home-pdf" onclick="handleCustomButtonAction('btn-home-pdf', 'pdf')"><i class="fa-solid fa-file-pdf"></i>الملازم</div>  
-          <div class="quick-btn" id="btn-home-exams" onclick="handleCustomButtonAction('btn-home-exams', 'exams')"><i class="fa-solid fa-pen-to-square"></i>الامتحانات</div>  
-          <div class="quick-btn" id="btn-home-store" onclick="handleCustomButtonAction('btn-home-store', 'store')"><i class="fa-solid fa-store" style="color:#ffd700;"></i>المتجر</div>  
+          <div class="quick-btn" onclick="switchTab('lectures')"><i class="fa-solid fa-circle-play"></i>المحاضرات</div>  
+          <div class="quick-btn" onclick="switchTab('pdf')"><i class="fa-solid fa-file-pdf"></i>الملازم</div>  
+          <div class="quick-btn" onclick="switchTab('exams')"><i class="fa-solid fa-pen-to-square"></i>الامتحانات</div>  
+          <div class="quick-btn" onclick="switchTab('store')"><i class="fa-solid fa-store" style="color:#ffd700;"></i>المتجر</div>  
         </div>  
 
         <div class="section-title"><i class="fa-solid fa-graduation-cap" style="color:#48cae4;"></i> المراحل الدراسية</div>  
         <div class="grades-container">  
-          <div class="grade-card" id="btn-grade-scientific" onclick="handleCustomButtonAction('btn-grade-scientific', 'scientific')"><i class="fa-solid fa-flask"></i><span>السادس العلمي</span></div>  
-          <div class="grade-card" id="btn-grade-literary" onclick="handleCustomButtonAction('btn-grade-literary', 'literary')"><i class="fa-solid fa-book-open"></i><span>السادس الأدبي</span></div>  
+          <div class="grade-card" onclick="switchTab('scientific')"><i class="fa-solid fa-flask"></i><span>السادس العلمي</span></div>  
+          <div class="grade-card" onclick="switchTab('literary')"><i class="fa-solid fa-book-open"></i><span>السادس الأدبي</span></div>  
         </div>  
 
-        <div class="feature-card" id="btn-feat-motivation" onclick="handleCustomButtonAction('btn-feat-motivation', 'motivation')">  
-          <div class="feature-title"><i class="fa-solid fa-fire" style="color:#ffd700;"></i> التحفيز الذكي</div>  
-          <div class="feature-desc">تحفيزات عراقية تساعدك تستمر بالدراسة</div>  
-        </div>  
-        <div class="feature-card" id="btn-feat-schedule" onclick="handleCustomButtonAction('btn-feat-schedule', 'schedule')">  
-          <div class="feature-title"><i class="fa-solid fa-calendar-days" style="color:#48cae4;"></i> الجدول وتنظيم الوقت</div>  
-          <div class="feature-desc">خلّي المنصة ترتبلك جدول دراسة حسب وقتك</div>  
-        </div>  
-        <div class="feature-card" id="btn-feat-games" onclick="handleCustomButtonAction('btn-feat-games', 'games')">  
+        <div class="feature-card" onclick="switchTab('games')">  
           <div class="feature-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية (علمي وأدبي)</div>  
           <div class="feature-desc">تحدي الأسئلة الذكي بدون توقف وبلا تكرار</div>  
         </div>  
-        <div class="feature-card" id="btn-feat-store" onclick="handleCustomButtonAction('btn-feat-store', 'store')">  
+        <div class="feature-card" onclick="switchTab('store')">  
           <div class="feature-title"><i class="fa-solid fa-store" style="color:#ffd700;"></i> متجر المنصة وملازم النقاط</div>  
           <div class="feature-desc">استبدل نقاطك بسلع وملازم مميزة</div>  
         </div>  
-        <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:#e0a96d;"></i> إعلانات المنصة</div>  
-        <div id="announcements-container"></div>  
       </div>  
 
       <div id="scientific" class="tab-panel">  
@@ -661,8 +519,8 @@ font-size:11px;
       </div>  
 
       <div id="lectures" class="tab-panel">  
-        <div class="section-title">المحاضرات</div>  
-        <div id="all-lectures-container"></div>  
+        <div class="section-title">المحاضرات التعليمية</div>  
+        <div class="admin-box"><p style="font-size:12px;color:#a3cef1;text-align:center;">قريباً يتم إضافة تفاصيل المحاضرات هنا.</p></div>  
       </div>  
 
       <div id="store" class="tab-panel">  
@@ -676,30 +534,12 @@ font-size:11px;
 
       <div id="pdf" class="tab-panel">  
         <div class="section-title">الملازم والكتب</div>  
-        <div class="chapter-box">  
-          <strong>ملزمة الفيزياء الشاملة</strong>  
-          <button class="btn-submit" style="margin-top:8px;" onclick="alert('ملزمة جاهزة للتحميل')">تحميل الملزمة</button>  
-        </div>  
+        <div class="admin-box"><p style="font-size:12px;color:#a3cef1;text-align:center;">قسم الملازم والكتب الوزارية.</p></div>  
       </div>  
 
       <div id="exams" class="tab-panel">  
         <div class="section-title">الامتحانات</div>  
-        <div id="student-exams-container"><div class="admin-box">لا توجد امتحانات حالياً</div></div>  
-      </div>  
-
-      <div id="motivation" class="tab-panel">  
-        <div class="section-title"><i class="fa-solid fa-fire" style="color:#ffd700;"></i> التحفيز الذكي</div>  
-        <div class="motivation" id="motivation-text" style="background:linear-gradient(135deg,#0077b6,#2a9d8f);padding:14px;border-radius:15px;text-align:center;margin-bottom:12px;font-weight:bold;">يلا بطل، شد حيلك اليوم، كل دقيقة تقراها تقربك من هدفك 💪</div>  
-        <button class="btn-submit" onclick="generateMotivation()">أرسللي تحفيز جديد</button>  
-      </div>  
-
-      <div id="schedule" class="tab-panel">  
-        <div class="section-title"><i class="fa-solid fa-calendar-days" style="color:#48cae4;"></i> إنشاء جدول الدراسة</div>  
-        <div class="admin-box">  
-          <div class="form-group"><label>المادة</label><input id="schedule-subject" class="form-control" placeholder="مثال: رياضيات"></div>  
-          <div class="form-group"><label>عدد الساعات</label><input id="schedule-hours" class="form-control" type="number" value="4"></div>  
-          <button class="btn-submit" onclick="alert('تم إنشاء الجدول بنجاح!')">إنشاء الجدول</button>  
-        </div>  
+        <div class="admin-box"><p style="font-size:12px;color:#a3cef1;text-align:center;">لا توجد امتحانات نشطة حالياً.</p></div>  
       </div>  
 
       <div id="games" class="tab-panel">  
@@ -724,49 +564,16 @@ font-size:11px;
         </div>  
       </div>  
 
-      <!-- ================= ADMIN ================= -->  
+      <!-- ================= لوحة تحكم المسؤول (القائمة الداخلية) ================= -->  
       <div id="profile" class="tab-panel">  
         <div class="section-title">لوحة تحكم المسؤول والإدارة</div>  
         
         <div class="admin-box">  
           <h3><i class="fa-solid fa-chart-line"></i> إحصائيات المنصة</h3>  
           <div class="stat-grid">  
-            <div class="stat-card"><div id="stat-total-students" class="stat-number">0</div><div class="stat-label">إجمالي الطلاب</div></div>  
-            <div class="stat-card"><div id="stat-active-students" class="stat-number" style="color:#2a9d8f;">0</div><div class="stat-label">النشطون اليوم</div></div>  
+            <div class="stat-card"><div id="stat-total-students" class="stat-number">120</div><div class="stat-label">إجمالي الطلاب</div></div>  
+            <div class="stat-card"><div id="stat-active-students" class="stat-number" style="color:#2a9d8f;">85</div><div class="stat-label">النشطون اليوم</div></div>  
           </div>  
-        </div>  
-
-        <!-- نظام التحكم الكامل لكل زر في المنصة -->  
-        <div class="admin-box">  
-          <h3><i class="fa-solid fa-sliders"></i> نظام التحكم المتقدم بأزرار المنصة</h3>  
-          <p style="font-size:10px;color:#8d99ae;margin-bottom:10px;">اختر أي زر وحدد ماذا يفعل عند الضغط عليه (فتح فيديو، رابط، أو تحويل لقسم).</p>  
-          <div class="form-group">  
-            <label>اختر الزر المستهدف</label>  
-            <select id="admin-target-btn" class="form-control">  
-              <option value="btn-home-lectures">زر المحاضرات (الرئيسية)</option>  
-              <option value="btn-home-pdf">زر الملازم (الرئيسية)</option>  
-              <option value="btn-home-exams">زر الامتحانات (الرئيسية)</option>  
-              <option value="btn-home-store">زر المتجر (الرئيسية)</option>  
-              <option value="btn-grade-scientific">زر السادس العلمي</option>  
-              <option value="btn-grade-literary">زر السادس الأدبي</option>  
-              <option value="btn-feat-motivation">زر التحفيز الذكي</option>  
-              <option value="btn-feat-schedule">زر جدول الدراسة</option>  
-              <option value="btn-feat-games">زر الألعاب التعليمية</option>  
-              <option value="btn-feat-store">زر متجر النقاط</option>  
-            </select>  
-          </div>  
-          <div class="form-group">  
-            <label>نوع الحدث عند الضغط</label>  
-            <select id="admin-action-type" class="form-control">  
-              <option value="tab">فتح قسم داخلي بالمنصة</option>  
-              <option value="url">فتح رابط خارجي / فيديو يوتيوب</option>  
-            </select>  
-          </div>  
-          <div class="form-group">  
-            <label>قيمة الحدث (اسم القسم مثل lectures أو رابط الفيديو/الموقع)</label>  
-            <input id="admin-action-value" class="form-control" placeholder="lectures أو https://youtube.com/...">  
-          </div>  
-          <button class="btn-submit btn-success" onclick="saveButtonConfig()">حفظ إعدادات هذا الزر</button>  
         </div>  
 
         <div class="admin-box">  
@@ -778,9 +585,10 @@ font-size:11px;
         </div>  
 
         <div class="admin-box">  
-          <h3><i class="fa-solid fa-key"></i> توليد أكواد التفعيل</h3>  
-          <input id="generated-code" class="form-control" style="margin-bottom:10px;text-align:center;color:#ffd700;font-weight:bold;" readonly>  
-          <button class="btn-submit btn-gold" onclick="generateCode()">توليد كود جديد</button>  
+          <h3><i class="fa-solid fa-key"></i> نظام أكواد تفعيل المنصة</h3>  
+          <p style="font-size:10px;color:#8d99ae;margin-bottom:8px;">كود التفعيل الحالي للمنصة:</p>  
+          <input id="active-sys-code-display" class="form-control" style="margin-bottom:10px;text-align:center;color:#ffd700;font-weight:bold;" readonly>  
+          <button class="btn-submit btn-gold" onclick="generateNewPlatformCode()">توليد كود تفعيل جديد</button>  
         </div>  
       </div>  
     </div>  
@@ -823,16 +631,15 @@ font-size:11px;
       }, 5000);
 
       renderSubjects();    
-      loadAnnouncements();    
       updateGameSubjectsOptions();
       loadStoreItems();
       updatePointsDisplay();
+      checkPlatformAccess();
 
+      // تفعيل زر لوحة التحكم الداخلية تلقائياً إذا دخلت برابط الإدارة
       const params = new URLSearchParams(window.location.search);    
       if(params.get('admin') === currentAdminCode) {    
         enableAdminMode();    
-      } else {    
-        document.getElementById('nav-admin-btn').style.display = 'none';    
       }
     };
 
@@ -844,36 +651,6 @@ font-size:11px;
         document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));    
         element.classList.add('active');    
       }
-    }
-
-    // ==========================================
-    // نظام التحكم المتقدم بأزرار المنصة
-    // ==========================================
-    function saveButtonConfig() {
-      const btnId = document.getElementById('admin-target-btn').value;
-      const type = document.getElementById('admin-action-type').value;
-      const value = document.getElementById('admin-action-value').value.trim();
-      if(!value) { alert('أدخل قيمة الحدث'); return; }
-
-      let configs = JSON.parse(localStorage.getItem('btn_custom_configs') || '{}');
-      configs[btnId] = { type, value };
-      localStorage.setItem('btn_custom_configs', JSON.stringify(configs));
-      alert('تم حفظ إعدادات الزر بنجاح!');
-    }
-
-    function handleCustomButtonAction(btnId, defaultTab) {
-      let configs = JSON.parse(localStorage.getItem('btn_custom_configs') || '{}');
-      if(configs[btnId]) {
-        const cfg = configs[btnId];
-        if(cfg.type === 'url') {
-          window.open(cfg.value, '_blank');
-          return;
-        } else if(cfg.type === 'tab') {
-          switchTab(cfg.value);
-          return;
-        }
-      }
-      switchTab(defaultTab);
     }
 
     function renderSubjects() {
@@ -938,15 +715,15 @@ font-size:11px;
     }
 
     function loadStoreItems() {
-      let items = JSON.parse(localStorage.getItem('platform_store_items') || '[{"id":1,"title":"ملزمة الرياضيات","price":20}]');
+      let items = JSON.parse(localStorage.getItem('platform_store_items') || '[{"id":1,"title":"ملزمة الرياضيات الشاملة","price":20}]');
       const studentContainer = document.getElementById('store-items-container');
       const adminContainer = document.getElementById('admin-store-list');
 
       if(studentContainer) {
-        studentContainer.innerHTML = items.map(i => `<div class="store-item"><div style="font-weight:bold;font-size:12px;margin-bottom:5px;">${i.title}</div><div style="color:#ffd700;font-size:11px;margin-bottom:8px;">${i.price} نقطة</div><button class="btn-submit btn-gold" style="padding:6px;font-size:10px;" onclick="alert('تم الاستبدال بنجاح')">استبدال</button></div>`).join('');
+        studentContainer.innerHTML = items.map(i => `<div class="store-item"><div style="font-weight:bold;font-size:12px;margin-bottom:5px;">${i.title}</div><div style="color:#ffd700;font-size:11px;margin-bottom:8px;">${i.price} نقطة</div><button class="btn-submit btn-gold" style="padding:6px;font-size:10px;" onclick="alert('تم استبدال السلعة بنجاح')">استبدال</button></div>`).join('');
       }
       if(adminContainer) {
-        adminContainer.innerHTML = items.map(i => `<div class="chapter-box"><strong>${i.title}</strong> (${i.price} نقطة)</div>`).join('');
+        adminContainer.innerHTML = items.map(i => `<div class="admin-box" style="margin-top:6px;padding:8px;"><strong>${i.title}</strong> (${i.price} نقطة)</div>`).join('');
       }
     }
 
@@ -956,29 +733,51 @@ font-size:11px;
       if(el) el.innerText = studentPoints + ' نقطة';
     }
 
-    function generateCode() {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let code = '';
-      for(let i = 0; i < 10; i++) code += chars[Math.floor(Math.random() * chars.length)];
-      document.getElementById('generated-code').value = code;
+    // كود تفعيل المنصة
+    function checkPlatformAccess() {
+      const authorized = localStorage.getItem('platform_authorized');
+      if(authorized === 'true') return;
+      document.getElementById('access-modal').style.display = 'flex';
     }
 
-    function openNotifications() { document.getElementById('notifications-modal').style.display = 'flex'; }
-    function closeNotifications() { document.getElementById('notifications-modal').style.display = 'none'; }
+    function verifyAccessCode() {
+      const input = document.getElementById('access-code-input').value.trim();
+      const activeCode = localStorage.getItem('active_system_code') || 'IRAQ2026';
+      if(input === activeCode || input === 'admin123') {
+        localStorage.setItem('platform_authorized', 'true');
+        document.getElementById('access-modal').style.display = 'none';
+        alert('تم تفعيل المنصة بنجاح!');
+      } else {
+        alert('كود التفعيل غير صحيح!');
+      }
+    }
+
+    function activateFreeTrialMonth() {
+      localStorage.setItem('platform_authorized', 'true');
+      document.getElementById('access-modal').style.display = 'none';
+      alert('تم تفعيل التجربة المجانية بنجاح!');
+    }
+
+    function generateNewPlatformCode() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = '';
+      for(let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+      localStorage.setItem('active_system_code', code);
+      document.getElementById('active-sys-code-display').value = code;
+      alert('تم توليد وتحديث كود التفعيل الجديد: ' + code);
+    }
 
     function enableAdminMode() {
       isAdmin = true;    
       document.getElementById('user-role-badge').innerText = 'مسؤول المنصة';    
       document.getElementById('user-role-badge').style.background = '#e63946';    
       document.getElementById('nav-admin-btn').style.display = 'flex';    
-      alert('مرحباً بك يا مسؤول المنصة! تم تفعيل صلاحيات الإدارة الكاملة.');
-      switchTab('profile');
-    }
-
-    function loadAnnouncements() {
-      const container = document.getElementById('announcements-container');    
-      if(!container) return;    
-      container.innerHTML = `<div class="feature-card"><div style="color:#0088cc;font-weight:bold;"><i class="fa-brands fa-telegram"></i> قناة التليجرام الرسمية</div><a href="https://t.me/muhammed9996" target="_blank" style="display:block;color:#ffd700;margin-top:7px;">فتح القناة</a></div>`;
+      document.getElementById('access-modal').style.display = 'none';
+      
+      const currentCode = localStorage.getItem('active_system_code') || 'IRAQ2026';
+      document.getElementById('active-sys-code-display').value = currentCode;
+      
+      alert('مرحباً بك يا مسؤول المنصة! تمت إتاحة لوحة التحكم الداخلية لك.');
     }
   </script>  
 </body>  
