@@ -1,1819 +1,3 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>منصة العراق التعليمية</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-:root{
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --secondary:#7c3aed;
-    --success:#16a34a;
-    --danger:#dc2626;
-    --warning:#f59e0b;
-    --dark:#0f172a;
-    --text:#1e293b;
-    --muted:#64748b;
-    --bg:#f1f5f9;
-    --card:#ffffff;
-    --border:#e2e8f0;
-    --shadow:0 10px 30px rgba(15,23,42,.08);
-    --radius:18px;
-}
-
-body{
-    font-family:
-        Tahoma,
-        Arial,
-        sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
-}
-
-button,
-input,
-select,
-textarea{
-    font-family:inherit;
-}
-
-button{
-    cursor:pointer;
-    border:none;
-}
-
-a{
-    text-decoration:none;
-    color:inherit;
-}
-
-/* =========================
-   APP
-========================= */
-
-.app{
-    width:100%;
-    max-width:520px;
-    margin:auto;
-    min-height:100vh;
-    background:#f8fafc;
-    position:relative;
-    overflow-x:hidden;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header{
-    background:linear-gradient(
-        135deg,
-        #1d4ed8,
-        #2563eb 50%,
-        #7c3aed
-    );
-    color:#fff;
-    padding:18px 16px 24px;
-    border-radius:0 0 28px 28px;
-    box-shadow:0 10px 30px rgba(37,99,235,.25);
-}
-
-.header-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.brand-logo{
-    width:48px;
-    height:48px;
-    border-radius:15px;
-    background:rgba(255,255,255,.18);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-    border:1px solid rgba(255,255,255,.2);
-}
-
-.brand h1{
-    font-size:18px;
-    font-weight:900;
-}
-
-.brand small{
-    display:block;
-    margin-top:3px;
-    opacity:.8;
-    font-size:11px;
-}
-
-.header-actions{
-    display:flex;
-    gap:7px;
-}
-
-.icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:13px;
-    background:rgba(255,255,255,.15);
-    color:#fff;
-    font-size:18px;
-}
-
-.welcome{
-    margin-top:20px;
-}
-
-.welcome h2{
-    font-size:24px;
-    margin-bottom:5px;
-}
-
-.welcome p{
-    font-size:13px;
-    opacity:.85;
-}
-
-/* =========================
-   SEARCH
-========================= */
-
-.search-box{
-    margin:-8px 16px 18px;
-    position:relative;
-}
-
-.search-box input{
-    width:100%;
-    height:50px;
-    border:none;
-    border-radius:16px;
-    padding:0 48px 0 16px;
-    outline:none;
-    box-shadow:0 8px 25px rgba(15,23,42,.1);
-    font-size:14px;
-    background:#fff;
-}
-
-.search-icon{
-    position:absolute;
-    right:17px;
-    top:15px;
-    color:#64748b;
-}
-
-/* =========================
-   CONTENT
-========================= */
-
-.content{
-    padding:0 16px 95px;
-}
-
-.section{
-    margin-bottom:24px;
-}
-
-.section-title{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:12px;
-}
-
-.section-title h3{
-    font-size:18px;
-    font-weight:900;
-}
-
-.section-title button{
-    background:none;
-    color:var(--primary);
-    font-size:12px;
-}
-
-/* =========================
-   QUICK CARDS
-========================= */
-
-.quick-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-}
-
-.quick-card{
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:17px;
-    box-shadow:0 5px 18px rgba(15,23,42,.05);
-    transition:.2s;
-}
-
-.quick-card:active{
-    transform:scale(.97);
-}
-
-.quick-icon{
-    width:45px;
-    height:45px;
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#eff6ff;
-    color:var(--primary);
-    font-size:21px;
-    margin-bottom:10px;
-}
-
-.quick-card h4{
-    font-size:14px;
-    margin-bottom:4px;
-}
-
-.quick-card p{
-    color:var(--muted);
-    font-size:11px;
-}
-
-/* =========================
-   GRADE CARDS
-========================= */
-
-.grade-list{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-}
-
-.grade-card{
-    background:#fff;
-    border-radius:20px;
-    padding:15px;
-    border:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    gap:13px;
-    box-shadow:0 5px 18px rgba(15,23,42,.05);
-}
-
-.grade-icon{
-    width:54px;
-    height:54px;
-    flex-shrink:0;
-    border-radius:16px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-size:23px;
-}
-
-.grade-science .grade-icon{
-    background:linear-gradient(135deg,#2563eb,#06b6d4);
-}
-
-.grade-literary .grade-icon{
-    background:linear-gradient(135deg,#7c3aed,#ec4899);
-}
-
-.grade-third .grade-icon{
-    background:linear-gradient(135deg,#16a34a,#14b8a6);
-}
-
-.grade-sixth .grade-icon{
-    background:linear-gradient(135deg,#f59e0b,#ef4444);
-}
-
-.grade-info{
-    flex:1;
-}
-
-.grade-info h4{
-    font-size:15px;
-    margin-bottom:5px;
-}
-
-.grade-info p{
-    font-size:11px;
-    color:var(--muted);
-}
-
-.arrow{
-    color:#94a3b8;
-    font-size:18px;
-}
-
-/* =========================
-   SUBJECTS
-========================= */
-
-.subject-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-}
-
-.subject-card{
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:14px;
-    min-height:105px;
-}
-
-.subject-card .subject-icon{
-    font-size:22px;
-    margin-bottom:10px;
-}
-
-.subject-card h4{
-    font-size:13px;
-}
-
-.subject-card p{
-    font-size:10px;
-    color:var(--muted);
-    margin-top:4px;
-}
-
-/* =========================
-   MATERIALS
-========================= */
-
-.material-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.material{
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:17px;
-    padding:13px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.material-icon{
-    width:45px;
-    height:45px;
-    border-radius:13px;
-    background:#fee2e2;
-    color:#dc2626;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-}
-
-.material-info{
-    flex:1;
-}
-
-.material-info h4{
-    font-size:13px;
-    margin-bottom:4px;
-}
-
-.material-info span{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.material-btn{
-    padding:9px 12px;
-    border-radius:11px;
-    background:#eff6ff;
-    color:var(--primary);
-    font-size:11px;
-    font-weight:bold;
-}
-
-/* =========================
-   ANNOUNCEMENT
-========================= */
-
-.announcement{
-    background:linear-gradient(
-        135deg,
-        #111827,
-        #1e293b
-    );
-    color:#fff;
-    border-radius:20px;
-    padding:18px;
-}
-
-.announcement-top{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:9px;
-}
-
-.announcement-icon{
-    width:42px;
-    height:42px;
-    background:rgba(255,255,255,.1);
-    border-radius:13px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.announcement h4{
-    font-size:14px;
-}
-
-.announcement p{
-    font-size:12px;
-    line-height:1.8;
-    opacity:.85;
-}
-
-/* =========================
-   BOTTOM NAV
-========================= */
-
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:50%;
-    transform:translateX(-50%);
-    width:100%;
-    max-width:520px;
-    height:72px;
-    background:rgba(255,255,255,.96);
-    backdrop-filter:blur(15px);
-    border-top:1px solid var(--border);
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    z-index:100;
-}
-
-.nav-item{
-    background:none;
-    color:#94a3b8;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:5px;
-    font-size:10px;
-}
-
-.nav-item span:first-child{
-    font-size:19px;
-}
-
-.nav-item.active{
-    color:var(--primary);
-    font-weight:bold;
-}
-
-/* =========================
-   MODALS
-========================= */
-
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(15,23,42,.7);
-    z-index:1000;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    width:100%;
-    max-width:430px;
-    max-height:90vh;
-    overflow:auto;
-    background:#fff;
-    border-radius:24px;
-    padding:22px;
-    box-shadow:0 25px 70px rgba(0,0,0,.25);
-}
-
-.modal-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-}
-
-.modal-head h3{
-    font-size:18px;
-}
-
-.close-btn{
-    width:35px;
-    height:35px;
-    border-radius:11px;
-    background:#f1f5f9;
-    color:#64748b;
-    font-size:18px;
-}
-
-/* =========================
-   FORM
-========================= */
-
-.form-group{
-    margin-bottom:14px;
-}
-
-.form-group label{
-    display:block;
-    font-size:12px;
-    font-weight:bold;
-    margin-bottom:7px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea{
-    width:100%;
-    border:1px solid var(--border);
-    border-radius:13px;
-    padding:12px;
-    outline:none;
-    font-size:13px;
-    background:#f8fafc;
-}
-
-.form-group textarea{
-    min-height:100px;
-    resize:vertical;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
-    border-color:var(--primary);
-    background:#fff;
-}
-
-.primary-btn{
-    width:100%;
-    padding:13px;
-    border-radius:13px;
-    background:linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-    );
-    color:#fff;
-    font-weight:bold;
-    font-size:13px;
-}
-
-.secondary-btn{
-    width:100%;
-    padding:13px;
-    border-radius:13px;
-    background:#f1f5f9;
-    color:var(--text);
-    font-weight:bold;
-    font-size:13px;
-    margin-top:9px;
-}
-
-/* =========================
-   TOAST
-========================= */
-
-.toast{
-    position:fixed;
-    top:20px;
-    left:50%;
-    transform:translate(-50%,-120px);
-    background:#0f172a;
-    color:#fff;
-    padding:13px 18px;
-    border-radius:13px;
-    font-size:12px;
-    z-index:3000;
-    transition:.3s;
-    width:max-content;
-    max-width:90%;
-    text-align:center;
-}
-
-.toast.show{
-    transform:translate(-50%,0);
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-    text-align:center;
-    padding:25px;
-    color:var(--muted);
-    font-size:13px;
-}
-
-.spinner{
-    width:30px;
-    height:30px;
-    border:3px solid #e2e8f0;
-    border-top-color:var(--primary);
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:0 auto 10px;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-/* =========================
-   ADMIN
-========================= */
-
-.admin-panel{
-    display:none;
-}
-
-.admin-panel.show{
-    display:block;
-}
-
-.admin-tabs{
-    display:flex;
-    overflow:auto;
-    gap:7px;
-    margin-bottom:15px;
-}
-
-.admin-tab{
-    white-space:nowrap;
-    padding:9px 13px;
-    border-radius:11px;
-    background:#f1f5f9;
-    color:#64748b;
-    font-size:11px;
-}
-
-.admin-tab.active{
-    background:var(--primary);
-    color:#fff;
-}
-
-.admin-card{
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:16px;
-    margin-bottom:12px;
-}
-
-.admin-card h4{
-    margin-bottom:12px;
-    font-size:14px;
-}
-
-.table-wrap{
-    overflow:auto;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:10px;
-}
-
-th,
-td{
-    padding:9px 7px;
-    border-bottom:1px solid var(--border);
-    text-align:right;
-    white-space:nowrap;
-}
-
-th{
-    background:#f8fafc;
-}
-
-/* =========================
-   STATS
-========================= */
-
-.stats-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-}
-
-.stat-card{
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:17px;
-    padding:15px;
-}
-
-.stat-card span{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.stat-card strong{
-    display:block;
-    margin-top:7px;
-    font-size:23px;
-}
-
-/* =========================
-   HIDDEN
-========================= */
-
-.page{
-    display:none;
-}
-
-.page.active{
-    display:block;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(min-width:521px){
-    body{
-        background:#cbd5e1;
-    }
-
-    .app{
-        box-shadow:0 0 50px rgba(15,23,42,.15);
-    }
-
-    .bottom-nav{
-        box-shadow:0 -5px 20px rgba(15,23,42,.08);
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<!-- HEADER -->
-<header class="header">
-
-    <div class="header-top">
-
-        <div class="brand">
-            <div class="brand-logo">🎓</div>
-
-            <div>
-                <h1 id="platform-name">منصة العراق التعليمية</h1>
-                <small>تعليمك يبدأ من هنا</small>
-            </div>
-        </div>
-
-        <div class="header-actions">
-
-            <button class="icon-btn" onclick="openAnnouncements()">
-                🔔
-            </button>
-
-            <button class="icon-btn" onclick="openProfile()">
-                👤
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="welcome">
-        <h2 id="welcome-name">أهلاً بك 👋</h2>
-        <p>اختر مرحلتك الدراسية وابدأ رحلة التفوق</p>
-    </div>
-
-</header>
-
-<!-- SEARCH -->
-<div class="search-box">
-
-    <span class="search-icon">🔍</span>
-
-    <input
-        id="searchInput"
-        type="search"
-        placeholder="ابحث عن مادة، ملزمة، محاضرة..."
-        oninput="performSearch()"
-    >
-
-</div>
-
-
-<!-- =========================
-     HOME PAGE
-========================= -->
-
-<main id="home-page" class="page active">
-
-<div class="content">
-
-    <!-- QUICK -->
-    <section class="section">
-
-        <div class="section-title">
-            <h3>الوصول السريع</h3>
-        </div>
-
-        <div class="quick-grid">
-
-            <button class="quick-card" onclick="openPage('materials')">
-                <div class="quick-icon">📚</div>
-                <h4>الملازم</h4>
-                <p>ملازم دفعة 2027</p>
-            </button>
-
-            <button class="quick-card" onclick="openPage('lectures')">
-                <div class="quick-icon">🎥</div>
-                <h4>المحاضرات</h4>
-                <p>شاهد دروسك</p>
-            </button>
-
-            <button class="quick-card" onclick="openPage('exams')">
-                <div class="quick-icon">📝</div>
-                <h4>الاختبارات</h4>
-                <p>اختبر معلوماتك</p>
-            </button>
-
-            <button class="quick-card" onclick="openPage('teachers')">
-                <div class="quick-icon">👨‍🏫</div>
-                <h4>المدرسون</h4>
-                <p>أفضل المدرسين</p>
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- GRADES -->
-    <section class="section">
-
-        <div class="section-title">
-            <h3>المراحل الدراسية</h3>
-        </div>
-
-        <div class="grade-list">
-
-            <button
-                class="grade-card grade-science"
-                onclick="openGrade('sixth_science')"
-            >
-
-                <div class="grade-icon">🔬</div>
-
-                <div class="grade-info">
-                    <h4>السادس العلمي</h4>
-                    <p>رياضيات • فيزياء • كيمياء • أحياء</p>
-                </div>
-
-                <span class="arrow">‹</span>
-
-            </button>
-
-
-            <button
-                class="grade-card grade-literary"
-                onclick="openGrade('sixth_literary')"
-            >
-
-                <div class="grade-icon">📖</div>
-
-                <div class="grade-info">
-                    <h4>السادس الأدبي</h4>
-                    <p>العربي • الإنكليزي • التاريخ • الجغرافية</p>
-                </div>
-
-                <span class="arrow">‹</span>
-
-            </button>
-
-
-            <button
-                class="grade-card grade-third"
-                onclick="openGrade('third_middle')"
-            >
-
-                <div class="grade-icon">📘</div>
-
-                <div class="grade-info">
-                    <h4>الثالث متوسط</h4>
-                    <p>جميع المواد الدراسية</p>
-                </div>
-
-                <span class="arrow">‹</span>
-
-            </button>
-
-
-            <button
-                class="grade-card grade-sixth"
-                onclick="openGrade('sixth_primary')"
-            >
-
-                <div class="grade-icon">🎒</div>
-
-                <div class="grade-info">
-                    <h4>السادس الابتدائي</h4>
-                    <p>جميع المواد الدراسية</p>
-                </div>
-
-                <span class="arrow">‹</span>
-
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- ANNOUNCEMENT -->
-    <section class="section">
-
-        <div class="announcement">
-
-            <div class="announcement-top">
-
-                <div class="announcement-icon">
-                    📢
-                </div>
-
-                <h4>آخر الإعلانات</h4>
-
-            </div>
-
-            <p id="home-announcement">
-                أهلاً بكم في منصة العراق التعليمية.
-                تابعوا الإعلانات الجديدة باستمرار.
-            </p>
-
-        </div>
-
-    </section>
-
-</div>
-
-</main>
-
-
-<!-- =========================
-     MATERIALS PAGE
-========================= -->
-
-<section id="materials-page" class="page">
-
-<div class="content">
-
-    <div class="section-title">
-        <h3>📚 ملازم دفعة 2027</h3>
-    </div>
-
-    <div id="materials-container">
-
-        <div class="material-list">
-
-            <div class="material">
-
-                <div class="material-icon">📕</div>
-
-                <div class="material-info">
-                    <h4>ملازم السادس العلمي</h4>
-                    <span>الجزء الأول والثاني</span>
-                </div>
-
-                <button
-                    class="material-btn"
-                    onclick="openGrade('sixth_science')"
-                >
-                    فتح
-                </button>
-
-            </div>
-
-
-            <div class="material">
-
-                <div class="material-icon">📗</div>
-
-                <div class="material-info">
-                    <h4>ملازم السادس الأدبي</h4>
-                    <span>الجزء الأول والثاني</span>
-                </div>
-
-                <button
-                    class="material-btn"
-                    onclick="openGrade('sixth_literary')"
-                >
-                    فتح
-                </button>
-
-            </div>
-
-
-            <div class="material">
-
-                <div class="material-icon">📘</div>
-
-                <div class="material-info">
-                    <h4>ملازم الثالث متوسط</h4>
-                    <span>الجزء الأول والثاني</span>
-                </div>
-
-                <button
-                    class="material-btn"
-                    onclick="openGrade('third_middle')"
-                >
-                    فتح
-                </button>
-
-            </div>
-
-
-            <div class="material">
-
-                <div class="material-icon">📙</div>
-
-                <div class="material-info">
-                    <h4>ملازم السادس الابتدائي</h4>
-                    <span>الجزء الأول والثاني</span>
-                </div>
-
-                <button
-                    class="material-btn"
-                    onclick="openGrade('sixth_primary')"
-                >
-                    فتح
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     LECTURES
-========================= -->
-
-<section id="lectures-page" class="page">
-
-<div class="content">
-
-    <div class="section-title">
-        <h3>🎥 المحاضرات</h3>
-    </div>
-
-    <div id="lectures-container">
-
-        <div class="loading">
-            <div class="spinner"></div>
-            جاري تحميل المحاضرات...
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     EXAMS
-========================= -->
-
-<section id="exams-page" class="page">
-
-<div class="content">
-
-    <div class="section-title">
-        <h3>📝 الاختبارات</h3>
-    </div>
-
-    <div id="exams-container">
-
-        <div class="loading">
-            <div class="spinner"></div>
-            جاري تحميل الاختبارات...
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     TEACHERS
-========================= -->
-
-<section id="teachers-page" class="page">
-
-<div class="content">
-
-    <div class="section-title">
-        <h3>👨‍🏫 المدرسون</h3>
-    </div>
-
-    <div id="teachers-container">
-
-        <div class="loading">
-            <div class="spinner"></div>
-            جاري تحميل المدرسين...
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     PROFILE
-========================= -->
-
-<section id="profile-page" class="page">
-
-<div class="content">
-
-    <div class="section-title">
-        <h3>👤 حساب الطالب</h3>
-    </div>
-
-    <div class="admin-card">
-
-        <div class="form-group">
-            <label>اسم الطالب</label>
-            <input id="profile-name" type="text">
-        </div>
-
-        <div class="form-group">
-            <label>المحافظة</label>
-
-            <select id="profile-governorate">
-
-                <option value="">اختر المحافظة</option>
-                <option>بغداد</option>
-                <option>البصرة</option>
-                <option>نينوى</option>
-                <option>أربيل</option>
-                <option>السليمانية</option>
-                <option>دهوك</option>
-                <option>الأنبار</option>
-                <option>كركوك</option>
-                <option>ديالى</option>
-                <option>صلاح الدين</option>
-                <option>بابل</option>
-                <option>كربلاء</option>
-                <option>النجف</option>
-                <option>واسط</option>
-                <option>القادسية</option>
-                <option>ميسان</option>
-                <option>ذي قار</option>
-                <option>المثنى</option>
-
-            </select>
-
-        </div>
-
-        <button
-            class="primary-btn"
-            onclick="saveProfile()"
-        >
-            حفظ البيانات
-        </button>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     GRADE PAGE
-========================= -->
-
-<section id="grade-page" class="page">
-
-<div class="content">
-
-    <div class="section-title">
-
-        <button onclick="goHome()">
-            → رجوع
-        </button>
-
-        <h3 id="grade-title">المرحلة الدراسية</h3>
-
-    </div>
-
-
-    <div id="subjects-container" class="subject-grid"></div>
-
-
-    <div style="height:20px"></div>
-
-
-    <div class="section-title">
-        <h3>📚 الملازم</h3>
-    </div>
-
-    <div id="grade-materials" class="material-list"></div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     ADMIN PAGE
-========================= -->
-
-<section id="admin-page" class="page">
-
-<div class="content">
-
-    <div class="section-title">
-
-        <h3>🛠️ لوحة الإدارة</h3>
-
-        <button onclick="adminLogout()">
-            خروج
-        </button>
-
-    </div>
-
-
-    <div class="stats-grid">
-
-        <div class="stat-card">
-            <span>الطلاب</span>
-            <strong id="stat-students">0</strong>
-        </div>
-
-        <div class="stat-card">
-            <span>المحاضرات</span>
-            <strong id="stat-lectures">0</strong>
-        </div>
-
-        <div class="stat-card">
-            <span>الملازم</span>
-            <strong id="stat-materials">0</strong>
-        </div>
-
-        <div class="stat-card">
-            <span>الإعلانات</span>
-            <strong id="stat-announcements">0</strong>
-        </div>
-
-    </div>
-
-
-    <div style="height:18px"></div>
-
-
-    <div class="admin-tabs">
-
-        <button class="admin-tab active" onclick="adminTab('announcement')">
-            إعلان
-        </button>
-
-        <button class="admin-tab" onclick="adminTab('material')">
-            ملزمة
-        </button>
-
-        <button class="admin-tab" onclick="adminTab('lecture')">
-            محاضرة
-        </button>
-
-        <button class="admin-tab" onclick="adminTab('teacher')">
-            مدرس
-        </button>
-
-        <button class="admin-tab" onclick="adminTab('code')">
-            كود تفعيل
-        </button>
-
-        <button class="admin-tab" onclick="adminTab('students')">
-            الطلاب
-        </button>
-
-    </div>
-
-
-    <!-- ANNOUNCEMENT ADMIN -->
-
-    <div id="admin-announcement" class="admin-card">
-
-        <h4>إضافة إعلان</h4>
-
-        <div class="form-group">
-            <label>عنوان الإعلان</label>
-            <input id="announcement-title">
-        </div>
-
-        <div class="form-group">
-            <label>نص الإعلان</label>
-            <textarea id="announcement-text"></textarea>
-        </div>
-
-        <button
-            class="primary-btn"
-            onclick="addAnnouncement()"
-        >
-            نشر الإعلان
-        </button>
-
-    </div>
-
-
-    <!-- MATERIAL ADMIN -->
-
-    <div id="admin-material" class="admin-card" style="display:none">
-
-        <h4>إضافة ملزمة</h4>
-
-        <div class="form-group">
-            <label>اسم الملزمة</label>
-            <input id="material-title">
-        </div>
-
-        <div class="form-group">
-            <label>المرحلة</label>
-
-            <select id="material-grade">
-
-                <option value="sixth_science">السادس العلمي</option>
-                <option value="sixth_literary">السادس الأدبي</option>
-                <option value="third_middle">الثالث متوسط</option>
-                <option value="sixth_primary">السادس الابتدائي</option>
-
-            </select>
-
-        </div>
-
-        <div class="form-group">
-            <label>الجزء</label>
-
-            <select id="material-part">
-
-                <option value="1">الجزء الأول</option>
-                <option value="2">الجزء الثاني</option>
-
-            </select>
-
-        </div>
-
-        <div class="form-group">
-            <label>رابط الملزمة</label>
-            <input id="material-url" type="url">
-        </div>
-
-        <button
-            class="primary-btn"
-            onclick="addMaterial()"
-        >
-            إضافة الملزمة
-        </button>
-
-    </div>
-
-
-    <!-- LECTURE ADMIN -->
-
-    <div id="admin-lecture" class="admin-card" style="display:none">
-
-        <h4>إضافة محاضرة</h4>
-
-        <div class="form-group">
-            <label>عنوان المحاضرة</label>
-            <input id="lecture-title">
-        </div>
-
-        <div class="form-group">
-            <label>اسم المدرس</label>
-            <input id="lecture-teacher">
-        </div>
-
-        <div class="form-group">
-            <label>المرحلة</label>
-
-            <select id="lecture-grade">
-
-                <option value="sixth_science">السادس العلمي</option>
-                <option value="sixth_literary">السادس الأدبي</option>
-                <option value="third_middle">الثالث متوسط</option>
-                <option value="sixth_primary">السادس الابتدائي</option>
-
-            </select>
-
-        </div>
-
-        <div class="form-group">
-            <label>رابط الفيديو</label>
-            <input id="lecture-url" type="url">
-        </div>
-
-        <button
-            class="primary-btn"
-            onclick="addLecture()"
-        >
-            إضافة المحاضرة
-        </button>
-
-    </div>
-
-
-    <!-- TEACHER ADMIN -->
-
-    <div id="admin-teacher" class="admin-card" style="display:none">
-
-        <h4>إضافة مدرس</h4>
-
-        <div class="form-group">
-            <label>اسم المدرس</label>
-            <input id="teacher-name">
-        </div>
-
-        <div class="form-group">
-            <label>المادة</label>
-            <input id="teacher-subject">
-        </div>
-
-        <div class="form-group">
-            <label>رابط الصورة</label>
-            <input id="teacher-image" type="url">
-        </div>
-
-        <button
-            class="primary-btn"
-            onclick="addTeacher()"
-        >
-            إضافة المدرس
-        </button>
-
-    </div>
-
-
-    <!-- CODE ADMIN -->
-
-    <div id="admin-code" class="admin-card" style="display:none">
-
-        <h4>إنشاء كود تفعيل</h4>
-
-        <div class="form-group">
-
-            <label>نوع التفعيل</label>
-
-            <select id="code-type">
-
-                <option value="monthly">شهري</option>
-                <option value="annual">سنوي</option>
-
-            </select>
-
-        </div>
-
-        <button
-            class="primary-btn"
-            onclick="generateActivationCode()"
-        >
-            إنشاء كود جديد
-        </button>
-
-        <div
-            id="generated-code"
-            style="
-                margin-top:15px;
-                text-align:center;
-                font-size:20px;
-                font-weight:900;
-                letter-spacing:2px;
-                color:#2563eb;
-            "
-        ></div>
-
-    </div>
-
-
-    <!-- STUDENTS -->
-
-    <div id="admin-students" class="admin-card" style="display:none">
-
-        <h4>الطلاب المسجلون</h4>
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>الاسم</th>
-                        <th>المحافظة</th>
-                        <th>التاريخ</th>
-                    </tr>
-                </thead>
-
-                <tbody id="students-table"></tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     BOTTOM NAV
-========================= -->
-
-<nav class="bottom-nav">
-
-    <button
-        class="nav-item active"
-        data-page="home"
-        onclick="openPage('home')"
-    >
-        <span>🏠</span>
-        <span>الرئيسية</span>
-    </button>
-
-    <button
-        class="nav-item"
-        data-page="materials"
-        onclick="openPage('materials')"
-    >
-        <span>📚</span>
-        <span>الملازم</span>
-    </button>
-
-    <button
-        class="nav-item"
-        data-page="lectures"
-        onclick="openPage('lectures')"
-    >
-        <span>🎥</span>
-        <span>المحاضرات</span>
-    </button>
-
-    <button
-        class="nav-item"
-        data-page="exams"
-        onclick="openPage('exams')"
-    >
-        <span>📝</span>
-        <span>الاختبارات</span>
-    </button>
-
-    <button
-        class="nav-item"
-        data-page="profile"
-        onclick="openPage('profile')"
-    >
-        <span>👤</span>
-        <span>حسابي</span>
-    </button>
-
-</nav>
-
-
-<!-- =========================
-     ACCESS MODAL
-========================= -->
-
-<div id="access-modal" class="modal">
-
-<div class="modal-box">
-
-    <div class="modal-head">
-
-        <h3>🔐 تفعيل المنصة</h3>
-
-    </div>
-
-    <p style="
-        font-size:12px;
-        color:#64748b;
-        line-height:1.8;
-        margin-bottom:15px;
-    ">
-        أدخل كود التفعيل الخاص بك للوصول إلى محتوى المنصة.
-    </p>
-
-    <div class="form-group">
-
-        <label>كود التفعيل</label>
-
-        <input
-            id="activation-code"
-            type="text"
-            placeholder="أدخل الكود هنا"
-            autocomplete="off"
-        >
-
-    </div>
-
-    <button
-        class="primary-btn"
-        onclick="verifyActivationCode()"
-    >
-        تحقق ودخول
-    </button>
-
-    <button
-        class="secondary-btn"
-        onclick="startFreeTrial()"
-    >
-        تجربة مجانية
-    </button>
-
-</div>
-
-</div>
-
-
-<!-- =========================
-     ATTENDANCE MODAL
-========================= -->
-
-<div id="attendance-modal" class="modal">
-
-<div class="modal-box">
-
-    <div class="modal-head">
-
-        <h3>👋 أهلاً بك</h3>
-
-    </div>
-
-    <p style="
-        font-size:12px;
-        color:#64748b;
-        line-height:1.8;
-        margin-bottom:15px;
-    ">
-        يرجى تسجيل بياناتك لمرة واحدة حتى نتمكن من تخصيص تجربة المنصة لك.
-    </p>
-
-    <div class="form-group">
-
-        <label>اسم الطالب</label>
-
-        <input
-            id="attendance-name"
-            type="text"
-            placeholder="اكتب اسمك"
-        >
-
-    </div>
-
-    <div class="form-group">
-
-        <label>المحافظة</label>
-
-        <select id="attendance-governorate">
-
-            <option value="">اختر المحافظة</option>
-            <option>بغداد</option>
-            <option>البصرة</option>
-            <option>نينوى</option>
-            <option>أربيل</option>
-            <option>السليمانية</option>
-            <option>دهوك</option>
-            <option>الأنبار</option>
-            <option>كركوك</option>
-            <option>ديالى</option>
-            <option>صلاح الدين</option>
-            <option>بابل</option>
-            <option>كربلاء</option>
-            <option>النجف</option>
-            <option>واسط</option>
-            <option>القادسية</option>
-            <option>ميسان</option>
-            <option>ذي قار</option>
-            <option>المثنى</option>
-
-        </select>
-
-    </div>
-
-    <button
-        class="primary-btn"
-        onclick="submitAttendance()"
-    >
-        دخول المنصة
-    </button>
-
-</div>
-
-</div>
-
-
-<!-- =========================
-     PROFILE MODAL
-========================= -->
-
-<div id="profile-modal" class="modal">
-
-<div class="modal-box">
-
-    <div class="modal-head">
-
-        <h3>👤 الملف الشخصي</h3>
-
-        <button
-            class="close-btn"
-            onclick="closeModal('profile-modal')"
-        >
-            ×
-        </button>
-
-    </div>
-
-    <p id="profile-summary"
-       style="
-        color:#64748b;
-        font-size:13px;
-        line-height:1.8;
-       ">
-    </p>
-
-    <button
-        class="primary-btn"
-        onclick="
-            closeModal('profile-modal');
-            openPage('profile');
-        "
-    >
-        تعديل البيانات
-    </button>
-
-</div>
-
-</div>
-
-
-<!-- TOAST -->
-
-<div id="toast" class="toast"></div>
-
-
 <script>
 
 /* =========================================================
@@ -1839,15 +23,19 @@ const db = createClient(
 ========================================================= */
 
 const ADMIN_CODE =
-    localStorage.getItem('platform_admin_code') || 'admin123';
+    localStorage.getItem(
+        'platform_admin_code'
+    ) || 'admin123';
 
 let currentGrade = '';
 
 let isAdmin = false;
 
+let currentStudent = null;
+
 
 /* =========================================================
-   BASIC HELPERS
+   BASIC
 ========================================================= */
 
 function $(id){
@@ -1859,23 +47,24 @@ function showToast(message){
 
     const toast = $('toast');
 
+    if(!toast) return;
+
     toast.textContent = message;
 
     toast.classList.add('show');
 
-    setTimeout(()=>{
-        toast.classList.remove('show');
-    },3000);
-}
+    clearTimeout(
+        window.__toastTimer
+    );
 
+    window.__toastTimer =
+        setTimeout(()=>{
 
-function closeModal(id){
+            toast.classList.remove(
+                'show'
+            );
 
-    const modal = $(id);
-
-    if(modal){
-        modal.classList.remove('show');
-    }
+        },3000);
 
 }
 
@@ -1891,495 +80,13 @@ function openModal(id){
 }
 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+function closeModal(id){
 
-function openPage(page){
+    const modal = $(id);
 
-    document
-        .querySelectorAll('.page')
-        .forEach(el=>{
-            el.classList.remove('active');
-        });
-
-    const target = $(page + '-page');
-
-    if(target){
-        target.classList.add('active');
+    if(modal){
+        modal.classList.remove('show');
     }
-
-    document
-        .querySelectorAll('.nav-item')
-        .forEach(btn=>{
-            btn.classList.remove('active');
-
-            if(btn.dataset.page === page){
-                btn.classList.add('active');
-            }
-        });
-
-    window.scrollTo({
-        top:0,
-        behavior:'smooth'
-    });
-
-    if(page === 'lectures'){
-        loadLectures();
-    }
-
-    if(page === 'exams'){
-        loadExams();
-    }
-
-    if(page === 'teachers'){
-        loadTeachers();
-    }
-
-    if(page === 'materials'){
-        loadMaterials();
-    }
-
-}
-
-
-function goHome(){
-
-    openPage('home');
-
-}
-
-
-/* =========================================================
-   GRADE
-========================================================= */
-
-const gradeData = {
-
-    sixth_science:{
-        title:'السادس العلمي',
-
-        subjects:[
-            ['➗','الرياضيات'],
-            ['⚡','الفيزياء'],
-            ['🧪','الكيمياء'],
-            ['🧬','الأحياء'],
-            ['📚','اللغة العربية'],
-            ['🇬🇧','اللغة الإنكليزية']
-        ]
-    },
-
-    sixth_literary:{
-        title:'السادس الأدبي',
-
-        subjects:[
-            ['📚','اللغة العربية'],
-            ['🇬🇧','اللغة الإنكليزية'],
-            ['🌍','الجغرافية'],
-            ['📜','التاريخ'],
-            ['🧠','علم الاجتماع'],
-            ['➗','الرياضيات']
-        ]
-    },
-
-    third_middle:{
-        title:'الثالث متوسط',
-
-        subjects:[
-            ['➗','الرياضيات'],
-            ['🔬','العلوم'],
-            ['📚','العربي'],
-            ['🇬🇧','الإنكليزي'],
-            ['🌍','الاجتماعيات'],
-            ['☪️','التربية الإسلامية']
-        ]
-    },
-
-    sixth_primary:{
-        title:'السادس الابتدائي',
-
-        subjects:[
-            ['➗','الرياضيات'],
-            ['🔬','العلوم'],
-            ['📚','اللغة العربية'],
-            ['🇬🇧','اللغة الإنكليزية'],
-            ['🌍','الاجتماعيات'],
-            ['☪️','التربية الإسلامية']
-        ]
-    }
-
-};
-
-
-async function openGrade(grade){
-
-    currentGrade = grade;
-
-    const data = gradeData[grade];
-
-    if(!data){
-        showToast('المرحلة غير موجودة');
-        return;
-    }
-
-    $('grade-title').textContent =
-        data.title;
-
-    const container =
-        $('subjects-container');
-
-    container.innerHTML = '';
-
-    data.subjects.forEach(subject=>{
-
-        const card =
-            document.createElement('button');
-
-        card.className =
-            'subject-card';
-
-        card.innerHTML = `
-            <div class="subject-icon">
-                ${subject[0]}
-            </div>
-
-            <h4>${subject[1]}</h4>
-
-            <p>
-                المحاضرات والملازم
-            </p>
-        `;
-
-        card.onclick = ()=>{
-            showToast(
-                `تم اختيار مادة ${subject[1]}`
-            );
-        };
-
-        container.appendChild(card);
-
-    });
-
-    await loadGradeMaterials(grade);
-
-    openPage('grade');
-
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-function loadProfile(){
-
-    const name =
-        localStorage.getItem('student_name') || '';
-
-    const governorate =
-        localStorage.getItem('student_governorate') || '';
-
-    $('profile-name').value = name;
-
-    $('profile-governorate').value =
-        governorate;
-
-    if(name){
-
-        $('welcome-name').textContent =
-            `أهلاً ${name} 👋`;
-
-    }
-
-}
-
-
-function saveProfile(){
-
-    const name =
-        $('profile-name').value.trim();
-
-    const governorate =
-        $('profile-governorate').value;
-
-    if(!name){
-        showToast('اكتب اسم الطالب');
-        return;
-    }
-
-    if(!governorate){
-        showToast('اختر المحافظة');
-        return;
-    }
-
-    localStorage.setItem(
-        'student_name',
-        name
-    );
-
-    localStorage.setItem(
-        'student_governorate',
-        governorate
-    );
-
-    $('welcome-name').textContent =
-        `أهلاً ${name} 👋`;
-
-    showToast('تم حفظ البيانات بنجاح');
-
-}
-
-
-function openProfile(){
-
-    const name =
-        localStorage.getItem('student_name') ||
-        'غير مسجل';
-
-    const governorate =
-        localStorage.getItem('student_governorate') ||
-        'غير محددة';
-
-    $('profile-summary').innerHTML = `
-        <strong>الاسم:</strong> ${escapeHtml(name)}
-        <br>
-        <strong>المحافظة:</strong> ${escapeHtml(governorate)}
-    `;
-
-    openModal('profile-modal');
-
-}
-
-
-/* =========================================================
-   ACCESS
-========================================================= */
-
-function checkPlatformAccess(){
-
-    if(isAdmin){
-        return;
-    }
-
-    const authorized =
-        localStorage.getItem(
-            'platform_authorized'
-        ) === 'true';
-
-    const expiry =
-        Number(
-            localStorage.getItem(
-                'activation_expiry'
-            ) || 0
-        );
-
-    if(!authorized || Date.now() >= expiry){
-
-        openModal('access-modal');
-
-        return false;
-    }
-
-    return true;
-}
-
-
-async function verifyActivationCode(){
-
-    const input =
-        $('activation-code').value
-            .trim()
-            .toUpperCase();
-
-    if(!input){
-        showToast('أدخل كود التفعيل');
-        return;
-    }
-
-    try{
-
-        const { data, error } =
-            await db
-                .from('codes')
-                .select('*')
-                .eq('code',input)
-                .eq('active',true)
-                .maybeSingle();
-
-        if(error){
-            console.error(error);
-
-            showToast(
-                'حدث خطأ في الاتصال بقاعدة البيانات'
-            );
-
-            return;
-        }
-
-        if(!data){
-
-            showToast(
-                'كود التفعيل غير صحيح أو غير فعال'
-            );
-
-            return;
-        }
-
-        if(data.expires_at){
-
-            const expires =
-                new Date(data.expires_at)
-                    .getTime();
-
-            if(Date.now() >= expires){
-
-                showToast(
-                    'هذا الكود منتهي الصلاحية'
-                );
-
-                return;
-            }
-
-        }
-
-        let expiry;
-
-        if(data.type === 'annual'){
-
-            expiry =
-                Date.now() +
-                365 * 24 * 60 * 60 * 1000;
-
-        }else{
-
-            expiry =
-                Date.now() +
-                30 * 24 * 60 * 60 * 1000;
-
-        }
-
-        localStorage.setItem(
-            'platform_authorized',
-            'true'
-        );
-
-        localStorage.setItem(
-            'activation_code',
-            input
-        );
-
-        localStorage.setItem(
-            'activation_expiry',
-            expiry
-        );
-
-        localStorage.setItem(
-            'activation_type',
-            data.type || 'monthly'
-        );
-
-        try{
-
-            await db
-                .from('activations')
-                .insert({
-
-                    student_name:
-                        localStorage.getItem(
-                            'student_name'
-                        ) || null,
-
-                    code:input,
-
-                    code_type:
-                        data.type || 'monthly',
-
-                    device_id:
-                        getDeviceId(),
-
-                    expires_at:
-                        new Date(expiry)
-                            .toISOString()
-
-                });
-
-        }catch(e){
-
-            console.warn(
-                'Activation logging failed',
-                e
-            );
-
-        }
-
-        try{
-
-            await db
-                .from('codes')
-                .update({
-                    used:true,
-                    active:false
-                })
-                .eq('id',data.id);
-
-        }catch(e){
-
-            console.warn(
-                'Code update failed',
-                e
-            );
-
-        }
-
-        closeModal('access-modal');
-
-        showToast(
-            'تم تفعيل المنصة بنجاح 🎉'
-        );
-
-        checkMandatoryAttendance();
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            'تعذر التحقق من الكود'
-        );
-
-    }
-
-}
-
-
-function startFreeTrial(){
-
-    const expiry =
-        Date.now() +
-        30 * 24 * 60 * 60 * 1000;
-
-    localStorage.setItem(
-        'platform_authorized',
-        'true'
-    );
-
-    localStorage.setItem(
-        'activation_expiry',
-        expiry
-    );
-
-    localStorage.setItem(
-        'activation_type',
-        'trial'
-    );
-
-    closeModal('access-modal');
-
-    showToast(
-        'تم تفعيل التجربة المجانية'
-    );
-
-    checkMandatoryAttendance();
 
 }
 
@@ -2399,11 +106,7 @@ function getDeviceId(){
 
         device =
             'DEV-' +
-            Date.now().toString(36) +
-            '-' +
-            Math.random()
-                .toString(36)
-                .substring(2,10);
+            crypto.randomUUID();
 
         localStorage.setItem(
             'platform_device_id',
@@ -2413,52 +116,493 @@ function getDeviceId(){
     }
 
     return device;
+
 }
 
 
 /* =========================================================
-   ATTENDANCE
+   AUTH SESSION
 ========================================================= */
 
-function checkMandatoryAttendance(){
+async function ensureStudentSession(){
 
-    if(isAdmin){
-        return;
+    const {
+        data,
+        error
+    } = await db.auth.getSession();
+
+
+    if(error){
+        throw error;
     }
 
-    const last =
-        Number(
-            localStorage.getItem(
-                'attendance_time'
-            ) || 0
-        );
-
-    const day =
-        24 * 60 * 60 * 1000;
 
     if(
-        !last ||
-        Date.now() - last >= day
+        data &&
+        data.session &&
+        data.session.user
     ){
 
-        openModal(
-            'attendance-modal'
+        return data.session.user;
+
+    }
+
+
+    const {
+        data:anonymousData,
+        error:anonymousError
+    } =
+        await db.auth.signInAnonymously();
+
+
+    if(anonymousError){
+
+        console.error(
+            anonymousError
         );
+
+        throw anonymousError;
+
+    }
+
+
+    return anonymousData.user;
+
+}
+
+
+/* =========================================================
+   STUDENT PROFILE
+========================================================= */
+
+async function loadStudentProfile(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await db.rpc(
+                'get_my_student'
+            );
+
+
+        if(error){
+
+            console.warn(
+                'Student profile:',
+                error
+            );
+
+            return null;
+
+        }
+
+
+        currentStudent =
+            data || null;
+
+
+        if(currentStudent){
+
+            localStorage.setItem(
+                'student_number',
+                currentStudent.student_number || ''
+            );
+
+            localStorage.setItem(
+                'student_name',
+                currentStudent.student_name || ''
+            );
+
+            localStorage.setItem(
+                'student_governorate',
+                currentStudent.governorate || ''
+            );
+
+            localStorage.setItem(
+                'student_grade',
+                currentStudent.grade || ''
+            );
+
+
+            updateStudentUI();
+
+        }
+
+
+        return currentStudent;
+
+    }catch(error){
+
+        console.error(error);
+
+        return null;
 
     }
 
 }
 
 
-async function submitAttendance(){
+/* =========================================================
+   UPDATE UI
+========================================================= */
+
+function updateStudentUI(){
+
+    if(!currentStudent){
+        return;
+    }
+
 
     const name =
-        $('attendance-name')
-            .value.trim();
+        currentStudent.student_name ||
+        'طالب';
+
+
+    const welcome =
+        $('welcome-name');
+
+
+    if(welcome){
+
+        welcome.textContent =
+            `أهلاً ${name} 👋`;
+
+    }
+
+
+    const profileName =
+        $('profile-name');
+
+
+    if(profileName){
+
+        profileName.value =
+            currentStudent.student_name || '';
+
+    }
+
+
+    const profileGovernorate =
+        $('profile-governorate');
+
+
+    if(profileGovernorate){
+
+        profileGovernorate.value =
+            currentStudent.governorate || '';
+
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function openPage(page){
+
+    document
+        .querySelectorAll('.page')
+        .forEach(el=>{
+
+            el.classList.remove(
+                'active'
+            );
+
+        });
+
+
+    const target =
+        $(page + '-page');
+
+
+    if(target){
+
+        target.classList.add(
+            'active'
+        );
+
+    }
+
+
+    document
+        .querySelectorAll('.nav-item')
+        .forEach(btn=>{
+
+            btn.classList.remove(
+                'active'
+            );
+
+
+            if(
+                btn.dataset.page === page
+            ){
+
+                btn.classList.add(
+                    'active'
+                );
+
+            }
+
+        });
+
+
+    window.scrollTo({
+        top:0,
+        behavior:'smooth'
+    });
+
+
+    if(page === 'lectures'){
+        loadLectures();
+    }
+
+
+    if(page === 'exams'){
+        loadExams();
+    }
+
+
+    if(page === 'teachers'){
+        loadTeachers();
+    }
+
+
+    if(page === 'materials'){
+        loadMaterials();
+    }
+
+
+    if(page === 'profile'){
+        loadProfile();
+    }
+
+}
+
+
+function goHome(){
+
+    openPage('home');
+
+}
+
+
+/* =========================================================
+   GRADES
+========================================================= */
+
+const gradeData = {
+
+    sixth_science:{
+
+        title:'السادس العلمي',
+
+        subjects:[
+            ['➗','الرياضيات'],
+            ['⚡','الفيزياء'],
+            ['🧪','الكيمياء'],
+            ['🧬','الأحياء'],
+            ['📚','اللغة العربية'],
+            ['🇬🇧','اللغة الإنكليزية']
+        ]
+
+    },
+
+
+    sixth_literary:{
+
+        title:'السادس الأدبي',
+
+        subjects:[
+            ['📚','اللغة العربية'],
+            ['🇬🇧','اللغة الإنكليزية'],
+            ['🌍','الجغرافية'],
+            ['📜','التاريخ'],
+            ['🧠','علم الاجتماع'],
+            ['➗','الرياضيات']
+        ]
+
+    },
+
+
+    third_middle:{
+
+        title:'الثالث متوسط',
+
+        subjects:[
+            ['➗','الرياضيات'],
+            ['🔬','العلوم'],
+            ['📚','العربي'],
+            ['🇬🇧','الإنكليزي'],
+            ['🌍','الاجتماعيات'],
+            ['☪️','التربية الإسلامية']
+        ]
+
+    },
+
+
+    sixth_primary:{
+
+        title:'السادس الابتدائي',
+
+        subjects:[
+            ['➗','الرياضيات'],
+            ['🔬','العلوم'],
+            ['📚','اللغة العربية'],
+            ['🇬🇧','اللغة الإنكليزية'],
+            ['🌍','الاجتماعيات'],
+            ['☪️','التربية الإسلامية']
+        ]
+
+    }
+
+};
+
+
+async function openGrade(grade){
+
+    currentGrade = grade;
+
+
+    const data =
+        gradeData[grade];
+
+
+    if(!data){
+
+        showToast(
+            'المرحلة غير موجودة'
+        );
+
+        return;
+
+    }
+
+
+    $('grade-title')
+        .textContent =
+        data.title;
+
+
+    const container =
+        $('subjects-container');
+
+
+    container.innerHTML = '';
+
+
+    data.subjects.forEach(
+        subject=>{
+
+            const card =
+                document.createElement(
+                    'button'
+                );
+
+
+            card.className =
+                'subject-card';
+
+
+            card.innerHTML = `
+
+                <div class="subject-icon">
+                    ${subject[0]}
+                </div>
+
+                <h4>
+                    ${escapeHtml(subject[1])}
+                </h4>
+
+                <p>
+                    المحاضرات والملازم
+                </p>
+
+            `;
+
+
+            card.onclick = ()=>{
+
+                showToast(
+                    `تم اختيار مادة ${subject[1]}`
+                );
+
+            };
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    await loadGradeMaterials(
+        grade
+    );
+
+
+    openPage('grade');
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+    if(!currentStudent){
+
+        await loadStudentProfile();
+
+    }
+
+
+    if(!currentStudent){
+
+        return;
+
+    }
+
+
+    $('profile-name').value =
+        currentStudent.student_name || '';
+
+
+    $('profile-governorate').value =
+        currentStudent.governorate || '';
+
+
+}
+
+
+async function saveProfile(){
+
+    const name =
+        $('profile-name')
+            .value
+            .trim();
+
 
     const governorate =
-        $('attendance-governorate')
+        $('profile-governorate')
             .value;
+
+
+    const grade =
+        currentStudent?.grade ||
+        localStorage.getItem(
+            'student_grade'
+        ) ||
+        '';
+
 
     if(!name){
 
@@ -2467,7 +611,9 @@ async function submitAttendance(){
         );
 
         return;
+
     }
+
 
     if(!governorate){
 
@@ -2476,87 +622,647 @@ async function submitAttendance(){
         );
 
         return;
+
     }
 
-    localStorage.setItem(
-        'student_name',
-        name
-    );
-
-    localStorage.setItem(
-        'student_governorate',
-        governorate
-    );
-
-    $('welcome-name').textContent =
-        `أهلاً ${name} 👋`;
 
     try{
 
-        const device =
-            getDeviceId();
+        const {
+            error
+        } =
+            await db.rpc(
+                'update_my_student',
+                {
+                    p_student_name:name,
+                    p_governorate:governorate,
+                    p_grade:grade
+                }
+            );
 
-        const { data:existing } =
-            await db
-                .from('attendance')
-                .select('id')
-                .eq('device_id',device)
-                .maybeSingle();
 
-        if(existing){
+        if(error){
 
-            await db
-                .from('attendance')
-                .update({
+            console.error(error);
 
-                    student_name:name,
+            showToast(
+                'تعذر حفظ البيانات'
+            );
 
-                    governorate:governorate,
-
-                    attended_at:
-                        new Date()
-                            .toISOString()
-
-                })
-                .eq('id',existing.id);
-
-        }else{
-
-            await db
-                .from('attendance')
-                .insert({
-
-                    student_name:name,
-
-                    governorate:governorate,
-
-                    device_id:device
-
-                });
+            return;
 
         }
+
+
+        await loadStudentProfile();
+
+
+        showToast(
+            'تم حفظ بياناتك بنجاح'
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            'حدث خطأ أثناء الحفظ'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PROFILE MODAL
+========================================================= */
+
+async function openProfile(){
+
+    if(!currentStudent){
+
+        await loadStudentProfile();
+
+    }
+
+
+    if(!currentStudent){
+
+        showToast(
+            'بيانات الطالب غير متوفرة'
+        );
+
+        return;
+
+    }
+
+
+    const grade =
+        gradeData[
+            currentStudent.grade
+        ]?.title ||
+        'غير محددة';
+
+
+    const expiry =
+        currentStudent.subscription_expires_at
+            ? new Date(
+                currentStudent.subscription_expires_at
+            ).toLocaleDateString(
+                'ar-IQ'
+            )
+            : 'غير محدد';
+
+
+    $('profile-summary')
+        .innerHTML = `
+
+        <strong>
+            رقم الطالب:
+        </strong>
+
+        ${escapeHtml(
+            currentStudent.student_number || '-'
+        )}
+
+        <br><br>
+
+        <strong>
+            الاسم:
+        </strong>
+
+        ${escapeHtml(
+            currentStudent.student_name || '-'
+        )}
+
+        <br><br>
+
+        <strong>
+            المرحلة:
+        </strong>
+
+        ${escapeHtml(grade)}
+
+        <br><br>
+
+        <strong>
+            المحافظة:
+        </strong>
+
+        ${escapeHtml(
+            currentStudent.governorate || '-'
+        )}
+
+        <br><br>
+
+        <strong>
+            نوع الاشتراك:
+        </strong>
+
+        ${escapeHtml(
+            currentStudent.activation_type || '-'
+        )}
+
+        <br><br>
+
+        <strong>
+            تاريخ انتهاء الاشتراك:
+        </strong>
+
+        ${escapeHtml(expiry)}
+
+        <br><br>
+
+        <strong>
+            عدد مرات الدخول:
+        </strong>
+
+        ${Number(
+            currentStudent.login_count || 0
+        )}
+
+    `;
+
+
+    openModal(
+        'profile-modal'
+    );
+
+}
+
+
+/* =========================================================
+   STUDENT REGISTRATION
+========================================================= */
+
+async function submitAttendance(){
+
+    const name =
+        $('attendance-name')
+            .value
+            .trim();
+
+
+    const governorate =
+        $('attendance-governorate')
+            .value;
+
+
+    const grade =
+        $('attendance-grade')
+            ? $('attendance-grade').value
+            : '';
+
+
+    if(!name){
+
+        showToast(
+            'اكتب اسم الطالب'
+        );
+
+        return;
+
+    }
+
+
+    if(!grade){
+
+        showToast(
+            'اختر المرحلة الدراسية'
+        );
+
+        return;
+
+    }
+
+
+    if(!governorate){
+
+        showToast(
+            'اختر المحافظة'
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const user =
+            await ensureStudentSession();
+
+
+        if(!user){
+
+            showToast(
+                'تعذر إنشاء جلسة الطالب'
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await db.rpc(
+                'get_or_create_student',
+                {
+                    p_student_name:name,
+                    p_governorate:governorate,
+                    p_grade:grade
+                }
+            );
+
+
+        if(error){
+
+            console.error(error);
+
+            showToast(
+                'تعذر حفظ بيانات الطالب'
+            );
+
+            return;
+
+        }
+
+
+        currentStudent =
+            data;
+
+
+        localStorage.setItem(
+            'student_name',
+            name
+        );
+
+        localStorage.setItem(
+            'student_governorate',
+            governorate
+        );
+
+        localStorage.setItem(
+            'student_grade',
+            grade
+        );
+
+        localStorage.setItem(
+            'student_number',
+            data.student_number || ''
+        );
+
+
+        await registerLogin(
+            'registration'
+        );
+
+
+        closeModal(
+            'attendance-modal'
+        );
+
+
+        updateStudentUI();
+
+
+        showToast(
+            `أهلاً بك ${name} 🎓`
+        );
+
+
+        setTimeout(()=>{
+
+            checkSubscription();
+
+        },500);
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            'تعذر تسجيل الدخول'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+async function registerLogin(
+    page='home'
+){
+
+    try{
+
+        await db.rpc(
+            'register_student_login',
+            {
+                p_page:page,
+                p_device_id:getDeviceId()
+            }
+        );
 
     }catch(error){
 
         console.warn(
-            'Attendance error:',
+            'Login logging error:',
             error
         );
 
     }
 
-    localStorage.setItem(
-        'attendance_time',
-        Date.now()
+}
+
+
+/* =========================================================
+   SUBSCRIPTION
+========================================================= */
+
+function hasValidSubscription(){
+
+    if(!currentStudent){
+
+        return false;
+
+    }
+
+
+    if(
+        !currentStudent.subscription_expires_at
+    ){
+
+        return false;
+
+    }
+
+
+    return (
+        new Date(
+            currentStudent.subscription_expires_at
+        ).getTime() > Date.now()
     );
 
-    closeModal(
-        'attendance-modal'
+}
+
+
+async function checkSubscription(){
+
+    if(isAdmin){
+
+        return true;
+
+    }
+
+
+    if(!currentStudent){
+
+        await loadStudentProfile();
+
+    }
+
+
+    if(!currentStudent){
+
+        openModal(
+            'attendance-modal'
+        );
+
+        return false;
+
+    }
+
+
+    if(
+        hasValidSubscription()
+    ){
+
+        return true;
+
+    }
+
+
+    openModal(
+        'access-modal'
     );
 
-    showToast(
-        'أهلاً بك في المنصة 🎓'
-    );
+
+    return false;
+
+}
+
+
+/* =========================================================
+   ACTIVATION CODE
+========================================================= */
+
+async function verifyActivationCode(){
+
+    const input =
+        $('activation-code')
+            .value
+            .trim()
+            .toUpperCase();
+
+
+    if(!input){
+
+        showToast(
+            'أدخل كود التفعيل'
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        await ensureStudentSession();
+
+
+        if(!currentStudent){
+
+            await loadStudentProfile();
+
+        }
+
+
+        if(!currentStudent){
+
+            showToast(
+                'سجل الطالب غير موجود'
+            );
+
+            closeModal(
+                'access-modal'
+            );
+
+            openModal(
+                'attendance-modal'
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await db.rpc(
+                'redeem_activation_code',
+                {
+                    p_code:input,
+                    p_device_id:getDeviceId()
+                }
+            );
+
+
+        if(error){
+
+            console.error(error);
+
+
+            showToast(
+                error.message ||
+                'كود التفعيل غير صحيح'
+            );
+
+            return;
+
+        }
+
+
+        await loadStudentProfile();
+
+
+        closeModal(
+            'access-modal'
+        );
+
+
+        showToast(
+            'تم تفعيل اشتراكك بنجاح 🎉'
+        );
+
+
+        await registerLogin(
+            'activation'
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            'تعذر التحقق من الكود'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FREE TRIAL
+========================================================= */
+
+async function startFreeTrial(){
+
+    try{
+
+        await ensureStudentSession();
+
+
+        if(!currentStudent){
+
+            await loadStudentProfile();
+
+        }
+
+
+        if(!currentStudent){
+
+            closeModal(
+                'access-modal'
+            );
+
+            openModal(
+                'attendance-modal'
+            );
+
+            showToast(
+                'أكمل بيانات الطالب أولاً'
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await db.rpc(
+                'activate_student_trial'
+            );
+
+
+        if(error){
+
+            console.error(error);
+
+            showToast(
+                error.message ||
+                'تعذر تفعيل التجربة'
+            );
+
+            return;
+
+        }
+
+
+        await loadStudentProfile();
+
+
+        closeModal(
+            'access-modal'
+        );
+
+
+        showToast(
+            'تم تفعيل التجربة المجانية 🎉'
+        );
+
+
+        await registerLogin(
+            'trial'
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            'تعذر تفعيل التجربة'
+        );
+
+    }
 
 }
 
@@ -2570,15 +1276,26 @@ async function loadMaterials(){
     const container =
         $('materials-container');
 
+
+    if(!container) return;
+
+
     try{
 
-        const { data,error } =
+        const {
+            data,
+            error
+        } =
             await db
                 .from('materials')
                 .select('*')
-                .order('created_at',{
-                    ascending:false
-                });
+                .order(
+                    'created_at',
+                    {
+                        ascending:false
+                    }
+                );
+
 
         if(error){
 
@@ -2588,27 +1305,35 @@ async function loadMaterials(){
 
         }
 
+
         if(!data || !data.length){
 
             return;
 
         }
 
+
         container.innerHTML =
             '<div class="material-list"></div>';
+
 
         const list =
             container.querySelector(
                 '.material-list'
             );
 
-        data.forEach(material=>{
 
-            list.appendChild(
-                createMaterialElement(material)
-            );
+        data.forEach(
+            material=>{
 
-        });
+                list.appendChild(
+                    createMaterialElement(
+                        material
+                    )
+                );
+
+            }
+        );
 
     }catch(error){
 
@@ -2619,69 +1344,104 @@ async function loadMaterials(){
 }
 
 
-async function loadGradeMaterials(grade){
+async function loadGradeMaterials(
+    grade
+){
 
     const container =
         $('grade-materials');
 
+
     container.innerHTML = `
+
         <div class="loading">
+
             <div class="spinner"></div>
+
             جاري تحميل الملازم...
+
         </div>
+
     `;
+
 
     try{
 
-        const { data,error } =
+        const {
+            data,
+            error
+        } =
             await db
                 .from('materials')
                 .select('*')
                 .eq('grade',grade)
-                .order('part',{
-                    ascending:true
-                });
+                .order(
+                    'part',
+                    {
+                        ascending:true
+                    }
+                );
+
 
         if(error){
 
             container.innerHTML = `
+
                 <div class="admin-card">
-                    لا توجد بيانات حالياً.
+                    تعذر تحميل الملازم.
                 </div>
+
             `;
 
             return;
 
         }
 
+
         if(!data || !data.length){
 
             container.innerHTML = `
+
                 <div class="admin-card">
-                    <strong>لا توجد ملازم مضافة حالياً.</strong>
+
+                    <strong>
+                        لا توجد ملازم مضافة حالياً.
+                    </strong>
+
                     <p style="
                         color:#64748b;
                         font-size:11px;
                         margin-top:7px;
                     ">
-                        سيتم عرض الملازم هنا عند إضافتها من لوحة الإدارة.
+
+                        سيتم عرض الملازم هنا
+                        عند إضافتها من لوحة الإدارة.
+
                     </p>
+
                 </div>
+
             `;
 
             return;
 
         }
 
+
         container.innerHTML = '';
 
-        data.forEach(item=>{
 
-            container.appendChild(
-                createMaterialElement(item)
-            );
+        data.forEach(
+            item=>{
 
-        });
+                container.appendChild(
+                    createMaterialElement(
+                        item
+                    )
+                );
+
+            }
+        );
 
     }catch(error){
 
@@ -2692,18 +1452,25 @@ async function loadGradeMaterials(grade){
 }
 
 
-function createMaterialElement(material){
+function createMaterialElement(
+    material
+){
 
     const div =
-        document.createElement('div');
+        document.createElement(
+            'div'
+        );
+
 
     div.className =
         'material';
 
+
     const part =
-        material.part === 2
+        Number(material.part) === 2
             ? 'الجزء الثاني'
             : 'الجزء الأول';
+
 
     div.innerHTML = `
 
@@ -2737,6 +1504,7 @@ function createMaterialElement(material){
 
     `;
 
+
     return div;
 
 }
@@ -2751,7 +1519,9 @@ function openMaterial(url){
         );
 
         return;
+
     }
+
 
     window.open(
         url,
@@ -2771,92 +1541,121 @@ async function loadLectures(){
     const container =
         $('lectures-container');
 
+
+    if(!container) return;
+
+
     try{
 
-        const { data,error } =
+        const {
+            data,
+            error
+        } =
             await db
                 .from('lectures')
                 .select('*')
-                .order('created_at',{
-                    ascending:false
-                });
+                .order(
+                    'created_at',
+                    {
+                        ascending:false
+                    }
+                );
+
 
         if(error){
 
             container.innerHTML = `
+
                 <div class="admin-card">
                     تعذر تحميل المحاضرات.
                 </div>
+
             `;
 
             return;
 
         }
+
 
         if(!data || !data.length){
 
             container.innerHTML = `
+
                 <div class="admin-card">
                     لا توجد محاضرات مضافة حالياً.
                 </div>
+
             `;
 
             return;
 
         }
 
+
         container.innerHTML = '';
 
-        data.forEach(item=>{
 
-            const card =
-                document.createElement('div');
+        data.forEach(
+            item=>{
 
-            card.className =
-                'material';
+                const card =
+                    document.createElement(
+                        'div'
+                    );
 
-            card.innerHTML = `
 
-                <div
-                    class="material-icon"
-                    style="
-                        background:#dbeafe;
-                        color:#2563eb;
-                    "
-                >
-                    🎥
-                </div>
+                card.className =
+                    'material';
 
-                <div class="material-info">
 
-                    <h4>
-                        ${escapeHtml(
-                            item.title || 'محاضرة'
-                        )}
-                    </h4>
+                card.innerHTML = `
 
-                    <span>
-                        ${escapeHtml(
-                            item.teacher || 'مدرس'
-                        )}
-                    </span>
+                    <div
+                        class="material-icon"
+                        style="
+                            background:#dbeafe;
+                            color:#2563eb;
+                        "
+                    >
+                        🎥
+                    </div>
 
-                </div>
+                    <div class="material-info">
 
-                <button
-                    class="material-btn"
-                    onclick="openMaterial('${escapeAttr(
-                        item.url || ''
-                    )}')"
-                >
-                    مشاهدة
-                </button>
+                        <h4>
+                            ${escapeHtml(
+                                item.title ||
+                                'محاضرة'
+                            )}
+                        </h4>
 
-            `;
+                        <span>
+                            ${escapeHtml(
+                                item.teacher ||
+                                'مدرس'
+                            )}
+                        </span>
 
-            container.appendChild(card);
+                    </div>
 
-        });
+                    <button
+                        class="material-btn"
+                        onclick="openMaterial('${escapeAttr(
+                            item.url || ''
+                        )}')"
+                    >
+                        مشاهدة
+                    </button>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
 
     }catch(error){
 
@@ -2876,85 +1675,112 @@ async function loadTeachers(){
     const container =
         $('teachers-container');
 
+
+    if(!container) return;
+
+
     try{
 
-        const { data,error } =
+        const {
+            data,
+            error
+        } =
             await db
                 .from('teachers')
                 .select('*')
-                .order('created_at',{
-                    ascending:false
-                });
+                .order(
+                    'created_at',
+                    {
+                        ascending:false
+                    }
+                );
+
 
         if(error){
 
             container.innerHTML = `
+
                 <div class="admin-card">
                     تعذر تحميل المدرسين.
                 </div>
+
             `;
 
             return;
 
         }
+
 
         if(!data || !data.length){
 
             container.innerHTML = `
+
                 <div class="admin-card">
                     لا توجد بيانات مدرسين حالياً.
                 </div>
+
             `;
 
             return;
 
         }
 
+
         container.innerHTML = '';
 
-        data.forEach(teacher=>{
 
-            const card =
-                document.createElement('div');
+        data.forEach(
+            teacher=>{
 
-            card.className =
-                'material';
+                const card =
+                    document.createElement(
+                        'div'
+                    );
 
-            card.innerHTML = `
 
-                <div
-                    class="material-icon"
-                    style="
-                        background:#ede9fe;
-                        color:#7c3aed;
-                    "
-                >
-                    👨‍🏫
-                </div>
+                card.className =
+                    'material';
 
-                <div class="material-info">
 
-                    <h4>
-                        ${escapeHtml(
-                            teacher.name ||
-                            'مدرس'
-                        )}
-                    </h4>
+                card.innerHTML = `
 
-                    <span>
-                        ${escapeHtml(
-                            teacher.subject ||
-                            'مدرس'
-                        )}
-                    </span>
+                    <div
+                        class="material-icon"
+                        style="
+                            background:#ede9fe;
+                            color:#7c3aed;
+                        "
+                    >
+                        👨‍🏫
+                    </div>
 
-                </div>
+                    <div class="material-info">
 
-            `;
+                        <h4>
+                            ${escapeHtml(
+                                teacher.name ||
+                                'مدرس'
+                            )}
+                        </h4>
 
-            container.appendChild(card);
+                        <span>
+                            ${escapeHtml(
+                                teacher.subject ||
+                                'مدرس'
+                            )}
+                        </span>
 
-        });
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
 
     }catch(error){
 
@@ -2974,94 +1800,121 @@ async function loadExams(){
     const container =
         $('exams-container');
 
+
+    if(!container) return;
+
+
     try{
 
-        const { data,error } =
+        const {
+            data,
+            error
+        } =
             await db
                 .from('exams')
                 .select('*')
-                .order('created_at',{
-                    ascending:false
-                });
+                .order(
+                    'created_at',
+                    {
+                        ascending:false
+                    }
+                );
+
 
         if(error){
 
             container.innerHTML = `
+
                 <div class="admin-card">
                     لا توجد اختبارات مضافة حالياً.
                 </div>
+
             `;
 
             return;
 
         }
+
 
         if(!data || !data.length){
 
             container.innerHTML = `
+
                 <div class="admin-card">
                     لا توجد اختبارات مضافة حالياً.
                 </div>
+
             `;
 
             return;
 
         }
 
+
         container.innerHTML = '';
 
-        data.forEach(exam=>{
 
-            const card =
-                document.createElement('div');
+        data.forEach(
+            exam=>{
 
-            card.className =
-                'material';
+                const card =
+                    document.createElement(
+                        'div'
+                    );
 
-            card.innerHTML = `
 
-                <div
-                    class="material-icon"
-                    style="
-                        background:#dcfce7;
-                        color:#16a34a;
-                    "
-                >
-                    📝
-                </div>
+                card.className =
+                    'material';
 
-                <div class="material-info">
 
-                    <h4>
-                        ${escapeHtml(
-                            exam.title ||
-                            'اختبار'
-                        )}
-                    </h4>
+                card.innerHTML = `
 
-                    <span>
-                        ${escapeHtml(
-                            exam.grade ||
-                            'جميع المراحل'
-                        )}
-                    </span>
+                    <div
+                        class="material-icon"
+                        style="
+                            background:#dcfce7;
+                            color:#16a34a;
+                        "
+                    >
+                        📝
+                    </div>
 
-                </div>
+                    <div class="material-info">
 
-                <button
-                    class="material-btn"
-                    onclick="openMaterial('${escapeAttr(
-                        exam.url || ''
-                    )}')"
-                >
-                    بدء
-                </button>
+                        <h4>
+                            ${escapeHtml(
+                                exam.title ||
+                                'اختبار'
+                            )}
+                        </h4>
 
-            `;
+                        <span>
+                            ${escapeHtml(
+                                exam.grade ||
+                                'جميع المراحل'
+                            )}
+                        </span>
 
-            container.appendChild(card);
+                    </div>
 
-        });
+                    <button
+                        class="material-btn"
+                        onclick="openMaterial('${escapeAttr(
+                            exam.url || ''
+                        )}')"
+                    >
+                        بدء
+                    </button>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
 
     }catch(error){
 
@@ -3080,14 +1933,21 @@ async function loadAnnouncements(){
 
     try{
 
-        const { data,error } =
+        const {
+            data,
+            error
+        } =
             await db
                 .from('announcements')
                 .select('*')
-                .order('created_at',{
-                    ascending:false
-                })
+                .order(
+                    'created_at',
+                    {
+                        ascending:false
+                    }
+                )
                 .limit(1);
+
 
         if(error){
 
@@ -3097,11 +1957,15 @@ async function loadAnnouncements(){
 
         }
 
-        if(data && data.length){
+
+        if(
+            data &&
+            data.length
+        ){
 
             $('home-announcement')
                 .textContent =
-                    data[0].text || '';
+                data[0].text || '';
 
         }
 
@@ -3133,13 +1997,11 @@ function enableAdminMode(){
 
     isAdmin = true;
 
-    document
-        .querySelectorAll('.nav-item')
-        .forEach(btn=>{
-            btn.style.display = '';
-        });
 
-    openPage('admin');
+    openPage(
+        'admin'
+    );
+
 
     loadAdminStats();
 
@@ -3159,64 +2021,101 @@ function adminTab(tab){
         'students'
     ];
 
-    tabs.forEach(name=>{
 
-        const box =
-            $('admin-' + name);
+    tabs.forEach(
+        name=>{
 
-        if(box){
+            const box =
+                $('admin-' + name);
 
-            box.style.display =
-                name === tab
-                    ? 'block'
-                    : 'none';
+
+            if(box){
+
+                box.style.display =
+                    name === tab
+                        ? 'block'
+                        : 'none';
+
+            }
 
         }
+    );
 
-    });
 
     document
-        .querySelectorAll('.admin-tab')
-        .forEach(btn=>{
-            btn.classList.remove('active');
-        });
-
-    const active =
-        [...document.querySelectorAll('.admin-tab')]
-        .find(btn =>
-            btn.textContent
-                .trim()
-                .includes(
-                    tab === 'announcement'
-                        ? 'إعلان'
-                        : tab === 'material'
-                        ? 'ملزمة'
-                        : tab === 'lecture'
-                        ? 'محاضرة'
-                        : tab === 'teacher'
-                        ? 'مدرس'
-                        : tab === 'code'
-                        ? 'كود'
-                        : 'الطلاب'
-                )
+        .querySelectorAll(
+            '.admin-tab'
+        )
+        .forEach(
+            btn=>{
+                btn.classList.remove(
+                    'active'
+                );
+            }
         );
 
-    if(active){
-        active.classList.add('active');
-    }
+
+    const names = {
+
+        announcement:'إعلان',
+
+        material:'ملزمة',
+
+        lecture:'محاضرة',
+
+        teacher:'مدرس',
+
+        code:'كود',
+
+        students:'الطلاب'
+
+    };
+
+
+    document
+        .querySelectorAll(
+            '.admin-tab'
+        )
+        .forEach(
+            btn=>{
+
+                if(
+                    btn.textContent
+                        .trim()
+                        .includes(
+                            names[tab]
+                        )
+                ){
+
+                    btn.classList.add(
+                        'active'
+                    );
+
+                }
+
+            }
+        );
 
 }
 
+
+/* =========================================================
+   ADMIN ANNOUNCEMENT
+========================================================= */
 
 async function addAnnouncement(){
 
     const title =
         $('announcement-title')
-            .value.trim();
+            .value
+            .trim();
+
 
     const text =
         $('announcement-text')
-            .value.trim();
+            .value
+            .trim();
+
 
     if(!title || !text){
 
@@ -3225,30 +2124,42 @@ async function addAnnouncement(){
         );
 
         return;
+
     }
+
 
     try{
 
-        const { error } =
+        const {
+            error
+        } =
             await db
                 .from('announcements')
                 .insert({
-                    title:title,
-                    text:text
+                    title,
+                    text
                 });
+
 
         if(error) throw error;
 
-        $('announcement-title').value = '';
 
-        $('announcement-text').value = '';
+        $('announcement-title')
+            .value = '';
+
+
+        $('announcement-text')
+            .value = '';
+
 
         $('home-announcement')
             .textContent = text;
 
+
         showToast(
             'تم نشر الإعلان'
         );
+
 
         loadAdminStats();
 
@@ -3265,15 +2176,22 @@ async function addAnnouncement(){
 }
 
 
+/* =========================================================
+   ADMIN MATERIAL
+========================================================= */
+
 async function addMaterial(){
 
     const title =
         $('material-title')
-            .value.trim();
+            .value
+            .trim();
+
 
     const grade =
         $('material-grade')
             .value;
+
 
     const part =
         Number(
@@ -3281,9 +2199,12 @@ async function addMaterial(){
                 .value
         );
 
+
     const url =
         $('material-url')
-            .value.trim();
+            .value
+            .trim();
+
 
     if(!title || !url){
 
@@ -3292,34 +2213,45 @@ async function addMaterial(){
         );
 
         return;
+
     }
+
 
     try{
 
-        const { error } =
+        const {
+            error
+        } =
             await db
                 .from('materials')
                 .insert({
 
-                    title:title,
+                    title,
 
-                    grade:grade,
+                    grade,
 
-                    part:part,
+                    part,
 
-                    url:url
+                    url
 
                 });
 
+
         if(error) throw error;
 
-        $('material-title').value = '';
 
-        $('material-url').value = '';
+        $('material-title')
+            .value = '';
+
+
+        $('material-url')
+            .value = '';
+
 
         showToast(
             'تمت إضافة الملزمة'
         );
+
 
         loadAdminStats();
 
@@ -3336,23 +2268,34 @@ async function addMaterial(){
 }
 
 
+/* =========================================================
+   ADMIN LECTURE
+========================================================= */
+
 async function addLecture(){
 
     const title =
         $('lecture-title')
-            .value.trim();
+            .value
+            .trim();
+
 
     const teacher =
         $('lecture-teacher')
-            .value.trim();
+            .value
+            .trim();
+
 
     const grade =
         $('lecture-grade')
             .value;
 
+
     const url =
         $('lecture-url')
-            .value.trim();
+            .value
+            .trim();
+
 
     if(!title || !url){
 
@@ -3361,36 +2304,49 @@ async function addLecture(){
         );
 
         return;
+
     }
+
 
     try{
 
-        const { error } =
+        const {
+            error
+        } =
             await db
                 .from('lectures')
                 .insert({
 
-                    title:title,
+                    title,
 
-                    teacher:teacher,
+                    teacher,
 
-                    grade:grade,
+                    grade,
 
-                    url:url
+                    url
 
                 });
 
+
         if(error) throw error;
 
-        $('lecture-title').value = '';
 
-        $('lecture-teacher').value = '';
+        $('lecture-title')
+            .value = '';
 
-        $('lecture-url').value = '';
+
+        $('lecture-teacher')
+            .value = '';
+
+
+        $('lecture-url')
+            .value = '';
+
 
         showToast(
             'تمت إضافة المحاضرة'
         );
+
 
         loadAdminStats();
 
@@ -3407,19 +2363,29 @@ async function addLecture(){
 }
 
 
+/* =========================================================
+   ADMIN TEACHER
+========================================================= */
+
 async function addTeacher(){
 
     const name =
         $('teacher-name')
-            .value.trim();
+            .value
+            .trim();
+
 
     const subject =
         $('teacher-subject')
-            .value.trim();
+            .value
+            .trim();
+
 
     const image =
         $('teacher-image')
-            .value.trim();
+            .value
+            .trim();
+
 
     if(!name){
 
@@ -3428,34 +2394,47 @@ async function addTeacher(){
         );
 
         return;
+
     }
+
 
     try{
 
-        const { error } =
+        const {
+            error
+        } =
             await db
                 .from('teachers')
                 .insert({
 
-                    name:name,
+                    name,
 
-                    subject:subject,
+                    subject,
 
                     image_url:image
 
                 });
 
+
         if(error) throw error;
 
-        $('teacher-name').value = '';
 
-        $('teacher-subject').value = '';
+        $('teacher-name')
+            .value = '';
 
-        $('teacher-image').value = '';
+
+        $('teacher-subject')
+            .value = '';
+
+
+        $('teacher-image')
+            .value = '';
+
 
         showToast(
             'تمت إضافة المدرس'
         );
+
 
         loadAdminStats();
 
@@ -3473,7 +2452,7 @@ async function addTeacher(){
 
 
 /* =========================================================
-   GENERATE CODE
+   CODE GENERATOR
 ========================================================= */
 
 function generateRandomCode(){
@@ -3481,9 +2460,15 @@ function generateRandomCode(){
     const chars =
         'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
+
     let result = '';
 
-    for(let i=0;i<12;i++){
+
+    for(
+        let i=0;
+        i<12;
+        i++
+    ){
 
         result +=
             chars.charAt(
@@ -3494,6 +2479,7 @@ function generateRandomCode(){
             );
 
     }
+
 
     return result;
 
@@ -3506,19 +2492,23 @@ async function generateActivationCode(){
         $('code-type')
             .value;
 
-    const code =
+
+    let code =
         generateRandomCode();
+
 
     try{
 
-        const { error } =
+        const {
+            error
+        } =
             await db
                 .from('codes')
                 .insert({
 
-                    code:code,
+                    code,
 
-                    type:type,
+                    type,
 
                     active:true,
 
@@ -3526,13 +2516,50 @@ async function generateActivationCode(){
 
                 });
 
-        if(error) throw error;
+
+        if(error){
+
+            console.error(error);
+
+            showToast(
+                'تعذر إنشاء الكود'
+            );
+
+            return;
+
+        }
+
 
         $('generated-code')
-            .textContent = code;
+            .innerHTML = `
+
+            <div style="
+                font-size:12px;
+                color:#64748b;
+                margin-bottom:7px;
+            ">
+                كود التفعيل الجديد
+            </div>
+
+            <strong>
+                ${escapeHtml(code)}
+            </strong>
+
+            <div style="
+                font-size:11px;
+                color:#64748b;
+                margin-top:8px;
+            ">
+                ${type === 'annual'
+                    ? 'اشتراك سنوي'
+                    : 'اشتراك شهري'}
+            </div>
+
+        `;
+
 
         showToast(
-            'تم إنشاء كود التفعيل'
+            'تم إنشاء كود جديد تلقائياً'
         );
 
     }catch(error){
@@ -3549,7 +2576,7 @@ async function generateActivationCode(){
 
 
 /* =========================================================
-   STUDENTS
+   STUDENTS ADMIN
 ========================================================= */
 
 async function loadStudents(){
@@ -3557,66 +2584,174 @@ async function loadStudents(){
     const tbody =
         $('students-table');
 
+
     if(!tbody) return;
+
 
     try{
 
-        const { data,error } =
+        const {
+            data,
+            error
+        } =
             await db
-                .from('attendance')
+                .from('students')
                 .select('*')
-                .order('attended_at',{
-                    ascending:false
-                })
-                .limit(100);
+                .order(
+                    'created_at',
+                    {
+                        ascending:false
+                    }
+                )
+                .limit(500);
+
 
         if(error){
 
             console.warn(error);
 
+            tbody.innerHTML = `
+
+                <tr>
+                    <td colspan="3">
+                        تعذر تحميل الطلاب
+                    </td>
+                </tr>
+
+            `;
+
             return;
 
         }
 
+
         tbody.innerHTML = '';
 
-        (data || []).forEach(student=>{
 
-            const tr =
-                document.createElement('tr');
+        (data || [])
+            .forEach(
+                student=>{
 
-            const date =
-                student.attended_at
-                    ? new Date(
-                        student.attended_at
-                    ).toLocaleDateString(
-                        'ar-IQ'
-                    )
-                    : '-';
+                    const tr =
+                        document.createElement(
+                            'tr'
+                        );
 
-            tr.innerHTML = `
 
-                <td>
-                    ${escapeHtml(
-                        student.student_name || '-'
-                    )}
-                </td>
+                    const created =
+                        student.created_at
+                            ? new Date(
+                                student.created_at
+                            ).toLocaleDateString(
+                                'ar-IQ'
+                            )
+                            : '-';
 
-                <td>
-                    ${escapeHtml(
-                        student.governorate || '-'
-                    )}
-                </td>
 
-                <td>
-                    ${date}
-                </td>
+                    const lastLogin =
+                        student.last_login_at
+                            ? new Date(
+                                student.last_login_at
+                            ).toLocaleString(
+                                'ar-IQ'
+                            )
+                            : '-';
 
-            `;
 
-            tbody.appendChild(tr);
+                    const expiry =
+                        student.subscription_expires_at
+                            ? new Date(
+                                student.subscription_expires_at
+                            ).toLocaleDateString(
+                                'ar-IQ'
+                            )
+                            : '-';
 
-        });
+
+                    tr.innerHTML = `
+
+                        <td>
+
+                            <strong>
+                                ${escapeHtml(
+                                    student.student_name || '-'
+                                )}
+                            </strong>
+
+                            <br>
+
+                            <small style="
+                                color:#64748b;
+                            ">
+
+                                ${escapeHtml(
+                                    student.student_number || '-'
+                                )}
+
+                            </small>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+                                student.governorate || '-'
+                            )}
+
+                            <br>
+
+                            <small style="
+                                color:#64748b;
+                            ">
+
+                                ${escapeHtml(
+                                    gradeData[
+                                        student.grade
+                                    ]?.title ||
+                                    student.grade ||
+                                    '-'
+                                )}
+
+                            </small>
+
+                        </td>
+
+
+                        <td>
+
+                            التسجيل:
+                            ${created}
+
+                            <br>
+
+                            آخر دخول:
+                            ${lastLogin}
+
+                            <br>
+
+                            الدخول:
+                            ${Number(
+                                student.login_count || 0
+                            )}
+
+                            <br>
+
+                            الانتهاء:
+                            ${expiry}
+
+                        </td>
+
+                    `;
+
+
+                    tbody.appendChild(
+                        tr
+                    );
+
+                }
+            );
+
 
     }catch(error){
 
@@ -3631,19 +2766,33 @@ async function loadStudents(){
    ADMIN STATS
 ========================================================= */
 
-async function countTable(table){
+async function countTable(
+    table
+){
 
     try{
 
-        const { count,error } =
+        const {
+            count,
+            error
+        } =
             await db
                 .from(table)
-                .select('*',{
-                    count:'exact',
-                    head:true
-                });
+                .select(
+                    '*',
+                    {
+                        count:'exact',
+                        head:true
+                    }
+                );
 
-        if(error) return 0;
+
+        if(error){
+
+            return 0;
+
+        }
+
 
         return count || 0;
 
@@ -3658,36 +2807,62 @@ async function countTable(table){
 
 async function loadAdminStats(){
 
-    if(!isAdmin) return;
+    if(!isAdmin){
+
+        return;
+
+    }
+
 
     const [
+
         students,
+
         lectures,
+
         materials,
+
         announcements
+
     ] = await Promise.all([
 
-        countTable('attendance'),
+        countTable(
+            'students'
+        ),
 
-        countTable('lectures'),
+        countTable(
+            'lectures'
+        ),
 
-        countTable('materials'),
+        countTable(
+            'materials'
+        ),
 
-        countTable('announcements')
+        countTable(
+            'announcements'
+        )
 
     ]);
 
+
     $('stat-students')
-        .textContent = students;
+        .textContent =
+        students;
+
 
     $('stat-lectures')
-        .textContent = lectures;
+        .textContent =
+        lectures;
+
 
     $('stat-materials')
-        .textContent = materials;
+        .textContent =
+        materials;
+
 
     $('stat-announcements')
-        .textContent = announcements;
+        .textContent =
+        announcements;
 
 }
 
@@ -3704,27 +2879,41 @@ function performSearch(){
             .trim()
             .toLowerCase();
 
-    if(!query){
-        return;
-    }
 
     const allCards =
         document.querySelectorAll(
             '.material,.subject-card,.grade-card'
         );
 
-    allCards.forEach(card=>{
 
-        const text =
-            card.textContent
-                .toLowerCase();
+    if(!query){
 
-        card.style.display =
-            text.includes(query)
-                ? ''
-                : 'none';
+        allCards.forEach(
+            card=>{
+                card.style.display = '';
+            }
+        );
 
-    });
+        return;
+
+    }
+
+
+    allCards.forEach(
+        card=>{
+
+            const text =
+                card.textContent
+                    .toLowerCase();
+
+
+            card.style.display =
+                text.includes(query)
+                    ? ''
+                    : 'none';
+
+        }
+    );
 
 }
 
@@ -3736,11 +2925,31 @@ function performSearch(){
 function escapeHtml(value){
 
     return String(value)
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;')
-        .replace(/'/g,'&#039;');
+
+        .replace(
+            /&/g,
+            '&amp;'
+        )
+
+        .replace(
+            /</g,
+            '&lt;'
+        )
+
+        .replace(
+            />/g,
+            '&gt;'
+        )
+
+        .replace(
+            /"/g,
+            '&quot;'
+        )
+
+        .replace(
+            /'/g,
+            '&#039;'
+        );
 
 }
 
@@ -3748,15 +2957,27 @@ function escapeHtml(value){
 function escapeAttr(value){
 
     return String(value)
-        .replace(/\\/g,'\\\\')
-        .replace(/'/g,"\\'")
-        .replace(/"/g,'&quot;');
+
+        .replace(
+            /\\/g,
+            '\\\\'
+        )
+
+        .replace(
+            /'/g,
+            "\\'"
+        )
+
+        .replace(
+            /"/g,
+            '&quot;'
+        );
 
 }
 
 
 /* =========================================================
-   ADMIN LOGIN VIA URL
+   ADMIN
 ========================================================= */
 
 function checkAdmin(){
@@ -3766,15 +2987,21 @@ function checkAdmin(){
             window.location.search
         );
 
+
     const admin =
         params.get('admin');
 
-    if(admin === ADMIN_CODE){
+
+    if(
+        admin === ADMIN_CODE
+    ){
 
         enableAdminMode();
 
         return true;
+
     }
+
 
     return false;
 
@@ -3785,11 +3012,80 @@ function adminLogout(){
 
     isAdmin = false;
 
-    openPage('home');
+    openPage(
+        'home'
+    );
 
     showToast(
         'تم الخروج من لوحة الإدارة'
     );
+
+}
+
+
+/* =========================================================
+   AUTO LOGIN
+========================================================= */
+
+async function initializeStudent(){
+
+    try{
+
+        await ensureStudentSession();
+
+
+        await loadStudentProfile();
+
+
+        if(!currentStudent){
+
+            openModal(
+                'attendance-modal'
+            );
+
+            return;
+
+        }
+
+
+        updateStudentUI();
+
+
+        await registerLogin(
+            'auto_login'
+        );
+
+
+        const active =
+            await checkSubscription();
+
+
+        if(!active){
+
+            return;
+
+        }
+
+
+        console.log(
+            'Student automatically logged in:',
+            currentStudent.student_number
+        );
+
+
+    }catch(error){
+
+        console.error(
+            'Auto login error:',
+            error
+        );
+
+
+        openModal(
+            'attendance-modal'
+        );
+
+    }
 
 }
 
@@ -3800,25 +3096,21 @@ function adminLogout(){
 
 async function initialize(){
 
-    loadProfile();
-
     loadAnnouncements();
+
 
     const admin =
         checkAdmin();
 
+
     if(admin){
+
         return;
+
     }
 
-    const authorized =
-        checkPlatformAccess();
 
-    if(!authorized){
-        return;
-    }
-
-    checkMandatoryAttendance();
+    await initializeStudent();
 
 }
 
@@ -3830,39 +3122,40 @@ window.addEventListener(
 
 
 /* =========================================================
-   MODAL CLICK OUTSIDE
+   MODAL OUTSIDE CLICK
 ========================================================= */
 
 document
     .querySelectorAll('.modal')
-    .forEach(modal=>{
+    .forEach(
+        modal=>{
 
-        modal.addEventListener(
-            'click',
-            function(event){
-
-                if(event.target === modal){
+            modal.addEventListener(
+                'click',
+                function(event){
 
                     if(
-                        modal.id !==
-                        'attendance-modal'
+                        event.target === modal
                     ){
 
-                        modal.classList.remove(
-                            'show'
-                        );
+                        if(
+                            modal.id !==
+                            'attendance-modal'
+                        ){
+
+                            modal.classList.remove(
+                                'show'
+                            );
+
+                        }
 
                     }
 
                 }
+            );
 
-            }
-        );
-
-    });
+        }
+    );
 
 
-</script>
-
-</body>
-    </html>
+    </script>
