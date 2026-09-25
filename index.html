@@ -3,7 +3,35 @@
 <head>    
 <meta charset="UTF-8">    
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
-<title>منصة العراق التعليمية</title>  
+
+<!-- عنوان الموقع -->
+<title>منصة العراق التعليمية | السادس العلمي والأدبي</title>  
+
+<!-- وصف الموقع لمحركات البحث -->
+<meta name="description" content="منصة العراق التعليمية لطلاب السادس العلمي والأدبي في العراق، توفر المحاضرات والامتحانات والملازم والنتائج وتنظيم الدراسة.">
+
+<!-- الكلمات المفتاحية -->
+<meta name="keywords" content="منصة العراق التعليمية, السادس العلمي, السادس الأدبي, طلاب العراق, محاضرات السادس, ملازم السادس, امتحانات السادس, نتائج السادس, التعليم في العراق">
+
+<!-- معلومات الموقع -->
+<meta name="author" content="منصة العراق التعليمية">
+
+<!-- السماح لمحركات البحث بفهرسة الموقع -->
+<meta name="robots" content="index, follow">
+
+<!-- Google Search Console -->
+<meta name="google-site-verification" content="AKX08rkSHvDALqIOzutVQdM9A5Gg5zOnUdVTJtrVprk">
+
+<!-- الرابط الأساسي للموقع -->
+<link rel="canonical" href="https://mohammed776677661-droid.github.io/iraq-education/">
+
+<!-- Open Graph - عند مشاركة الموقع -->
+<meta property="og:title" content="منصة العراق التعليمية | السادس العلمي والأدبي">
+<meta property="og:description" content="منصة تعليمية لطلاب السادس العلمي والأدبي في العراق، تشمل المحاضرات والامتحانات والملازم والنتائج.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mohammed776677661-droid.github.io/iraq-education/">
+<meta property="og:locale" content="ar_IQ">
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">  
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
 <style>    
@@ -1718,14 +1746,12 @@ background:#0077b6;
       if(!code) { alert('ولد الكود أولاً'); return; }    
 
       try {
-        // يتم حفظ الكود محلياً وفي جدول التفعيل في Supabase (تأكد من إنشاء جدول codes في قاعدة البيانات إذا أردت)
         localStorage.setItem('active_system_code', code);    
         localStorage.setItem('active_code_type', type);    
         
         await db.from('codes').insert([{ code: code, type: type, active: true }]);
         alert('تم اعتماد وحفظ الكود بنجاح: ' + code);
       } catch(err) {
-        // في حال لم يكن جدول codes موجوداً بـ Supabase، يتم حفظه محلياً كخيار بديل
         localStorage.setItem('active_system_code', code);
         localStorage.setItem('active_code_type', type);
         alert('تم اعتماد الكود محلياً: ' + code);
