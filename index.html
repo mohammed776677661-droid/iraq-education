@@ -705,7 +705,7 @@ background:#0077b6;
     </div>  
   </div>  
 
-  <!-- ================= تفعيل المنصة (كود أو تجربة 30 يوم) ================= -->  
+  <!-- ================= تفعيل المنصة ================= -->  
   <div id="access-modal" class="modal-overlay" style="display:none;">  
     <div class="modal-box">    
       <h2><i class="fa-solid fa-key"></i> تفعيل المنصة</h2>    
@@ -756,12 +756,6 @@ background:#0077b6;
         <div class="hero-card">  
           <h2 id="banner-title">منصة العراق التعليمية</h2>  
           <p>أهلاً بك في المنصة التعليمية</p>  
-        </div>  
-
-        <!-- بوابة المسؤولين -->
-        <div class="feature-card" style="border-color:#e63946;background:linear-gradient(135deg,#1c2541,#3a1c1c);" onclick="openAdminPanelDirect()">  
-          <div class="feature-title"><i class="fa-solid fa-shield-halved" style="color:#e63946;"></i> بوابة المسؤولين والإدارة</div>  
-          <div class="feature-desc">اضغط هنا للدخول المباشر إلى لوحة التحكم والإحصائيات</div>  
         </div>  
 
         <div class="section-title">الأقسام الرئيسية</div>  
@@ -923,7 +917,7 @@ background:#0077b6;
       <div id="games" class="tab-panel">  
         <div class="section-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية المتطورة</div>  
         <div class="game-card">  
-          <h3>تحدي الأسئلة الذكي (بدون تكرار) 🎯</h3>  
+          <h3>تحدي الأسئلة الذكي (بلا حدود وبدون تكرار) 🎯</h3>  
           <div class="form-group" style="text-align:right;margin-top:10px;">  
             <label>اختر الفرع الدراسي</label>  
             <select id="game-branch" class="form-control" onchange="updateGameSubjectsOptions()">  
@@ -1230,16 +1224,6 @@ background:#0077b6;
       if(element) {    
         document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));    
         element.classList.add('active');    
-      }
-    }
-
-    function openAdminPanelDirect() {
-      const pass = prompt('أدخل كلمة مرور المسؤول (الكود السري):');
-      if(pass === currentAdminCode) {
-        enableAdminMode();
-        switchTab('profile');
-      } else if(pass !== null) {
-        alert('كلمة المرور غير صحيحة');
       }
     }
 
@@ -1859,14 +1843,13 @@ background:#0077b6;
         { q: `سؤال تدريبي عام في مادة ${sub}: هل أنت مستعد للامتحان الوزاري؟`, answers: ["نعم وبقوة", "قريب جداً", "أحتاج مراجعة", "كلا"], correct: 0 }
       ];
       activeGamePool = [...originalList];
-      document.getElementById('game-question').innerText = "اضغط زر 'ابدأ / السؤال التالي' لبدء التحدي";
-      document.getElementById('game-answers').innerHTML = '';
+      startCustomGame();
     }
 
     function startCustomGame() {
       if(activeGamePool.length === 0) {
         resetGameSession();
-        alert('أتممت جميع أسئلة هذه المادة بنجاح! تم إعادة تعقيم وتدوير الأسئلة لك مرة أخرى.');
+        return;
       }
       
       const randomIndex = Math.floor(Math.random() * activeGamePool.length);
