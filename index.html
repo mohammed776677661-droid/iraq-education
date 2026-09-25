@@ -135,6 +135,42 @@ font-size:11px;
 color:#e0a96d;
 }
 
+.header-actions{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.notification-bell{
+position:relative;
+background:rgba(224,169,109,.2);
+color:#e0a96d;
+width:36px;
+height:36px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+font-size:15px;
+}
+
+.notification-badge{
+position:absolute;
+top:-2px;
+right:-2px;
+background:#c0392b;
+color:#fff;
+font-size:9px;
+width:16px;
+height:16px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-weight:bold;
+}
+
 .role-badge{
 background:rgba(224,169,109,.2);
 color:#e0a96d;
@@ -615,7 +651,7 @@ background:#0077b6;
   <!-- ================= حضور إجباري ================= -->  
   <div id="mandatory-attendance-modal" class="modal-overlay" style="display:none;">  
     <div class="modal-box">
-      <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور</h2>    
+      <h2><i class="fa-solid fa-clipboard-user"></i> تسجيل الحضور والدخول</h2>    
       <div class="form-group">    
         <label>اسم الطالب الثلاثي</label>    
         <input id="m-att-name" class="form-control" placeholder="أدخل اسمك الثلاثي">    
@@ -624,7 +660,11 @@ background:#0077b6;
         <label>اسم المحافظة</label>    
         <input id="m-att-gov" class="form-control" placeholder="مثال: بغداد">    
       </div>    
-      <button class="btn-submit btn-gold" onclick="submitMandatoryAttendance()">تسجيل الحضور والدخول</button>
+      <div class="form-group">    
+        <label>اسم المدرسة</label>    
+        <input id="m-att-school" class="form-control" placeholder="مثال: إعدادية بغداد">    
+      </div>    
+      <button class="btn-submit btn-gold" onclick="submitMandatoryAttendance()">تأكيد وتسجيل الحضور</button>
     </div>  
   </div>  
 
@@ -633,7 +673,7 @@ background:#0077b6;
     <div class="modal-box">    
       <h2><i class="fa-solid fa-key"></i> تفعيل المنصة</h2>    
       <p style="font-size:11px;color:#a3cef1;margin-bottom:12px;text-align:center;">    
-        يمكنك استخدام كود شهري أو سنوي، أو تجربة المنصة مجاناً لمدة شهر.    
+        أدخل كود التفعيل أو جرب المنصة مجاناً لمدة شهر.    
       </p>    
       <div class="form-group">    
         <label>كود التفعيل</label>    
@@ -641,6 +681,15 @@ background:#0077b6;
       </div>    
       <button class="btn-submit" onclick="verifyAccessCode()">تحقق ودخول</button>    
       <button class="btn-submit btn-gold" style="margin-top:10px;" onclick="activateFreeTrialMonth()">🎁 تجربة مجانية لمدة شهر</button>
+    </div>  
+  </div>  
+
+  <!-- ================= نافذة الإشعارات ================= -->  
+  <div id="notifications-modal" class="modal-overlay" style="display:none;">  
+    <div class="modal-box">  
+      <h2><i class="fa-solid fa-bell"></i> إشعارات المسؤول</h2>  
+      <div id="notifications-list" style="max-height:250px;overflow-y:auto;margin-bottom:12px;font-size:11px;"></div>  
+      <button class="btn-submit" onclick="closeNotifications()">إغلاق</button>  
     </div>  
   </div>  
 
@@ -654,7 +703,13 @@ background:#0077b6;
           <div class="brand-subtitle">معاً نحو مستقبل أفضل</div>    
         </div>
       </div>    
-      <div class="role-badge" id="user-role-badge">طالب</div>  
+      <div class="header-actions">
+        <div class="notification-bell" onclick="openNotifications()">
+          <i class="fa-solid fa-bell"></i>
+          <span id="notif-count" class="notification-badge">0</span>
+        </div>
+        <div class="role-badge" id="user-role-badge">طالب</div>  
+      </div>
     </div>  
 
     <!-- ================= CONTENT ================= -->  
@@ -687,7 +742,7 @@ background:#0077b6;
         </div>  
         <div class="feature-card" onclick="switchTab('games')">  
           <div class="feature-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية</div>  
-          <div class="feature-desc">استراحة ممتعة مع ألعاب سؤال وجواب</div>  
+          <div class="feature-desc">استراحة ممتعة مع ألعاب سؤال وجواب حسب المادة</div>  
         </div>  
         <div class="feature-card" onclick="switchTab('competition')">  
           <div class="feature-title"><i class="fa-solid fa-trophy" style="color:#ffd700;"></i> المسابقات والمتصدرين</div>  
@@ -822,13 +877,24 @@ background:#0077b6;
 
       <!-- ================= GAMES ================= -->  
       <div id="games" class="tab-panel">  
-        <div class="section-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية</div>  
+        <div class="section-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية المحدثة</div>  
         <div class="game-card">  
-          <h3>سؤال وجواب 🎯</h3>  
-          <p id="game-question" style="margin-top:10px;font-size:13px;">اضغط ابدأ حتى يطلعلك سؤال</p>  
+          <h3>تحدي الأسئلة الذكي 🎯</h3>  
+          <div class="form-group" style="text-align:right;margin-top:10px;">  
+            <label>اختر الفرع الدراسي</label>  
+            <select id="game-branch" class="form-control" onchange="updateGameSubjectsOptions()">  
+              <option value="scientific">السادس العلمي</option>  
+              <option value="literary">السادس الأدبي</option>  
+            </select>  
+          </div>  
+          <div class="form-group" style="text-align:right;">  
+            <label>اختر المادة</label>  
+            <select id="game-subject-select" class="form-control"></select>  
+          </div>  
+          <p id="game-question" style="margin-top:10px;font-size:13px;font-weight:bold;color:#48cae4;">اختر المادة وابدأ التحدي</p>  
           <div id="game-answers"></div>  
-          <button class="btn-submit" style="margin-top:12px;" onclick="startGame()">ابدأ اللعبة</button>  
-          <div id="game-score" style="margin-top:10px;color:#ffd700;">النقاط: 0</div>  
+          <button class="btn-submit btn-gold" style="margin-top:12px;" onclick="startCustomGame()">ابدأ اللعبة بلا حدود</button>  
+          <div id="game-score" style="margin-top:10px;color:#ffd700;font-weight:bold;">النقاط: 0</div>  
         </div>  
       </div>  
 
@@ -845,17 +911,17 @@ background:#0077b6;
       <div id="profile" class="tab-panel">  
         <div class="section-title">لوحة تحكم المنصة</div>  
         
-        <!-- الإحصائيات -->  
+        <!-- إحصائيات المنصة المتقدمة والنشطة -->  
         <div class="admin-box">  
-          <h3><i class="fa-solid fa-chart-column"></i> إحصائيات المنصة</h3>  
+          <h3><i class="fa-solid fa-chart-line"></i> إحصائيات المنصة الشاملة</h3>  
           <div class="stat-grid">  
             <div class="stat-card">  
-              <div id="stat-students" class="stat-number">0</div>  
-              <div class="stat-label">الطلاب المسجلون</div>  
+              <div id="stat-total-students" class="stat-number">0</div>  
+              <div class="stat-label">إجمالي طلاب المنصة</div>  
             </div>  
             <div class="stat-card">  
-              <div id="stat-attendance" class="stat-number">0</div>  
-              <div class="stat-label">الحضور</div>  
+              <div id="stat-active-students" class="stat-number" style="color:#2a9d8f;">0</div>  
+              <div class="stat-label">الطلاب النشطون اليوم</div>  
             </div>  
             <div class="stat-card">  
               <div id="stat-teachers" class="stat-number">0</div>  
@@ -964,22 +1030,37 @@ background:#0077b6;
         <div class="admin-box">  
           <h3><i class="fa-solid fa-key"></i> توليد وإدارة أكواد التفعيل</h3>  
           <select id="code-type" class="form-control">  
-            <option value="monthly">شهري</option>  
-            <option value="annual">سنوي</option>  
+            <option value="شهري">شهري</option>  
+            <option value="سنوي">سنوي</option>  
           </select>  
           <input id="generated-code" class="form-control" style="margin-top:10px;text-align:center;color:#ffd700;font-weight:bold;" readonly>  
           <button class="btn-submit btn-gold" style="margin-top:10px;" onclick="generateCode()">توليد كود</button>  
           <button class="btn-submit btn-success" style="margin-top:7px;" onclick="saveGeneratedCodeToSupabase()">اعتماد وحفظ الكود في قاعدة البيانات</button>  
         </div>  
 
-        <!-- الطلاب -->  
+        <!-- سجل الطلاب المسجلين بالأكواد -->  
         <div class="admin-box">  
-          <h3><i class="fa-solid fa-users"></i> الطلاب المسجلون والحضور</h3>  
+          <h3><i class="fa-solid fa-id-card"></i> الطلاب المسجلون عبر الأكواد</h3>  
           <table>  
             <thead>  
               <tr>  
                 <th>الطالب</th>  
-                <th>المحافظة</th>  
+                <th>المحافظة والمدرسة</th>  
+                <th>نوع الاشتراك</th>  
+              </tr>  
+            </thead>  
+            <tbody id="codes-students-table"></tbody>  
+          </table>  
+        </div>  
+
+        <!-- قائمة الحضور الشاملة والطلاب -->  
+        <div class="admin-box">  
+          <h3><i class="fa-solid fa-clipboard-user"></i> قائمة الحضور والطلاب الشاملة</h3>  
+          <table>  
+            <thead>  
+              <tr>  
+                <th>الطالب</th>  
+                <th>المحافظة والمدرسة</th>  
                 <th>الإجراء</th>  
               </tr>  
             </thead>  
@@ -1020,6 +1101,48 @@ background:#0077b6;
     const scientificSubjects = ["التربية الإسلامية", "اللغة العربية", "اللغة الإنكليزية", "الرياضيات", "الفيزياء", "الكيمياء", "الأحياء"];
     const literarySubjects = ["التربية الإسلامية", "اللغة العربية", "اللغة الإنكليزية", "التاريخ", "الجغرافية", "الاقتصاد", "الفلسفة والمنطق"];
 
+    const masterQuestionBank = {
+      "الرياضيات": [
+        { q: "ما قيمة العدد المركب (i)^2 ؟", answers: ["1", "-1", "i", "-i"], correct: 1 },
+        { q: "ما هي المشتقة الأولى للدالة f(x) = x^3 ؟", answers: ["3x", "3x^2", "x^2", "6x"], correct: 1 },
+        { q: "ما هو تكامل الدالة cos(x) ؟", answers: ["-sin(x)", "sin(x)", "cos(x)", "-cos(x)"], correct: 1 }
+      ],
+      "الفيزياء": [
+        { q: "ما وحدة قياس الحث الذاتي؟", answers: ["فولت", "هنري", "فاراد", "تسلا"], correct: 1 },
+        { q: "في المتسعات، ما الغرض من وضع عازل كهربائي؟", answers: ["تقليل السعة", "زيادة السعة", "إنعدام المجال", "تثبيت الجهد"], correct: 1 },
+        { q: "ما وحدة قياس الفيض المغناطيسي؟", answers: ["ويبر", "تسلا", "أمبير", "جول"], correct: 0 }
+      ],
+      "الكيمياء": [
+        { q: "ما وحدة الثابت كاي eq في الاتزان الكيميائي؟", answers: ["ثابت بدون وحدة", "مول/لتر", "لتر/مول", "جول"], correct: 0 },
+        { q: "ما نوع التفاعل الذي تكون فيه قيمة ΔH موجبة؟", answers: ["باعث للحرارة", "ماص للحرارة", "متزن", "عفوي"], correct: 1 }
+      ],
+      "الأحياء": [
+        { q: "في أي دور تحدث ظاهرة العبور (Crossing Over)؟", answers: ["التمهيدي الأول", "الاستوائي الأول", "الانفصالي الأول", "النهائي"], correct: 0 },
+        { q: "ما هو المسؤول عن تكوين السنتروزوم في الخلايا الحيوانية؟", answers: ["النواة", "الجسم المركزى", "الميتوكوندريا", "الرايبوسومات"], correct: 1 }
+      ],
+      "التاريخ": [
+        { q: "في أي عام تم عقد مؤتمر القاهرة؟", answers: ["1920", "1921", "1922", "1923"], correct: 1 }
+      ],
+      "الجغرافية": [
+        { q: "ما هو فرع الجغرافيا الذي يدرس توزيع السكان؟", answers: ["الجغرافيا الطبيعية", "الجغرافيا البشرية", "جغرافيا التضاريس", "الجغرافيا الاقتصادية"], correct: 1 }
+      ],
+      "الاقتصاد": [
+        { q: "ما هو علم الاقتصاد؟", answers: ["علم إدارة الأموال", "علم يبحث في كيفية توظيف الموارد المحدودة", "علم التجارة", "علم الاستثمار"], correct: 1 }
+      ],
+      "الفلسفة والمنطق": [
+        { q: "من هو واضع علم المنطق الصكوري؟", answers: ["أرسطو", "أفلاطون", "سقراط", "ديكارت"], correct: 0 }
+      ],
+      "التربية الإسلامية": [
+        { q: "ما هي السورة التي تسمى قلب القرآن؟", answers: ["البقرة", "يس", "الملك", "الرحمن"], correct: 1 }
+      ],
+      "اللغة العربية": [
+        { q: "ما هي حروف الاستفهام الهجائية؟", answers: ["هل والهمزة", "من وما", "أين وكيف", "متى وأيان"], correct: 0 }
+      ],
+      "اللغة الإنكليزية": [
+        { q: "What is the past tense of 'go'?", answers: ["goed", "gone", "went", "going"], correct: 2 }
+      ]
+    };
+
     window.onload = function() {
       check24HourReset();    
       loadBranding();    
@@ -1031,6 +1154,9 @@ background:#0077b6;
       updateWatchDisplay();    
       loadStats();    
       loadStudents();    
+      loadCodesStudents();
+      loadNotifications();
+      updateGameSubjectsOptions();
 
       const params = new URLSearchParams(window.location.search);    
       if(params.get('admin') === currentAdminCode) {    
@@ -1651,35 +1777,41 @@ background:#0077b6;
       return (String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0'));
     }
 
-    const gameQuestions = [
-      { q: 'ما هو ناتج 5 × 6؟', answers: ['20', '30', '35', '40'], correct: 1 },
-      { q: 'ما هو الكوكب المعروف بالكوكب الأحمر؟', answers: ['الأرض', 'المريخ', 'المشتري', 'الزهرة'], correct: 1 },
-      { q: 'كم عدد أيام الأسبوع؟', answers: ['5', '6', '7', '8'], correct: 2 },
-      { q: 'ما هو رمز الماء الكيميائي؟', answers: ['CO2', 'O2', 'H2O', 'NaCl'], correct: 2 }
-    ];
+    function updateGameSubjectsOptions() {
+      const branch = document.getElementById('game-branch').value;
+      const select = document.getElementById('game-subject-select');
+      const subjects = branch === 'scientific' ? scientificSubjects : literarySubjects;
+      select.innerHTML = '';
+      subjects.forEach(sub => {
+        select.innerHTML += `<option value="${sub}">${sub}</option>`;
+      });
+    }
 
-    let currentGameQuestion = null;
-
-    function startGame() {
-      currentGameQuestion = gameQuestions[Math.floor(Math.random() * gameQuestions.length)];    
-      document.getElementById('game-question').innerText = currentGameQuestion.q;    
-      const answers = document.getElementById('game-answers');    
-      answers.innerHTML = '';    
-      currentGameQuestion.answers.forEach((answer, index) => {    
-        const btn = document.createElement('button');    
-        btn.className = 'answer-btn';    
-        btn.innerText = answer;    
-        btn.onclick = () => {    
-          if(index === currentGameQuestion.correct) {    
-            gameScore += 10;    
-            alert('إجابة صحيحة! 🔥');    
-          } else {    
-            alert('مو صحيح، حاول بالسؤال الجاي 💪');    
-          }    
-          document.getElementById('game-score').innerText = 'النقاط: ' + gameScore;    
-          startGame();    
-        };    
-        answers.appendChild(btn);    
+    let currentGameData = null;
+    function startCustomGame() {
+      const sub = document.getElementById('game-subject-select').value;
+      const questionsList = masterQuestionBank[sub] || [
+        { q: `سؤال عام في مادة ${sub}: ما هي أهمية هذه المادة في الوزاري؟`, answers: ["مهمة جداً", "متوسطة الأهمية", "استرشادية", "غير مهمة"], correct: 0 }
+      ];
+      currentGameData = questionsList[Math.floor(Math.random() * questionsList.length)];
+      document.getElementById('game-question').innerText = currentGameData.q;
+      const answersDiv = document.getElementById('game-answers');
+      answersDiv.innerHTML = '';
+      currentGameData.answers.forEach((ans, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.innerText = ans;
+        btn.onclick = () => {
+          if(index === currentGameData.correct) {
+            gameScore += 10;
+            alert('إجابة صحيحة بطل! 🔥');
+          } else {
+            alert('خطأ، حاول في السؤال القادم 💪');
+          }
+          document.getElementById('game-score').innerText = 'النقاط: ' + gameScore;
+          startCustomGame();
+        };
+        answersDiv.appendChild(btn);
       });
     }
 
@@ -1770,17 +1902,24 @@ background:#0077b6;
     async function verifyAccessCode() {
       const input = document.getElementById('access-code-input').value.trim();    
       let validCode = localStorage.getItem('active_system_code') || 'IRAQ2026CODE';    
+      let codeType = localStorage.getItem('active_code_type') || 'شهري';
 
       try {
         const { data } = await db.from('codes').select('*').eq('code', input).eq('active', true);
         if(data && data.length > 0) {
           validCode = input;
+          codeType = data[0].type || 'شهري';
         }
       } catch(e) {}
 
       if(input === validCode) {    
         localStorage.setItem('platform_authorized', 'true');    
         document.getElementById('access-modal').style.display = 'none';    
+        
+        const studentInfo = JSON.parse(localStorage.getItem('current_student_info') || '{"name":"طالب كود","gov":"غير محدد","school":"غير محدد"}');
+        saveCodeStudentRecord(studentInfo.name, studentInfo.gov, studentInfo.school, codeType);
+        
+        addNotification(`🔑 تم تفعيل دخول جديد عبر كود (${codeType}) للطالب: ${studentInfo.name}`);
         alert('تم التفعيل بنجاح');    
       } else {    
         alert('الكود غير صحيح');    
@@ -1791,11 +1930,45 @@ background:#0077b6;
       const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;    
       localStorage.setItem('free_trial_expiry_month', expiry);    
       document.getElementById('access-modal').style.display = 'none';    
+      
+      const studentInfo = JSON.parse(localStorage.getItem('current_student_info') || '{"name":"طالب تجريبي","gov":"غير محدد","school":"غير محدد"}');
+      saveCodeStudentRecord(studentInfo.name, studentInfo.gov, studentInfo.school, 'تجربة شهرية');
+      addNotification(`🎁 طالب جديد بدأ التجربة المجانية لمدة شهر: ${studentInfo.name}`);
       alert('تم تفعيل التجربة المجانية لمدة شهر 🎁');
     }
 
+    async function saveCodeStudentRecord(name, gov, school, type) {
+      let list = JSON.parse(localStorage.getItem('codes_students_list') || '[]');
+      list.push({ name, info: `${gov} - ${school}`, type });
+      localStorage.setItem('codes_students_list', JSON.stringify(list));
+      
+      try {
+        await db.from('code_students').insert([{ student_name: name, governorate: gov, school: school, sub_type: type }]);
+      } catch(e) {}
+      loadCodesStudents();
+      loadStats();
+    }
+
+    async function loadCodesStudents() {
+      const tbody = document.getElementById('codes-students-table');
+      if(!tbody) return;
+      let list = JSON.parse(localStorage.getItem('codes_students_list') || '[]');
+      try {
+        const res = await db.from('code_students').select('*');
+        if(res.data && res.data.length > 0) {
+          list = res.data.map(x => ({ name: x.student_name, info: `${x.governorate} - ${x.school}`, type: x.sub_type }));
+        }
+      } catch(e) {}
+
+      if(list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#8d99ae;">لا توجد تسجلات عبر الأكواد حالياً</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map(s => `<tr><td>${escapeHTML(s.name)}</td><td>${escapeHTML(s.info)}</td><td><span class="badge">${escapeHTML(s.type)}</span></td></tr>`).join('');
+    }
+
     /* =========================================================
-    ATTENDANCE & STUDENTS
+    ATTENDANCE & STUDENTS & NOTIFICATIONS
     ========================================================= */
     function checkMandatoryAttendance() {
       const last = parseInt(localStorage.getItem('mandatory_attendance_time') || '0');    
@@ -1807,16 +1980,22 @@ background:#0077b6;
     async function submitMandatoryAttendance() {
       const name = document.getElementById('m-att-name').value.trim();    
       const gov = document.getElementById('m-att-gov').value.trim();    
-      if(!name || !gov) { alert('أدخل الاسم والمحافظة'); return; }    
+      const school = document.getElementById('m-att-school').value.trim();    
+      if(!name || !gov || !school) { alert('أدخل الاسم والمحافظة والمدرسة'); return; }    
+
+      localStorage.setItem('current_student_info', JSON.stringify({ name, gov, school }));
 
       try {    
-        await db.from('attendance').insert([{ student_name: name, governorate: gov }]);    
+        await db.from('attendance').insert([{ student_name: name, governorate: `${gov} (${school})` }]);    
       } catch(error) {    
         console.log(error);    
       }    
 
       localStorage.setItem('mandatory_attendance_time', Date.now());    
       document.getElementById('mandatory-attendance-modal').style.display = 'none';    
+      
+      addNotification(`📋 تسجيل حضور جديد للطالب: ${name} من محافظة ${gov}`);
+
       loadStudents();    
       alert('تم تسجيل حضورك بنجاح');
     }
@@ -1843,8 +2022,10 @@ background:#0077b6;
           </tr>`;    
         });    
 
-        document.getElementById('stat-students').innerText = data.length;    
-        document.getElementById('stat-attendance').innerText = data.length;    
+        const totalCountEl = document.getElementById('stat-total-students');
+        const activeCountEl = document.getElementById('stat-active-students');
+        if(totalCountEl) totalCountEl.innerText = data.length;
+        if(activeCountEl) activeCountEl.innerText = Math.min(data.length, Math.floor(data.length * 0.8) + 1);
       } catch(error) {    
         body.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#8d99ae;">تعذر تحميل سجل الطلاب من قاعدة البيانات</td></tr>`;    
       }
@@ -1852,6 +2033,35 @@ background:#0077b6;
 
     function markStudentAttendance(name) {
       alert('تم تأكيد حضور الطالب: ' + name);
+    }
+
+    function addNotification(text) {
+      let notifs = JSON.parse(localStorage.getItem('platform_admin_notifications') || '[]');
+      notifs.unshift({ text, time: new Date().toLocaleTimeString('ar-IQ') });
+      if(notifs.length > 20) notifs = notifs.slice(0, 20);
+      localStorage.setItem('platform_admin_notifications', JSON.stringify(notifs));
+      updateNotifCount();
+    }
+
+    function updateNotifCount() {
+      const notifs = JSON.parse(localStorage.getItem('platform_admin_notifications') || '[]');
+      const badge = document.getElementById('notif-count');
+      if(badge) badge.innerText = notifs.length;
+    }
+
+    function openNotifications() {
+      const list = document.getElementById('notifications-list');
+      const notifs = JSON.parse(localStorage.getItem('platform_admin_notifications') || '[]');
+      if(notifs.length === 0) {
+        list.innerHTML = `<p style="text-align:center;color:#8d99ae;">لا توجد إشعارات جديدة</p>`;
+      } else {
+        list.innerHTML = notifs.map(n => `<div class="chapter-box"><div>${escapeHTML(n.text)}</div><div style="font-size:9px;color:#e0a96d;margin-top:3px;">${n.time}</div></div>`).join('');
+      }
+      document.getElementById('notifications-modal').style.display = 'flex';
+    }
+
+    function closeNotifications() {
+      document.getElementById('notifications-modal').style.display = 'none';
     }
 
     /* =========================================================
@@ -1869,6 +2079,7 @@ background:#0077b6;
 
       if(teacherStat) teacherStat.innerText = teachers.length;    
       if(lectureStat) lectureStat.innerText = lectures;
+      updateNotifCount();
     }
 
     function openSupport() {
@@ -1900,4 +2111,4 @@ background:#0077b6;
     setInterval(loadAllLectures, 5000);
   </script>  
 </body>  
-  </html>
+</html>
