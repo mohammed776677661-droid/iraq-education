@@ -52,6 +52,36 @@ align-items:center;
 min-height:100vh;
 }
 
+/* شاشة التحميل والترحيب (Splash Screen) */
+#splash-screen{
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,#0b132b,#1c2541);
+z-index:99999;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+transition:opacity 0.5s ease;
+}
+
+#splash-screen img{
+width:90px;
+height:90px;
+border-radius:50%;
+border:3px solid #e0a96d;
+margin-bottom:15px;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.08);}
+100%{transform:scale(1);}
+}
+
 .app-container{
 width:100%;
 max-width:430px;
@@ -648,6 +678,13 @@ background:#0077b6;
 </head>  
 <body>  
 
+  <!-- ================= شاشة الترحيب والتحميل (5 ثواني) ================= -->
+  <div id="splash-screen">
+    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%231c2541'/><path d='M30 65 Q50 45 50 75 Q50 45 70 65' fill='%23e0a96d'/><polygon points='50,25 75,38 50,50 25,38' fill='%230077b6'/></svg>">
+    <h2 style="color:#e0a96d;margin-bottom:8px;">منصة العراق التعليمية</h2>
+    <p style="font-size:12px;color:#a3cef1;">جاري تحميل المنصة وإعداد بيئة الدراسة...</p>
+  </div>
+
   <!-- ================= حضور إجباري ================= -->  
   <div id="mandatory-attendance-modal" class="modal-overlay" style="display:none;">  
     <div class="modal-box">
@@ -668,19 +705,19 @@ background:#0077b6;
     </div>  
   </div>  
 
-  <!-- ================= تفعيل المنصة ================= -->  
+  <!-- ================= تفعيل المنصة (كود أو تجربة 30 يوم) ================= -->  
   <div id="access-modal" class="modal-overlay" style="display:none;">  
     <div class="modal-box">    
       <h2><i class="fa-solid fa-key"></i> تفعيل المنصة</h2>    
       <p style="font-size:11px;color:#a3cef1;margin-bottom:12px;text-align:center;">    
-        أدخل كود التفعيل أو جرب المنصة مجاناً لمدة شهر.    
+        أدخل كود التفعيل الخاص بك أو استفد من عرض التجربة المجانية لمدة 30 يوماً.    
       </p>    
       <div class="form-group">    
-        <label>كود التفعيل</label>    
+        <label>كود التفعيل (شهري / سنوي)</label>    
         <input id="access-code-input" class="form-control" placeholder="أدخل كود التفعيل">    
       </div>    
-      <button class="btn-submit" onclick="verifyAccessCode()">تحقق ودخول</button>    
-      <button class="btn-submit btn-gold" style="margin-top:10px;" onclick="activateFreeTrialMonth()">🎁 تجربة مجانية لمدة شهر</button>
+      <button class="btn-submit" onclick="verifyAccessCode()">تحقق وتفعيل الكود</button>    
+      <button class="btn-submit btn-gold" style="margin-top:10px;" onclick="activateFreeTrialMonth()">🎁 تجربة المنصة مجاناً لمدة 30 يوماً</button>
     </div>  
   </div>  
 
@@ -721,7 +758,7 @@ background:#0077b6;
           <p>أهلاً بك في المنصة التعليمية</p>  
         </div>  
 
-        <!-- زر خاص بالمسؤولين في الواجهة الرئيسية -->
+        <!-- بوابة المسؤولين -->
         <div class="feature-card" style="border-color:#e63946;background:linear-gradient(135deg,#1c2541,#3a1c1c);" onclick="openAdminPanelDirect()">  
           <div class="feature-title"><i class="fa-solid fa-shield-halved" style="color:#e63946;"></i> بوابة المسؤولين والإدارة</div>  
           <div class="feature-desc">اضغط هنا للدخول المباشر إلى لوحة التحكم والإحصائيات</div>  
@@ -749,7 +786,7 @@ background:#0077b6;
         </div>  
         <div class="feature-card" onclick="switchTab('games')">  
           <div class="feature-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية</div>  
-          <div class="feature-desc">استراحة ممتعة مع ألعاب سؤال وجواب حسب المادة</div>  
+          <div class="feature-desc">تحدي الأسئلة والمسابقات حسب المادة الدراسية</div>  
         </div>  
         <div class="feature-card" onclick="switchTab('competition')">  
           <div class="feature-title"><i class="fa-solid fa-trophy" style="color:#ffd700;"></i> المسابقات والمتصدرين</div>  
@@ -884,9 +921,9 @@ background:#0077b6;
 
       <!-- ================= GAMES ================= -->  
       <div id="games" class="tab-panel">  
-        <div class="section-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية المحدثة</div>  
+        <div class="section-title"><i class="fa-solid fa-gamepad" style="color:#e0a96d;"></i> الألعاب التعليمية المتطورة</div>  
         <div class="game-card">  
-          <h3>تحدي الأسئلة الذكي 🎯</h3>  
+          <h3>تحدي الأسئلة الذكي (بدون تكرار) 🎯</h3>  
           <div class="form-group" style="text-align:right;margin-top:10px;">  
             <label>اختر الفرع الدراسي</label>  
             <select id="game-branch" class="form-control" onchange="updateGameSubjectsOptions()">  
@@ -896,11 +933,11 @@ background:#0077b6;
           </div>  
           <div class="form-group" style="text-align:right;">  
             <label>اختر المادة</label>  
-            <select id="game-subject-select" class="form-control"></select>  
+            <select id="game-subject-select" class="form-control" onchange="resetGameSession()"></select>  
           </div>  
           <p id="game-question" style="margin-top:10px;font-size:13px;font-weight:bold;color:#48cae4;">اختر المادة وابدأ التحدي</p>  
           <div id="game-answers"></div>  
-          <button class="btn-submit btn-gold" style="margin-top:12px;" onclick="startCustomGame()">ابدأ اللعبة بلا حدود</button>  
+          <button class="btn-submit btn-gold" style="margin-top:12px;" onclick="startCustomGame()">ابدأ / السؤال التالي</button>  
           <div id="game-score" style="margin-top:10px;color:#ffd700;font-weight:bold;">النقاط: 0</div>  
         </div>  
       </div>  
@@ -1110,47 +1147,58 @@ background:#0077b6;
 
     const masterQuestionBank = {
       "الرياضيات": [
-        { q: "ما قيمة العدد المركب (i)^2 ؟", answers: ["1", "-1", "i", "-i"], correct: 1 },
+        { q: "ما قيمة العدد المركب (i)^2 في الرياضيات؟", answers: ["1", "-1", "i", "-i"], correct: 1 },
         { q: "ما هي المشتقة الأولى للدالة f(x) = x^3 ؟", answers: ["3x", "3x^2", "x^2", "6x"], correct: 1 },
         { q: "ما هو تكامل الدالة cos(x) ؟", answers: ["-sin(x)", "sin(x)", "cos(x)", "-cos(x)"], correct: 1 }
       ],
       "الفيزياء": [
-        { q: "ما وحدة قياس الحث الذاتي؟", answers: ["فولت", "هنري", "فاراد", "تسلا"], correct: 1 },
-        { q: "في المتسعات، ما الغرض من وضع عازل كهربائي؟", answers: ["تقليل السعة", "زيادة السعة", "إنعدام المجال", "تثبيت الجهد"], correct: 1 },
-        { q: "ما وحدة قياس الفيض المغناطيسي؟", answers: ["ويبر", "تسلا", "أمبير", "جول"], correct: 0 }
+        { q: "ما وحدة قياس الحث الذاتي في النظام الدولي؟", answers: ["فولت", "هنري", "فاراد", "تسلا"], correct: 1 },
+        { q: "في المتسعات، ما الغرض الأساسي من إدخال عازل قطبي؟", answers: ["تقليل السعة", "زيادة سعة المتسعة", "منع التوصيل تماماً", "تثبيت الشحنة"], correct: 1 }
       ],
       "الكيمياء": [
-        { q: "ما وحدة الثابت كاي eq في الاتزان الكيميائي؟", answers: ["ثابت بدون وحدة", "مول/لتر", "لتر/مول", "جول"], correct: 0 },
-        { q: "ما نوع التفاعل الذي تكون فيه قيمة ΔH موجبة؟", answers: ["باعث للحرارة", "ماص للحرارة", "متزن", "عفوي"], correct: 1 }
+        { q: "ما وحدة الثابت كاي eq في الاتزان الكيميائي للتفاعلات الغازية؟", answers: ["ثابت بدون وحدة ثابتة", "مول/لتر", "لتر/مول", "جول/كلفن"], correct: 0 },
+        { q: "ما نوع التفاعل الكيميائي الذي تكون فيه قيمة ΔH موجبة؟", answers: ["باعث للحرارة", "ماص للحرارة", "متزن استاتيكياً", "تفاعل عفوي تام"], correct: 1 }
       ],
       "الأحياء": [
-        { q: "في أي دور تحدث ظاهرة العبور (Crossing Over)؟", answers: ["التمهيدي الأول", "الاستوائي الأول", "الانفصالي الأول", "النهائي"], correct: 0 },
-        { q: "ما هو المسؤول عن تكوين السنتروزوم في الخلايا الحيوانية؟", answers: ["النواة", "الجسم المركزى", "الميتوكوندريا", "الرايبوسومات"], correct: 1 }
+        { q: "في أي دور من الانقسام الاختزالي تحدث ظاهرة العبور (Crossing Over)؟", answers: ["التمهيدي الأول", "الاستوائي الأول", "الانفصالي الأول", "النهائي الثاني"], correct: 0 },
+        { q: "ما هو العضيو المسؤول عن التنفس الخلوي وإنتاج الطاقة في الخلية؟", answers: ["النواة", "الميتوكوندريا", "جهاز جولجي", "الرايبوسومات"], correct: 1 }
       ],
       "التاريخ": [
-        { q: "في أي عام تم عقد مؤتمر القاهرة؟", answers: ["1920", "1921", "1922", "1923"], correct: 1 }
+        { q: "في أي عام ميلادي تم عقد مؤتمر القاهرة في العراق؟", answers: ["1920", "1921", "1922", "1923"], correct: 1 }
       ],
       "الجغرافية": [
-        { q: "ما هو فرع الجغرافيا الذي يدرس توزيع السكان؟", answers: ["الجغرافيا الطبيعية", "الجغرافيا البشرية", "جغرافيا التضاريس", "الجغرافيا الاقتصادية"], correct: 1 }
+        { q: "ما هو فرع الجغرافيا الذي يدرس خصائص وتوزيع السكان؟", answers: ["الجغرافيا الطبيعية", "الجغرافيا البشرية", "جغرافيا التضاريس", "الجغرافيا الفلكية"], correct: 1 }
       ],
       "الاقتصاد": [
-        { q: "ما هو علم الاقتصاد؟", answers: ["علم إدارة الأموال", "علم يبحث في كيفية توظيف الموارد المحدودة", "علم التجارة", "علم الاستثمار"], correct: 1 }
+        { q: "ما هو التعريف الأدق لعلم الاقتصاد الحديث؟", answers: ["علم إدارة الأموال الفردية", "علم يبحث في كيفية توظيف الموارد المحدودة لتلبية الحاجات", "علم التجارة والأسواق", "علم الاستثمار المالي فقط"], correct: 1 }
       ],
       "الفلسفة والمنطق": [
-        { q: "من هو واضع علم المنطق الصكوري؟", answers: ["أرسطو", "أفلاطون", "سقراط", "ديكارت"], correct: 0 }
+        { q: "من هو الفيلسوف اليوناني الملقب بمعلم المنطق الأول؟", answers: ["أرسطو", "أفلاطون", "سقراط", "ديكارت"], correct: 0 }
       ],
       "التربية الإسلامية": [
-        { q: "ما هي السورة التي تسمى قلب القرآن؟", answers: ["البقرة", "يس", "الملك", "الرحمن"], correct: 1 }
+        { q: "ما هي السورة القرآنية الكريمة التي تسمى بقلب القرآن؟", answers: ["سورة البقرة", "سورة يس", "سورة الملك", "سورة الرحمن"], correct: 1 }
       ],
       "اللغة العربية": [
-        { q: "ما هي حروف الاستفهام الهجائية؟", answers: ["هل والهمزة", "من وما", "أين وكيف", "متى وأيان"], correct: 0 }
+        { q: "ما هي أ حروف الاستفهام الأساسية في اللغة العربية؟", answers: ["هل والهمزة", "من وما", "أين وكيف", "متى وأيان"], correct: 0 }
       ],
       "اللغة الإنكليزية": [
-        { q: "What is the past tense of 'go'?", answers: ["goed", "gone", "went", "going"], correct: 2 }
+        { q: "What is the past tense of the verb 'go'?", answers: ["goed", "gone", "went", "going"], correct: 2 }
       ]
     };
 
+    let activeGamePool = [];
+    let currentGameData = null;
+
     window.onload = function() {
+      // شاشة الترحيب لمدة 5 ثواني
+      setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        if(splash) {
+          splash.style.opacity = '0';
+          setTimeout(() => splash.remove(), 500);
+        }
+      }, 5000);
+
       check24HourReset();    
       loadBranding();    
       renderSubjects();    
@@ -1802,18 +1850,32 @@ background:#0077b6;
       subjects.forEach(sub => {
         select.innerHTML += `<option value="${sub}">${sub}</option>`;
       });
+      resetGameSession();
     }
 
-    let currentGameData = null;
-    function startCustomGame() {
+    function resetGameSession() {
       const sub = document.getElementById('game-subject-select').value;
-      const questionsList = masterQuestionBank[sub] || [
-        { q: `سؤال عام في مادة ${sub}: ما هي أهمية هذه المادة في الوزاري؟`, answers: ["مهمة جداً", "متوسطة الأهمية", "استرشادية", "غير مهمة"], correct: 0 }
+      const originalList = masterQuestionBank[sub] || [
+        { q: `سؤال تدريبي عام في مادة ${sub}: هل أنت مستعد للامتحان الوزاري؟`, answers: ["نعم وبقوة", "قريب جداً", "أحتاج مراجعة", "كلا"], correct: 0 }
       ];
-      currentGameData = questionsList[Math.floor(Math.random() * questionsList.length)];
+      activeGamePool = [...originalList];
+      document.getElementById('game-question').innerText = "اضغط زر 'ابدأ / السؤال التالي' لبدء التحدي";
+      document.getElementById('game-answers').innerHTML = '';
+    }
+
+    function startCustomGame() {
+      if(activeGamePool.length === 0) {
+        resetGameSession();
+        alert('أتممت جميع أسئلة هذه المادة بنجاح! تم إعادة تعقيم وتدوير الأسئلة لك مرة أخرى.');
+      }
+      
+      const randomIndex = Math.floor(Math.random() * activeGamePool.length);
+      currentGameData = activeGamePool.splice(randomIndex, 1)[0];
+
       document.getElementById('game-question').innerText = currentGameData.q;
       const answersDiv = document.getElementById('game-answers');
       answersDiv.innerHTML = '';
+      
       currentGameData.answers.forEach((ans, index) => {
         const btn = document.createElement('button');
         btn.className = 'answer-btn';
@@ -1823,7 +1885,7 @@ background:#0077b6;
             gameScore += 10;
             alert('إجابة صحيحة بطل! 🔥');
           } else {
-            alert('خطأ، حاول في السؤال القادم 💪');
+            alert('إجابة خاطئة، حاول في السؤال القادم 💪');
           }
           document.getElementById('game-score').innerText = 'النقاط: ' + gameScore;
           startCustomGame();
@@ -1945,13 +2007,14 @@ background:#0077b6;
 
     function activateFreeTrialMonth() {
       const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;    
+      localStorage.setItem('platform_authorized', 'true');
       localStorage.setItem('free_trial_expiry_month', expiry);    
       document.getElementById('access-modal').style.display = 'none';    
       
       const studentInfo = JSON.parse(localStorage.getItem('current_student_info') || '{"name":"طالب تجريبي","gov":"غير محدد","school":"غير محدد"}');
-      saveCodeStudentRecord(studentInfo.name, studentInfo.gov, studentInfo.school, 'تجربة شهرية');
-      addNotification(`🎁 طالب جديد بدأ التجربة المجانية لمدة شهر: ${studentInfo.name}`);
-      alert('تم تفعيل التجربة المجانية لمدة شهر 🎁');
+      saveCodeStudentRecord(studentInfo.name, studentInfo.gov, studentInfo.school, 'تجربة 30 يوم');
+      addNotification(`🎁 طالب جديد بدأ التجربة المجانية لمدة 30 يوماً: ${studentInfo.name}`);
+      alert('تم تفعيل التجربة المجانية لمدة 30 يوماً بنجاح 🎁');
     }
 
     async function saveCodeStudentRecord(name, gov, school, type) {
