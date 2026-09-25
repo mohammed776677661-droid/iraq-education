@@ -1,315 +1,533 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
 
-<title>منصة العراق التعليمية</title>
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0f172a">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>منصة العراق التعليمية</title>
 
-<style>
+    <meta name="description"
+          content="منصة العراق التعليمية - دروس، ملازم، اختبارات، تصحيح ومتابعة للطلاب العراقيين">
 
-:root{
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --accent:#f59e0b;
-    --bg:#f5f7fb;
-    --card:#ffffff;
-    --text:#172033;
-    --muted:#6b7280;
-    --line:#e7eaf0;
-    --success:#16a34a;
-    --danger:#dc2626;
-    --shadow:0 10px 30px rgba(23,32,51,.07);
-    --radius:20px;
-}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-*{
-    box-sizing:border-box;
-}
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-html{
-    scroll-behavior:smooth;
-}
+<body>
 
-body{
-    margin:0;
-    font-family:"Cairo",sans-serif;
-    background:var(--bg);
-    color:var(--text);
-}
+<!-- ================= HEADER ================= -->
 
-button,
-input,
-select,
-textarea{
-    font:inherit;
-}
+<header class="top-header">
 
-button{
-    cursor:pointer;
-}
+    <div class="header-right">
 
-a{
-    text-decoration:none;
-    color:inherit;
-}
+        <button class="menu-btn" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
 
-/* HEADER */
+        <div class="brand">
 
-.topbar{
-    position:sticky;
-    top:0;
-    z-index:50;
-    background:rgba(255,255,255,.94);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
-    min-height:74px;
-    display:flex;
-    align-items:center;
-}
+            <div class="brand-logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
 
-.topbar-inner{
-    width:min(1450px,94%);
-    margin:auto;
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
+            <div>
+                <h1>منصة العراق</h1>
+                <span>التعليمية</span>
+            </div>
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:800;
-    font-size:20px;
-    white-space:nowrap;
-}
+        </div>
 
-.brand-mark{
-    width:42px;
-    height:42px;
-    border-radius:13px;
-    display:grid;
-    place-items:center;
-    color:#fff;
-    background:linear-gradient(135deg,var(--primary),#60a5fa);
-    box-shadow:0 8px 18px rgba(37,99,235,.25);
-}
+    </div>
 
-.brand small{
-    display:block;
-    color:var(--muted);
-    font-size:10px;
-    font-weight:600;
-}
 
-.search{
-    flex:1;
-    max-width:560px;
-    margin:auto;
-    position:relative;
-}
+    <div class="header-search">
 
-.search input{
-    width:100%;
-    height:46px;
-    border:1px solid var(--line);
-    outline:none;
-    background:#f8fafc;
-    border-radius:14px;
-    padding:0 46px 0 16px;
-}
+        <i class="fa-solid fa-magnifying-glass"></i>
 
-.search i{
-    position:absolute;
-    right:17px;
-    top:14px;
-    color:#94a3b8;
-}
+        <input
+            type="text"
+            id="globalSearch"
+            placeholder="ابحث عن درس، أستاذ، ملزمة، مادة..."
+            onkeyup="globalSearch()">
 
-.header-actions{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+    </div>
 
-.icon-btn,
-.avatar{
-    width:42px;
-    height:42px;
-    border-radius:13px;
-    border:1px solid var(--line);
-    background:#fff;
-    display:grid;
-    place-items:center;
-    color:#46526a;
-}
 
-.avatar{
-    background:#dbeafe;
-    border-color:#bfdbfe;
-    color:#1d4ed8;
-    font-weight:800;
-}
+    <div class="header-left">
 
-/* LAYOUT */
+        <button class="header-icon"
+                onclick="showNotifications()">
 
-.layout{
-    width:min(1450px,94%);
-    margin:22px auto;
-    display:grid;
-    grid-template-columns:260px 1fr;
-    gap:22px;
-}
+            <i class="fa-regular fa-bell"></i>
 
-.sidebar{
-    background:#0f172a;
-    color:#fff;
-    border-radius:24px;
-    padding:20px;
-    min-height:calc(100vh - 118px);
-    position:sticky;
-    top:96px;
-    box-shadow:var(--shadow);
-}
+            <span class="notification-dot"></span>
 
-.sidebar-inner{
-    display:flex;
-    flex-direction:column;
-    height:100%;
-}
+        </button>
 
-.side-title{
-    font-size:12px;
-    color:#94a3b8;
-    margin:18px 8px 10px;
-}
 
-.nav-item{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:13px 12px;
-    border-radius:13px;
-    color:#cbd5e1;
-    transition:.2s;
-    margin-bottom:5px;
-}
+        <button class="header-profile"
+                onclick="openProfile()">
 
-.nav-item:hover,
-.nav-item.active{
-    background:#1e293b;
-    color:#fff;
-}
+            <div class="avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
 
-.nav-item.active{
-    box-shadow:inset -3px 0 0 #60a5fa;
-}
+            <span id="headerStudentName">
+                الطالب
+            </span>
 
-.nav-item i{
-    width:20px;
-    text-align:center;
-}
+        </button>
 
-.side-bottom{
-    margin-top:auto;
-}
+    </div>
 
-.main{
-    min-width:0;
-}
+</header>
 
-/* HERO */
 
-.hero{
-    background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#60a5fa);
-    color:#fff;
-    border-radius:24px;
-    padding:30px;
-    display:grid;
-    grid-template-columns:1.4fr .9fr;
-    gap:20px;
-    overflow:hidden;
-    position:relative;
-    box-shadow:0 18px 36px rgba(37,99,235,.18);
-}
+<!-- ================= SIDEBAR ================= -->
 
-.hero h1{
-    font-size:32px;
-    line-height:1.4;
-    margin:0 0 8px;
-    position:relative;
-    z-index:1;
-}
+<aside id="sidebar" class="sidebar">
 
-.hero p{
-    color:#dbeafe;
-    margin:0 0 20px;
-    max-width:700px;
-    position:relative;
-    z-index:1;
-}
+    <div class="sidebar-user">
 
-.hero-actions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-}
+        <div class="large-avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
 
-.hero-card{
-    background:rgba(255,255,255,.12);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:20px;
-    padding:20px;
-    backdrop-filter:blur(10px);
-}
+        <div>
 
-.hero-card-title{
-    font-weight:700;
-    margin-bottom:14px;
-}
+            <strong id="sidebarStudentName">
+                الطالب
+            </strong>
 
-.progress{
-    height:9px;
-    border-radius:20px;
-    background:#e5e7eb;
-    overflow:hidden;
-}
+            <small id="sidebarStage">
+                اختر مرحلتك الدراسية
+            </small>
 
-.progress > span{
-    display:block;
-    height:100%;
-    background:var(--primary);
-    border-radius:20px;
-}
+        </div>
 
-.hero-card .progress{
-    background:rgba(255,255,255,.22);
-}
+    </div>
 
-.hero-card .progress > span{
-    background:#fff;
-}
 
-.hero-stat{
-    display:flex;
-    justify-content:space-between;
-    font-size:12px;
-    color:#dbeafe;
-    margin-top:9px;
-}
+    <nav>
 
-/* BUTTONS */
+        <div class="nav-title">
+            الرئيسية
+        </div>
 
-.btn{
-    border:0;
-    border-radius:13px;
-    padding:11px 17px;
-    font-weight:
+        <a href="#" class="nav-item active"
+           onclick="showPage('home')">
+
+            <i class="fa-solid fa-house"></i>
+            الرئيسية
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('stages')">
+
+            <i class="fa-solid fa-layer-group"></i>
+            المراحل الدراسية
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('subjects')">
+
+            <i class="fa-solid fa-book"></i>
+            المواد الدراسية
+
+        </a>
+
+
+        <div class="nav-title">
+            التعليم
+        </div>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('teachers')">
+
+            <i class="fa-solid fa-chalkboard-user"></i>
+            الأساتذة
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('lessons')">
+
+            <i class="fa-solid fa-video"></i>
+            الدروس
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('notes')">
+
+            <i class="fa-solid fa-file-pdf"></i>
+            الملازم والكتب
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('tests')">
+
+            <i class="fa-solid fa-clipboard-check"></i>
+            الاختبارات
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('correction')">
+
+            <i class="fa-solid fa-user-check"></i>
+            التصحيح
+
+        </a>
+
+
+        <div class="nav-title">
+            حسابي
+        </div>
+
+
+        <a href="#" class="nav-item"
+           onclick="showPage('progress')">
+
+            <i class="fa-solid fa-chart-line"></i>
+            تقدمي الدراسي
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="openProfile()">
+
+            <i class="fa-solid fa-user"></i>
+            الملف الشخصي
+
+        </a>
+
+
+        <a href="#" class="nav-item"
+           onclick="logout()">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+            تسجيل الخروج
+
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main id="mainContent" class="main-content">
+
+
+<!-- ================= HOME ================= -->
+
+<section id="page-home" class="page active">
+
+    <div class="welcome-section">
+
+        <div>
+
+            <span class="welcome-small">
+                أهلاً بك في
+            </span>
+
+            <h2>
+                منصة العراق التعليمية
+            </h2>
+
+            <p>
+                كل ما تحتاجه لتطوير مستواك الدراسي
+                في مكان واحد.
+            </p>
+
+        </div>
+
+        <div class="welcome-icon">
+            🎓
+        </div>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-book"></i>
+            </div>
+
+            <div>
+
+                <span>الدروس</span>
+
+                <strong id="lessonsCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+                <i class="fa-solid fa-file-pdf"></i>
+            </div>
+
+            <div>
+
+                <span>الملازم</span>
+
+                <strong id="notesCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+
+            <div>
+
+                <span>الاختبارات</span>
+
+                <strong id="testsCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+                <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+
+            <div>
+
+                <span>الأساتذة</span>
+
+                <strong id="teachersCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STAGE SELECTOR -->
+
+    <div class="section-header">
+
+        <div>
+
+            <h3>
+                اختر مرحلتك الدراسية
+            </h3>
+
+            <p>
+                للوصول إلى المحتوى المناسب لك
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="stageGrid"
+         class="stage-grid">
+
+    </div>
+
+
+    <!-- QUICK ACCESS -->
+
+    <div class="section-header">
+
+        <div>
+
+            <h3>
+                الوصول السريع
+            </h3>
+
+        </div>
+
+    </div>
+
+
+    <div class="quick-grid">
+
+        <button onclick="showPage('notes')">
+
+            <i class="fa-solid fa-file-pdf"></i>
+
+            <span>
+                الملازم
+            </span>
+
+        </button>
+
+
+        <button onclick="showPage('tests')">
+
+            <i class="fa-solid fa-pen-to-square"></i>
+
+            <span>
+                الاختبارات
+            </span>
+
+        </button>
+
+
+        <button onclick="showPage('correction')">
+
+            <i class="fa-solid fa-check-double"></i>
+
+            <span>
+                التصحيح
+            </span>
+
+        </button>
+
+
+        <button onclick="showPage('teachers')">
+
+            <i class="fa-solid fa-users"></i>
+
+            <span>
+                الأساتذة
+            </span>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STAGES ================= -->
+
+<section id="page-stages" class="page">
+
+    <div class="page-title">
+
+        <h2>
+            المراحل الدراسية
+        </h2>
+
+        <p>
+            اختر المرحلة للوصول إلى جميع موادها
+        </p>
+
+    </div>
+
+
+    <div id="allStages"
+         class="stage-list">
+
+    </div>
+
+</section>
+
+
+<!-- ================= SUBJECTS ================= -->
+
+<section id="page-subjects" class="page">
+
+    <div class="page-title">
+
+        <h2>
+            المواد الدراسية
+        </h2>
+
+        <p>
+            المواد حسب المرحلة الدراسية
+        </p>
+
+    </div>
+
+
+    <div class="filter-box">
+
+        <select id="subjectStageFilter"
+                onchange="renderSubjects()">
+
+            <option value="">
+                كل المراحل
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div id="subjectsContainer"
+         class="cards-grid">
+
+    </div>
+
+</section>
+
+
+<!-- ================= TEACHERS ================= -->
+
+<section id="page-teachers" class="page">
+
+    <div class="page-title">
+
+        <h2>
+            الأساتذة
+        </h2>
+
+        <p>
+            نخبة من المدرسين والمختصين
+        </p>
+
+    </div>
+
+
+    <div class="teacher-search">
+
+        <i class="fa-solid fa-search"></i>
+
+        <input
+            id
