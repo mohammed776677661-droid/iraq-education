@@ -1,533 +1,196 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
+'use client';
+import React, { useState } from 'react';
 
-    <meta name="viewport"
-          content="width=device-width,
-                   initial-scale=1.0,
-                   maximum-scale=1.0,
-                   user-scalable=no">
+export default function IraqEduPlatform() {
+  const [currentView, setCurrentView] = useState('home'); // للتحكم بالانتقال بين (الرئيسية، تسجيل الدخول، المراحل)
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
 
-    <meta name="theme-color" content="#0f172a">
+  // بيانات المراحل الدراسية
+  const stages = [
+    { id: 1, name: "السادس الإعدادي (علمي/أدبي)", icon: "📚", coursesCount: "45+ دورة متكاملة" },
+    { id: 2, name: "الثالث المتوسط", icon: "📖", coursesCount: "30+ دورة وزارية" },
+    { id: 3, name: "السادس الابتدائي", icon: "✏️", coursesCount: "20+ دورة تأسيسية" },
+  ];
 
-    <title>منصة العراق التعليمية</title>
+  // بيانات الأساتذة
+  const teachers = [
+    { id: 1, name: "أستاذ الرياضيات", subject: "الرياضيات", rating: "4.9", image: "👨‍🏫" },
+    { id: 2, name: "أستاذ الكيمياء", subject: "الكيمياء", rating: "4.8", image: "🧪" },
+    { id: 3, name: "أستاذ الفيزياء", subject: "الفيزياء", rating: "5.0", image: "⚡" },
+  ];
 
-    <meta name="description"
-          content="منصة العراق التعليمية - دروس، ملازم، اختبارات، تصحيح ومتابعة للطلاب العراقيين">
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    alert(`تم محاولة تسجيل الدخول برقم الهاتف: ${phone}`);
+  };
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  return (
+    <div className="min-h-screen bg-gray-50 text-right font-sans" dir="rtl">
+      
+      {/* ================= الشريط العلوي (Navbar) ================= */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentView('home')}>
+            <span className="text-2xl font-bold text-blue-600">🎓 منصة العراق التعليمية</span>
+          </div>
+          <nav className="hidden md:flex gap-6 text-gray-600 font-medium">
+            <button onClick={() => setCurrentView('home')} className="hover:text-blue-600 transition">الرئيسية</button>
+            <button onClick={() => setCurrentView('stages')} className="hover:text-blue-600 transition">المراحل الدراسية</button>
+            <button onClick={() => setCurrentView('home')} className="hover:text-blue-600 transition">الأساتذة</button>
+            <button onClick={() => setCurrentView('home')} className="hover:text-blue-600 transition">المكتبة الوزارية</button>
+          </nav>
+          <div className="flex gap-3">
+            <button 
+              onClick={() => setCurrentView('login')}
+              className="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
+              تسجيل الدخول
+            </button>
+            <button 
+              onClick={() => setCurrentView('login')}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              حساب جديد
+            </button>
+          </div>
+        </div>
+      </header>
 
-    <link rel="stylesheet" href="css/style.css">
-</head>
+      {/* ================= عرض الواجهة حسب اختيار المستخدم ================= */}
 
-<body>
-
-<!-- ================= HEADER ================= -->
-
-<header class="top-header">
-
-    <div class="header-right">
-
-        <button class="menu-btn" onclick="toggleSidebar()">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="brand">
-
-            <div class="brand-logo">
-                <i class="fa-solid fa-graduation-cap"></i>
+      {/* 1. صفحة تسجيل الدخول */}
+      {currentView === 'login' && (
+        <section className="py-20 flex justify-center items-center px-4">
+          <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md border border-gray-100">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">تسجيل الدخول إلى المنصة</h2>
+              <p className="text-gray-500 text-sm mt-1">أدخل رقم الهاتف وكلمة المرور لمتابعة دروسك</p>
             </div>
-
-            <div>
-                <h1>منصة العراق</h1>
-                <span>التعليمية</span>
+            <form onSubmit={handleLoginSubmit} className="space-y-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-bold mb-2">رقم الهاتف</label>
+                <input 
+                  type="text" 
+                  value={phone} 
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="07xxxxxxxxx" 
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-600 text-left"
+                  dir="ltr"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-bold mb-2">كلمة المرور</label>
+                <input 
+                  type="password" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••" 
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-600"
+                  required
+                />
+              </div>
+              <button 
+                type="submit" 
+                className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-md">
+                دخول
+              </button>
+            </form>
+            <div className="text-center mt-4">
+              <button onClick={() => setCurrentView('home')} className="text-sm text-blue-600 hover:underline">
+                العودة إلى الصفحة الرئيسية
+              </button>
             </div>
+          </div>
+        </section>
+      )}
 
-        </div>
+      {/* 2. صفحة المراحل الدراسية */}
+      {currentView === 'stages' && (
+        <section className="max-w-7xl mx-auto px-4 py-16">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800">كافة المراحل الدراسية</h2>
+            <button onClick={() => setCurrentView('home')} className="text-blue-600 font-medium hover:underline">← رجوع للرئيسية</button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {stages.map((stage) => (
+              <div key={stage.id} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition text-center">
+                <div className="text-6xl mb-4">{stage.icon}</div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">{stage.name}</h3>
+                <p className="text-gray-500 mb-6">{stage.coursesCount}</p>
+                <button className="w-full py-2 bg-blue-50 text-blue-600 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">
+                  تصفح الدورات
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
-    </div>
-
-
-    <div class="header-search">
-
-        <i class="fa-solid fa-magnifying-glass"></i>
-
-        <input
-            type="text"
-            id="globalSearch"
-            placeholder="ابحث عن درس، أستاذ، ملزمة، مادة..."
-            onkeyup="globalSearch()">
-
-    </div>
-
-
-    <div class="header-left">
-
-        <button class="header-icon"
-                onclick="showNotifications()">
-
-            <i class="fa-regular fa-bell"></i>
-
-            <span class="notification-dot"></span>
-
-        </button>
-
-
-        <button class="header-profile"
-                onclick="openProfile()">
-
-            <div class="avatar">
-                <i class="fa-solid fa-user"></i>
+      {/* 3. الصفحة الرئيسية الافتراضية */}
+      {currentView === 'home' && (
+        <>
+          {/* قسم الترحيب */}
+          <section className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-20">
+            <div className="max-w-7xl mx-auto px-4 text-center">
+              <h1 className="text-4xl md:text-5xl font-extrabold mb-4">طريقك نحو التفوق والامتحانات الوزارية</h1>
+              <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                تعلم مع نخبة من أفضل أساتذة العراق، محاضرات تفاعلية، اختبارات ذكية، ومتابعة مستمرة لدرجاتك.
+              </p>
+              <div className="flex justify-center gap-4">
+                <button 
+                  onClick={() => setCurrentView('stages')}
+                  className="bg-amber-400 text-gray-900 font-bold px-8 py-3 rounded-xl shadow-lg hover:bg-amber-300 transition">
+                  تصفح المراحل الدراسية
+                </button>
+              </div>
             </div>
-
-            <span id="headerStudentName">
-                الطالب
-            </span>
-
-        </button>
-
-    </div>
-
-</header>
-
-
-<!-- ================= SIDEBAR ================= -->
-
-<aside id="sidebar" class="sidebar">
-
-    <div class="sidebar-user">
-
-        <div class="large-avatar">
-            <i class="fa-solid fa-user"></i>
-        </div>
-
-        <div>
-
-            <strong id="sidebarStudentName">
-                الطالب
-            </strong>
-
-            <small id="sidebarStage">
-                اختر مرحلتك الدراسية
-            </small>
-
-        </div>
-
-    </div>
-
-
-    <nav>
-
-        <div class="nav-title">
-            الرئيسية
-        </div>
-
-        <a href="#" class="nav-item active"
-           onclick="showPage('home')">
-
-            <i class="fa-solid fa-house"></i>
-            الرئيسية
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('stages')">
-
-            <i class="fa-solid fa-layer-group"></i>
-            المراحل الدراسية
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('subjects')">
-
-            <i class="fa-solid fa-book"></i>
-            المواد الدراسية
-
-        </a>
-
-
-        <div class="nav-title">
-            التعليم
-        </div>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('teachers')">
-
-            <i class="fa-solid fa-chalkboard-user"></i>
-            الأساتذة
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('lessons')">
-
-            <i class="fa-solid fa-video"></i>
-            الدروس
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('notes')">
-
-            <i class="fa-solid fa-file-pdf"></i>
-            الملازم والكتب
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('tests')">
-
-            <i class="fa-solid fa-clipboard-check"></i>
-            الاختبارات
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('correction')">
-
-            <i class="fa-solid fa-user-check"></i>
-            التصحيح
-
-        </a>
-
-
-        <div class="nav-title">
-            حسابي
-        </div>
-
-
-        <a href="#" class="nav-item"
-           onclick="showPage('progress')">
-
-            <i class="fa-solid fa-chart-line"></i>
-            تقدمي الدراسي
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="openProfile()">
-
-            <i class="fa-solid fa-user"></i>
-            الملف الشخصي
-
-        </a>
-
-
-        <a href="#" class="nav-item"
-           onclick="logout()">
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-            تسجيل الخروج
-
-        </a>
-
-    </nav>
-
-</aside>
-
-
-<!-- ================= MAIN ================= -->
-
-<main id="mainContent" class="main-content">
-
-
-<!-- ================= HOME ================= -->
-
-<section id="page-home" class="page active">
-
-    <div class="welcome-section">
-
-        <div>
-
-            <span class="welcome-small">
-                أهلاً بك في
-            </span>
-
-            <h2>
-                منصة العراق التعليمية
-            </h2>
-
-            <p>
-                كل ما تحتاجه لتطوير مستواك الدراسي
-                في مكان واحد.
-            </p>
-
-        </div>
-
-        <div class="welcome-icon">
-            🎓
-        </div>
-
-    </div>
-
-
-    <!-- STATISTICS -->
-
-    <div class="stats-grid">
-
-        <div class="stat-card">
-
-            <div class="stat-icon blue">
-                <i class="fa-solid fa-book"></i>
+          </section>
+
+          {/* قسم المراحل الدراسية السريع */}
+          <section className="max-w-7xl mx-auto px-4 py-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">اختر مرحلتك الدراسية</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {stages.map((stage) => (
+                <div 
+                  key={stage.id} 
+                  onClick={() => setCurrentView('stages')}
+                  className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer text-center">
+                  <div className="text-5xl mb-4">{stage.icon}</div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{stage.name}</h3>
+                  <p className="text-gray-500">{stage.coursesCount}</p>
+                </div>
+              ))}
             </div>
+          </section>
 
-            <div>
-
-                <span>الدروس</span>
-
-                <strong id="lessonsCount">
-                    0
-                </strong>
-
+          {/* قسم نخبة الأساتذة */}
+          <section className="bg-gray-100 py-16">
+            <div className="max-w-7xl mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">نخبة من أفضل أساتذة العراق</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {teachers.map((teacher) => (
+                  <div key={teacher.id} className="bg-white p-6 rounded-2xl shadow-sm text-center">
+                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">
+                      {teacher.image}
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-800">{teacher.name}</h3>
+                    <p className="text-blue-600 font-medium mb-2">{teacher.subject}</p>
+                    <div className="text-amber-500 font-bold">⭐ {teacher.rating} تقييم الطلاب</div>
+                  </div>
+                ))}
+              </div>
             </div>
+          </section>
+        </>
+      )}
 
+      {/* ================= تذييل الصفحة (Footer) ================= */}
+      <footer className="bg-gray-900 text-white py-8 mt-12">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-gray-400">© 2026 منصة العراق التعليمية. جميع الحقوق محفوظة.</p>
         </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon green">
-                <i class="fa-solid fa-file-pdf"></i>
-            </div>
-
-            <div>
-
-                <span>الملازم</span>
-
-                <strong id="notesCount">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon orange">
-                <i class="fa-solid fa-clipboard-check"></i>
-            </div>
-
-            <div>
-
-                <span>الاختبارات</span>
-
-                <strong id="testsCount">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon purple">
-                <i class="fa-solid fa-chalkboard-user"></i>
-            </div>
-
-            <div>
-
-                <span>الأساتذة</span>
-
-                <strong id="teachersCount">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
+      </footer>
 
     </div>
-
-
-    <!-- STAGE SELECTOR -->
-
-    <div class="section-header">
-
-        <div>
-
-            <h3>
-                اختر مرحلتك الدراسية
-            </h3>
-
-            <p>
-                للوصول إلى المحتوى المناسب لك
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div id="stageGrid"
-         class="stage-grid">
-
-    </div>
-
-
-    <!-- QUICK ACCESS -->
-
-    <div class="section-header">
-
-        <div>
-
-            <h3>
-                الوصول السريع
-            </h3>
-
-        </div>
-
-    </div>
-
-
-    <div class="quick-grid">
-
-        <button onclick="showPage('notes')">
-
-            <i class="fa-solid fa-file-pdf"></i>
-
-            <span>
-                الملازم
-            </span>
-
-        </button>
-
-
-        <button onclick="showPage('tests')">
-
-            <i class="fa-solid fa-pen-to-square"></i>
-
-            <span>
-                الاختبارات
-            </span>
-
-        </button>
-
-
-        <button onclick="showPage('correction')">
-
-            <i class="fa-solid fa-check-double"></i>
-
-            <span>
-                التصحيح
-            </span>
-
-        </button>
-
-
-        <button onclick="showPage('teachers')">
-
-            <i class="fa-solid fa-users"></i>
-
-            <span>
-                الأساتذة
-            </span>
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- ================= STAGES ================= -->
-
-<section id="page-stages" class="page">
-
-    <div class="page-title">
-
-        <h2>
-            المراحل الدراسية
-        </h2>
-
-        <p>
-            اختر المرحلة للوصول إلى جميع موادها
-        </p>
-
-    </div>
-
-
-    <div id="allStages"
-         class="stage-list">
-
-    </div>
-
-</section>
-
-
-<!-- ================= SUBJECTS ================= -->
-
-<section id="page-subjects" class="page">
-
-    <div class="page-title">
-
-        <h2>
-            المواد الدراسية
-        </h2>
-
-        <p>
-            المواد حسب المرحلة الدراسية
-        </p>
-
-    </div>
-
-
-    <div class="filter-box">
-
-        <select id="subjectStageFilter"
-                onchange="renderSubjects()">
-
-            <option value="">
-                كل المراحل
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div id="subjectsContainer"
-         class="cards-grid">
-
-    </div>
-
-</section>
-
-
-<!-- ================= TEACHERS ================= -->
-
-<section id="page-teachers" class="page">
-
-    <div class="page-title">
-
-        <h2>
-            الأساتذة
-        </h2>
-
-        <p>
-            نخبة من المدرسين والمختصين
-        </p>
-
-    </div>
-
-
-    <div class="teacher-search">
-
-        <i class="fa-solid fa-search"></i>
-
-        <input
-            id
+  );
+}
